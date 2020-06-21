@@ -12,7 +12,7 @@ CREATE TABLE EMPLEADOS (
     cedula_ciudadania INT(11),
     genero VARCHAR(20),
     fecha_nacimiento DATE,
-    cargo VARCHAR(250),
+    rol VARCHAR(250),
     PRIMARY KEY (id_empleado)
 );
 
@@ -40,13 +40,19 @@ CREATE TABLE PEDIDOS (
     descripcion TEXT,
     PRIMARY KEY (id_pedido)
 );
-
--- Creacion tabla pedido_empleado
-CREATE TABLE PEDIDO_EMPLEADO (
-    id_pedido INT(11) NOT NULL,
+--Creacion tabla MODULO
+CREATE TABLE MODULO (
+    id_modulo INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(200),
+    
+    PRIMARY KEY (id_modulo)
+);
+-- Creacion tabla EMPLEADO_MODULO
+CREATE TABLE EMPLEADO_MODULO (
+    id_modulo INT(11) NOT NULL,
     id_empleado INT(11) NOT NULL,
-    PRIMARY KEY (id_empleado),
-    FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id_pedido) ON DELETE CASCADE,
+
+    FOREIGN KEY (id_modulo) REFERENCES MODULO(id_modulo) ON DELETE CASCADE,
     FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id_empleado) ON DELETE CASCADE
 );
 
@@ -62,15 +68,6 @@ CREATE TABLE VALIDACIONES (
     FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id_pedido) ON DELETE CASCADE
 );
 
--- Creacion tabla IMPRESIONES
-CREATE TABLE IMPRESIONES (
-    id_impresion INT(11) NOT NULL AUTO_INCREMENT,
-    id_pedido INT(11) NOT NULL,
-    impreso VARCHAR(300),
-    PRIMARY KEY (id_impresion),
-    FOREIGN KEY (id_pedido) REFERENCES pedido_empleado(id_pedido) ON DELETE CASCADE
-);
-
 -- Creacion tabla CLIENTES
 CREATE TABLE CLIENTES (
     id_cliente INT(11) NOT NULL AUTO_INCREMENT,
@@ -78,6 +75,14 @@ CREATE TABLE CLIENTES (
     apellido VARCHAR(250),
     cedula_ciudadania INT(15),
     PRIMARY KEY (id_cliente)
+);
+--Creacion tabla EMPLEADOS_CLIENTES
+CREATE TABLE EMPLEADOS_CLIENTES (
+    id_cliente INT(11) NOT NULL AUTO_INCREMENT,
+    id_empleado INT(11) NOT NULL,
+
+    FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente) ON DELETE CASCADE,
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id_empleado) ON DELETE CASCADE
 );
 
 -- Creacion tabla DOCUMENTOS
@@ -89,21 +94,13 @@ CREATE TABLE DOCUMENTOS(
     PRIMARY key (id_documento)
 );
 
--- Creacion tabla cliente_documento
+-- Creacion tabla CLIENTE_DOCUMENTO
 CREATE TABLE CLIENTE_DOCUMENTO(
     id_documento INT(11) NOT NULL,
     id_cliente INT(11) NOT NULL,
     PRIMARY key(id_documento),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente) ON DELETE CASCADE,
     FOREIGN KEY (id_documento) REFERENCES DOCUMENTOS(id_documento) ON DELETE CASCADE
-);
-
--- Creacion tabla RECLAMOS
-CREATE TABLE RECLAMOS(
-    id_reclamo INT(11) NOT NULL AUTO_INCREMENT,
-    tipo VARCHAR(200),
-    descripcion TEXT,
-    PRIMARY KEY(id_reclamo)
 );
 
 -- Creacion tabla cliente_pedido
@@ -114,13 +111,4 @@ CREATE TABLE CLIENTE_PEDIDO(
     PRIMARY KEY (id_pedido),
     FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id_pedido) ON DELETE CASCADE,
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente) ON DELETE CASCADE
-);
-
--- Creacion tabla cliente_pedido
-CREATE TABLE PEDIDO_RECLAMO(
-    id_pedido INT(11) NOT NULL,
-    id_reclamo INT(11) NOT NULL,
-    PRIMARY KEY (id_pedido),
-    FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id_pedido) ON DELETE CASCADE,
-    FOREIGN KEY (id_reclamo) REFERENCES RECLAMOS(id_reclamo) ON DELETE CASCADE
 );
