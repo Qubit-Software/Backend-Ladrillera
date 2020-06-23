@@ -40,6 +40,23 @@ CREATE TABLE PEDIDOS (
     descripcion TEXT,
     PRIMARY KEY (id)
 );
+--Creacion Productos
+CREATE TABLE PRODUCTOS (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(200),
+    descripcion TEXT,
+    imagen VARCHAR(200),
+
+    PRIMARY KEY (id)
+);
+--Creacion Productos_Pedidos
+CREATE TABLE PRODUCTOS_PEDIDOS (
+    id_P INT(11) NOT NULL,
+    id_Pr INT(11) NOT NULL,
+
+    FOREIGN KEY (id_P) REFERENCES PEDIDOS(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_Pr) REFERENCES PRODUCTOS(id) ON DELETE CASCADE
+);
 --Creacion tabla MODULO
 CREATE TABLE MODULO (
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -47,6 +64,8 @@ CREATE TABLE MODULO (
     
     PRIMARY KEY (id)
 );
+
+
 -- Creacion tabla EMPLEADO_MODULO
 CREATE TABLE EMPLEADO_MODULO (
     id INT(11) NOT NULL,
@@ -61,6 +80,7 @@ CREATE TABLE VALIDACIONES (
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_E INT(11) NOT NULL,
     id_P INT(11) NOT NULL,
+    fase INT(3) NOT NULL,
     anexo VARCHAR(400),
     descripcion TEXT,
     PRIMARY KEY (id),
@@ -74,6 +94,7 @@ CREATE TABLE CLIENTES (
     nombre VARCHAR(250),
     apellido VARCHAR(250),
     cedula_ciudadania INT(15),
+    tipo_cliente VARCHAR(100),
     PRIMARY KEY (id)
 );
 --Creacion tabla EMPLEADOS_CLIENTES
