@@ -50,4 +50,11 @@ class Usuario  extends Authenticatable
 
         return $this->api_token;
     }
+
+
+    public function hasModule($module)
+    {
+        //  TODO: Check if user belong to the specific module
+        return true;
+    }
 }

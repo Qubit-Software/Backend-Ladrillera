@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Usuario;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class LoginController extends Controller
@@ -39,25 +41,32 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+        $this->middleware('guest:api')->except('logout');
     }
 
 
 
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        $this->validateLogin($request, [
+            'email'   => 'required|email',
+            'password' => 'required|min:6'
+        ]);
 
-        if ($this->attemptLogin($request)) {
-            $user = $this->guard()->user();
-            $user->generateToken();
+        $credentials = ['email' => $request->email, 'contraseña' => $request->password];
+        $usuario = Usuario::where('email', $credentials['email'])->first();
+
+        if (!is_null($usuario) && Hash::check($credentials['contraseña'], $usuario->contraseña)) {
+            $usuario->generateToken();
 
             return response()->json([
-                'data' => $user->toArray(),
+                'data' => $usuario->toArray(),
             ]);
         }
 
         return $this->sendFailedLoginResponse($request);
     }
+
 
     public function logout(Request $request)
     {
