@@ -31,14 +31,25 @@ CREATE TABLE USUARIOS (
     PRIMARY KEY (id),
     FOREIGN KEY (id_E) REFERENCES EMPLEADOS(id) ON DELETE CASCADE
 );
-
+-- Creacion tabla CLIENTES
+CREATE TABLE CLIENTES (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    nombre VARCHAR(250),
+    apellido VARCHAR(250),
+    cedula_ciudadania INT(15),
+    tipo_cliente VARCHAR(100),
+    PRIMARY KEY (id)
+);
 -- Creacion tabla PEDIDOS
 CREATE TABLE PEDIDOS (
     id INT(11) NOT NULL AUTO_INCREMENT,
+    id_C INT(11) NOT NULL,
     PEDIDO VARCHAR(500),
     cantidad INT(15),
     descripcion TEXT,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (id_C) REFERENCES CLIENTES(id) ON DELETE CASCADE
+
 );
 --Creacion Productos
 CREATE TABLE PRODUCTOS (
@@ -87,16 +98,6 @@ CREATE TABLE VALIDACIONES (
     FOREIGN KEY (id_E) REFERENCES EMPLEADOS(id) ON DELETE CASCADE,
     FOREIGN KEY (id_P) REFERENCES PEDIDOS(id) ON DELETE CASCADE
 );
-
--- Creacion tabla CLIENTES
-CREATE TABLE CLIENTES (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(250),
-    apellido VARCHAR(250),
-    cedula_ciudadania INT(15),
-    tipo_cliente VARCHAR(100),
-    PRIMARY KEY (id)
-);
 --Creacion tabla EMPLEADOS_CLIENTES
 CREATE TABLE EMPLEADOS_CLIENTES (
     id_C INT(11) NOT NULL,
@@ -108,28 +109,12 @@ CREATE TABLE EMPLEADOS_CLIENTES (
 
 -- Creacion tabla DOCUMENTOS
 CREATE TABLE DOCUMENTOS(
-    id_documento INT(11) NOT NULL AUTO_INCREMENT,
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    id_C INT(11) NOT NULL,
     nombre VARCHAR(250),
     descripcion TEXT,
     tipoArchivo VARCHAR(250),
-    PRIMARY key (id_documento)
+    PRIMARY key (id),
+    FOREIGN KEY (id_C) REFERENCES CLIENTES(id) ON DELETE CASCADE
 );
 
--- Creacion tabla CLIENTE_DOCUMENTO
-CREATE TABLE CLIENTE_DOCUMENTO(
-    id_documento INT(11) NOT NULL,
-    id_cliente INT(11) NOT NULL,
-    PRIMARY key(id_documento),
-    FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente) ON DELETE CASCADE,
-    FOREIGN KEY (id_documento) REFERENCES DOCUMENTOS(id_documento) ON DELETE CASCADE
-);
-
--- Creacion tabla cliente_pedido
-CREATE TABLE CLIENTE_PEDIDO(
-    id_pedido INT(11) NOT NULL,
-    id_cliente INT(11) NOT NULL,
-    estacion VARCHAR(300),
-    PRIMARY KEY (id_pedido),
-    FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id_pedido) ON DELETE CASCADE,
-    FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id_cliente) ON DELETE CASCADE
-);
