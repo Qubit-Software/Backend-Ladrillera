@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace App;
+
 
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Str;
 
-
-class Usuario  extends Authenticatable
+class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
@@ -19,17 +18,16 @@ class Usuario  extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nombre', 'email', 'contraseña',
+        'name', 'email', 'password',
     ];
 
-    public $timestamps = false;
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'contraseña', 'remember_token',
+        'password', 'remember_token',
     ];
 
     /**
@@ -40,23 +38,4 @@ class Usuario  extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
-    /**
-     * Generates a new token for the user
-     */
-    public function generateToken()
-    {
-        $this->api_token = str::random(60);
-        $this->save();
-
-        return $this->api_token;
-    }
-
-
-    public function hasModule($module)
-    {
-        //  TODO: Check if user belong to the specific module
-        return true;
-    }
 }

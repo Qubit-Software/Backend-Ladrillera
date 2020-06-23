@@ -2,6 +2,8 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\Usuario;
 use Closure;
 
 class CheckModule
@@ -15,7 +17,9 @@ class CheckModule
      */
     public function handle($request, Closure $next, $module)
     {
-        if (!$request->user()->hasModule($module)) {
+        $authUser = Auth::user();
+        $usuario = Usuario::where('email', $authUser->email)->fisrt();
+        if (!$usuario->hasModule($module)) {
             abort(403, 'No tienes autorización para ingresar.');
         }
         return $next($request);

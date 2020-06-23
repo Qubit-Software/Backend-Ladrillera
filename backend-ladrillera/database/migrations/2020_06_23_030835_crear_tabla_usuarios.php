@@ -14,12 +14,12 @@ class CrearTablaUsuarios extends Migration
     public function up()
     {
         Schema::table('USUARIOS', function (Blueprint $table) {
-            $table->string('api_token', 60)->unique()->nullable();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->rememberToken();
-            $table->timestamps();
+            // Referencia a tabla users id con big int
+            $table->unsignedBigInteger('auth_user_id')->nullable(true);
+            $table->foreign('auth_user_id')->references('id')->on('users');
         });
     }
+
     /**
      * Reverse the migrations.
      *
