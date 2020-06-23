@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Empleado;
+namespace App\Http\Controllers\Usuario;
 
 use App\Http\Controllers\Controller;
-use App\Models\Empleado as ModelEmpleado;
 use Illuminate\Http\Request;
 
-class Empleado extends Controller
+class UsuarioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,6 @@ class Empleado extends Controller
     public function index()
     {
         //
-        return response()->json(ModelEmpleado::get(), 200);
     }
 
     /**
@@ -37,8 +35,7 @@ class Empleado extends Controller
      */
     public function store(Request $request)
     {
-        $empleado = ModelEmpleado::create($request->all());
-        return response()->json($empleado, 201);
+        //
     }
 
     /**
@@ -50,7 +47,6 @@ class Empleado extends Controller
     public function show($id)
     {
         //
-        return response()->json(ModelEmpleado::find($id), 200);
     }
 
     /**
@@ -73,12 +69,7 @@ class Empleado extends Controller
      */
     public function update(Request $request, $id)
     {
-        $empleado = ModelEmpleado::find($id);
-        if (is_null($empleado)) {
-            return response()->json(["msg" => $id . " no encontrado"], 404);
-        }
-        $empleado->update($request->all());
-        return response()->json($empleado, 201);
+        //
     }
 
     /**
@@ -89,11 +80,6 @@ class Empleado extends Controller
      */
     public function destroy($id)
     {
-        $empleado = ModelEmpleado::find($id);
-        if (is_null($empleado)) {
-            return response()->json(["msg" => $id . " no encontrado"], 404);
-        }
-        $empleado->delete();
-        return response()->json(["msg" => $id . " Deleted"], 200);
+        //
     }
 }
