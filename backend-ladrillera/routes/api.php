@@ -28,13 +28,23 @@ Route::group(['prefix' => 'auth'], function () {
 
 // Api Routes with implicit route binding, using the api guard
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::group(['prefix' => 'administracion', 'middleware' => ['module:administrador']], function () {
+    Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
         // echo "Administracion perros";
-        Route::resource('empleado', 'Empleado\EmpleadoController');
-        Route::resource('usuario', 'Usuario\UsuarioController');
+        Route::apiResource('empleado', 'Empleado\EmpleadoController');
+        Route::apiResource('usuario', 'Usuario\UsuarioController')->only([
+            'index', 'show', "create", "store", "update"
+        ]);
     });
-    Route::group(['prefix' => 'ventas', 'middleware' => ['module:administrador']], function () {
-        Route::resource('cliente', 'Cliente\ClienteController');
-        Route::resource('pedido', 'Pedido\PedidoController');
+    Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
+        Route::apiResource('cliente', 'Cliente\ClienteController');
+        Route::apiResource('pedido', 'Pedido\PedidoController');
+    });
+    Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:contabilidad']], function () {
+        Route::apiResource('cliente', 'Cliente\ClienteController');
+        Route::apiResource('pedido', 'Pedido\PedidoController');
+    });
+    Route::group(['prefix' => 'despacho', 'middleware' => ['module:despacho']], function () {
+        Route::apiResource('cliente', 'Cliente\ClienteController');
+        Route::apiResource('pedido', 'Pedido\PedidoController');
     });
 });

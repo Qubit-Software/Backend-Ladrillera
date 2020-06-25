@@ -9,9 +9,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 
-class Usuario  extends Authenticatable
+class Usuario  extends Model
 {
-    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +18,7 @@ class Usuario  extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nombre', 'email', 'contraseña',
+        'nombre', 'email', 'contraseña', 'id_empleado'
     ];
 
     public $timestamps = false;
@@ -40,23 +39,4 @@ class Usuario  extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
-    /**
-     * Generates a new token for the user
-     */
-    public function generateToken()
-    {
-        $this->api_token = str::random(60);
-        $this->save();
-
-        return $this->api_token;
-    }
-
-
-    public function hasModule($module)
-    {
-        //  TODO: Check if user belong to the specific module
-        return true;
-    }
 }

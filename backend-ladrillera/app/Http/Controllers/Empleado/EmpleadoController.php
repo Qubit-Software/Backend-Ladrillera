@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Empleado;
 
+use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Empleado as ModelEmpleado;
 use Illuminate\Http\Request;
@@ -16,7 +17,8 @@ class EmpleadoController extends Controller
     public function index()
     {
         //
-        return response()->json(ModelEmpleado::get(), 200);
+        $empleados = ModelEmpleado::all();
+        return response()->json($empleados, 200);
     }
 
     /**
@@ -37,6 +39,19 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+        $rules = [
+            "nombres" => "required|min:1",
+            "apellidos" => "required|min:2|max:100",
+            "cedula_ciudadania" => "required|digits:10",
+            "genero" => "required|min:1",
+            // "fecha_nacimiento" => "required|date_format:d/m/Y",
+            "fecha_nacimiento" => "required|date_format:Y-m-d",
+            "rol" => "required|string",
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
         $empleado = ModelEmpleado::create($request->all());
         return response()->json($empleado, 201);
     }
@@ -49,8 +64,11 @@ class EmpleadoController extends Controller
      */
     public function show($id)
     {
-        //
-        return response()->json(ModelEmpleado::find($id), 200);
+        $empleado = ModelEmpleado::find($id);
+        if (is_null($empleado)) {
+            return response()->json(['message' => "No se encontro el Empleado"]);
+        }
+        return response()->json($empleado, 200);
     }
 
     /**
@@ -73,9 +91,22 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $rules = [
+            "nombres" => "required|min:1",
+            "apellidos" => "required|min:2|max:100",
+            "cedula_ciudadania" => "required|digits:10",
+            "genero" => "required|min:1",
+            "fecha_nacimiento" => "required|date",
+            "rol" => "required|string",
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 400);
+        }
+
         $empleado = ModelEmpleado::find($id);
         if (is_null($empleado)) {
-            return response()->json(["msg" => $id . " no encontrado"], 404);
+            return response()->json(["msg" => $id . " Empleado no encontrado"], 404);
         }
         $empleado->update($request->all());
         return response()->json($empleado, 201);
