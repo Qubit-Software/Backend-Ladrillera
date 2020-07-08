@@ -14,8 +14,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+// Auth routes
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('login', 'AuthController@login');
+    Route::post('signup', 'AuthController@signup');
+
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('logout', 'AuthController@logout');
+        Route::get('user', 'AuthController@user');
+    });
 });
 
-Route::resource('empleado', 'Empleado\Empleado');
+
+// Api Routes with implicit route binding, using the api guard
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
+        // echo "Administracion perros";
+        Route::apiResource('empleado', 'Empleado\EmpleadoController');
+        Route::apiResource('usuario', 'Usuario\UsuarioController')->only([
+            'index', 'show', "create", "store", "update"
+        ]);
+    });
+    Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
+        Route::apiResource('cliente', 'Cliente\ClienteController');
+        Route::apiResource('pedido', 'Pedido\PedidoController');
+    });
+    Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:contabilidad']], function () {
+        Route::apiResource('cliente', 'Cliente\ClienteController');
+        Route::apiResource('pedido', 'Pedido\PedidoController');
+    });
+    Route::group(['prefix' => 'despacho', 'middleware' => ['module:despacho']], function () {
+        Route::apiResource('cliente', 'Cliente\ClienteController');
+        Route::apiResource('pedido', 'Pedido\PedidoController');
+    });
+});

@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
-
+namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
-class User extends Authenticatable
+
+class Usuario  extends Model
 {
-    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -18,16 +18,17 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'nombre', 'email', 'contraseña', 'id_empleado'
     ];
 
+    public $timestamps = false;
     /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'contraseña', 'remember_token',
     ];
 
     /**
