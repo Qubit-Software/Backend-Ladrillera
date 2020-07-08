@@ -21,6 +21,7 @@ CREATE TABLE USUARIOS (
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     id_empleado INT(11) NULL,
     nombre VARCHAR(250),
+    email VARCHAR(250),
     contraseña VARCHAR(250),
     activo boolean,
     PRIMARY KEY (id),
