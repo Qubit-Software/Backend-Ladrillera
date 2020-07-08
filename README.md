@@ -14,7 +14,7 @@ Backend Ladillera
 
 3.  Abrir el PhpMyadmin y ejecutar el codigo sql dentro del archivo "database.sql"
 4.  Para la base de datos de la ladrillera crear un usuario con permisos de consulta y escritura.
-5.  En el archivo .env del proyecto de laravel cambiar credenciales de acceso a la base de datos MYSQL por los nuevos.  
+5.  Re nombrar archivo env.example a .env y en  ese archivo .env del proyecto cambiar credenciales de acceso a la base de datos MYSQL por los nuevos.  
     ```
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
