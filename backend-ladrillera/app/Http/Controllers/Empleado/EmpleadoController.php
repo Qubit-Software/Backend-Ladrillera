@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Empleado;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
 use App\Models\Empleado as ModelEmpleado;
+use App\User;
+use App\Models\Usuario;
 use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
@@ -39,6 +41,7 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+
         $rules = [
             "nombres" => "required|min:1",
             "apellidos" => "required|min:2|max:100",
@@ -47,12 +50,42 @@ class EmpleadoController extends Controller
             // "fecha_nacimiento" => "required|date_format:d/m/Y",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
+            "email" => "required|string|email",
+            "password" => "required|string",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $empleado = ModelEmpleado::create($request->all());
+
+        // Creacion de tablas de apoyo para ese nuevo empleado, la de user para auth y la usuario para 
+        // gestion de datos de los usuarios
+        try {
+            $user = new User([
+                'name'     => $request->nombres,
+                'email'    => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+            $user->save();
+            // Save to Usuario table
+            $usuario = new Usuario([
+                'nombre' => $request['name'],
+                'correo' => $request['email'],
+                'contraseña' => bcrypt($request['password']),
+                'auth_user_id' => $user->id,
+            ]);
+            $usuario->save();
+        } catch (\Illuminate\Database\QueryException $e) {
+            $erro = $e->errorInfo;
+        }
+        $datosEmpleado = $request->all();
+        $datosEmpleado['correo'] = $datosEmpleado['email'];
+        unset($datosEmpleado['email']);
+        $datosEmpleado['nombre'] = $datosEmpleado['nombres'];
+        unset($datosEmpleado['nombres']);
+        $datosEmpleado['apellido'] = $datosEmpleado['apellidos'];
+        unset($datosEmpleado['apellidos']);
+        $empleado = ModelEmpleado::create($datosEmpleado);
         return response()->json($empleado, 201);
     }
 
@@ -98,6 +131,8 @@ class EmpleadoController extends Controller
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date",
             "rol" => "required|string",
+            "correo" => "required|string|email|unique:empleados",
+            "contraseña" => "required|string",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

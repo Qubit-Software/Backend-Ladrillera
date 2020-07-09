@@ -28,8 +28,9 @@ class AuthController extends Controller
         // Save to Usuario table
         $usuario = new Usuario([
             'nombre' => $request['name'],
-            'email' => $request['email'],
+            'correo' => $request['email'],
             'contraseña' => bcrypt($request['password']),
+            'auth_user_id' => $user->id,
         ]);
         $usuario->save();
         return response()->json([
@@ -45,13 +46,21 @@ class AuthController extends Controller
             'password'    => 'required|string',
             'remember_me' => 'boolean',
         ]);
+        // Check for user credentials
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Unauthorized'
+                'message' => 'Sin autorización'
             ], 401);
         }
         $user = $request->user();
+        $isActive = Usuario::where('auth_user_id', '=', $user->id)->first();
+        if (!$isActive) {
+            return response()->json([
+                'message' => 'No tienes una cuenta activa'
+            ], 401);
+        }
+        // Create new token for the authenticated user 
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me) {
@@ -65,8 +74,7 @@ class AuthController extends Controller
             'token_type'   => 'Bearer',
             'expires_at'   => Carbon::parse(
                 $tokenResult->token->expires_at
-            )
-                ->toDateTimeString(),
+            )->toDateTimeString(),
         ]);
     }
 

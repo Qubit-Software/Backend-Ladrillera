@@ -14,6 +14,7 @@ class Empleado extends Model
         "genero",
         "fecha_nacimiento",
         "rol",
+        "correo",
     ];
     public $timestamps = false;
 

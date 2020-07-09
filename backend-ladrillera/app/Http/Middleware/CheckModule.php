@@ -19,7 +19,7 @@ class CheckModule
     public function handle($request, Closure $next, $module)
     {
         $authUser = Auth::user();
-        $usuario = Usuario::where('email', $authUser->email)->first();
+        $usuario = Usuario::where('correo', $authUser->email)->first();
         $empleado = Empleado::where('id', $usuario->id_empleado)->first();
         if (is_null($empleado) || !$empleado->hasModule($module)) {
             return response()->json(['msg' => 'No tienes autorización para ingresar al modulo ' . $module], 403);
