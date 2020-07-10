@@ -30,6 +30,7 @@ Backend Ladillera
        > php artisan migrate
    2. Generar nuevas keys para passport con este flag si da error "--force" 
        > php artisan passport:install   
+       > php artisan key:generate
 8.  Iniciar proyecto
     >  php artisan serve  
 
