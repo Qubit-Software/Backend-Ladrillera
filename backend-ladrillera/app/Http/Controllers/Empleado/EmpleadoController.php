@@ -8,9 +8,13 @@ use App\Models\Empleado as ModelEmpleado;
 use App\User;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Traits\UploadTrait;
 
 class EmpleadoController extends Controller
 {
+    use UploadTrait;
+
     /**
      * Display a listing of the resource.
      *
@@ -47,9 +51,9 @@ class EmpleadoController extends Controller
             "apellidos" => "required|min:2|max:100",
             "cedula_ciudadania" => "required|digits:10",
             "genero" => "required|min:1",
-            // "fecha_nacimiento" => "required|date_format:d/m/Y",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
+            'foto' =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             "email" => "required|string|email",
             "password" => "required|string",
         ];
@@ -86,6 +90,20 @@ class EmpleadoController extends Controller
         $datosEmpleado['apellido'] = $datosEmpleado['apellidos'];
         unset($datosEmpleado['apellidos']);
         $empleado = ModelEmpleado::create($datosEmpleado);
+        if ($request->has('foto')) {
+            $image = $request->file('foto');
+            // Make a image name based on user name and current timestamp
+            $name = Str::slug($request->input('name')) . '_' . time();
+            // Define folder path under storage/app/public/uploads/images
+            $folder = '/uploads/images/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+            // Set user profile image path in database to filePath
+            $empleado->foto = $filePath;
+        }
+        $empleado->save();
         return response()->json($empleado, 201);
     }
 
