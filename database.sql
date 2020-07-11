@@ -20,10 +20,9 @@ CREATE TABLE EMPLEADOS (
 CREATE TABLE USUARIOS (
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     id_empleado INT(11) NULL,
-    nombre VARCHAR(250),
     correo VARCHAR(250),
     contraseña VARCHAR(250),
-    activo boolean DEFAULT 0,
+    activo boolean DEFAULT 1,
     PRIMARY KEY (id),
     FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE CASCADE
 );
