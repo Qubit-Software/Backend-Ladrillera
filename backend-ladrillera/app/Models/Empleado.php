@@ -15,6 +15,8 @@ class Empleado extends Model
         "fecha_nacimiento",
         "rol",
         "correo",
+        "foto",
+
     ];
     public $timestamps = false;
 
@@ -52,5 +54,9 @@ class Empleado extends Model
             return true;
         }
         return false;
+    }
+    public function getImageAttribute()
+    {
+        return $this->foto;
     }
 }
