@@ -28,6 +28,7 @@ Route::group(['prefix' => 'auth'], function () {
 
 // Api Routes with implicit route binding, using the api guard
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::get('user_modules', 'Empleado\EmpleadoController@modules');
     Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
         // echo "Administracion perros";
         Route::apiResource('empleado', 'Empleado\EmpleadoController');

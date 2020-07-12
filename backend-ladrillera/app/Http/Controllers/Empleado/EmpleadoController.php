@@ -10,6 +10,10 @@ use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
+use App\Http\Controllers\MailController;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Empleado;
+use Illuminate\Support\Facades\DB;
 
 class EmpleadoController extends Controller
 {
@@ -45,7 +49,9 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-
+        DB::beginTransaction();
+        // Validate required parameters to create all the db tables needed for an Employee--------------------------------------------
+        $normalPassword = Str::random(10);
         $rules = [
             "nombres" => "required|min:1",
             "apellidos" => "required|min:2|max:100",
@@ -55,33 +61,18 @@ class EmpleadoController extends Controller
             "rol" => "required|string",
             'foto' =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             "email" => "required|string|email",
-            "password" => "required|string",
         ];
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
+        // Fin validacion --------------------------------------------
 
         // Creacion de tablas de apoyo para ese nuevo empleado, la de user para auth y la usuario para 
         // gestion de datos de los usuarios
-        try {
-            $user = new User([
-                'name'     => $request->nombres,
-                'email'    => $request->email,
-                'password' => bcrypt($request->password),
-            ]);
-            $user->save();
-            // Save to Usuario table
-            $usuario = new Usuario([
-                'nombre' => $request['name'],
-                'correo' => $request['email'],
-                'contraseña' => bcrypt($request['password']),
-                'auth_user_id' => $user->id,
-            ]);
-            $usuario->save();
-        } catch (\Illuminate\Database\QueryException $e) {
-            $erro = $e->errorInfo;
-        }
+        $user = new User();
+        $usuario = new Usuario();
+        $this->createUserTables($request, $normalPassword, $user, $usuario);
         $datosEmpleado = $request->all();
         $datosEmpleado['correo'] = $datosEmpleado['email'];
         unset($datosEmpleado['email']);
@@ -89,26 +80,90 @@ class EmpleadoController extends Controller
         unset($datosEmpleado['nombres']);
         $datosEmpleado['apellido'] = $datosEmpleado['apellidos'];
         unset($datosEmpleado['apellidos']);
-        $empleado = ModelEmpleado::create($datosEmpleado);
-        if ($request->has('foto')) {
-            $image = $request->file('foto');
-            // Make a image name based on user name and current timestamp
-            $name = Str::slug($request->input('name')) . '_' . time();
-            // Define folder path under storage/app/public/uploads/images
-            $folder = '/uploads/images/';
-            // Make a file path where image will be stored [ folder path + file name + file extension]
-            $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
-            // Upload image
-            $this->uploadOne($image, $folder, 'public', $name);
-            // Set user profile image path in database to filePath
-            $empleado->foto = $filePath;
-        }
-        $empleado->save();
-        $usuario->id_empleado = $empleado->id;
-        $usuario->save();
+        $empleado = new ModelEmpleado($datosEmpleado);
+        $this->createEmpleado($request, $normalPassword, $usuario, $empleado);
+        DB::commit();;
         return response()->json($empleado, 201);
     }
 
+    private function createEmpleado($request, $normalPassword, $usuario, $empleado)
+    {
+        DB::beginTransaction();
+        try {
+            if ($request->has('foto')) {
+                $image = $request->file('foto');
+                // Make a image name based on user name and current timestamps
+                $name = Str::slug($request->input('name')) . '_' . time();
+                // Define folder path under storage/app/public/uploads/images
+                $folder = '/uploads/images/';
+                // Make a file path where image will be stored [ folder path + file name + file extension]
+                $filePath = $folder . $name . '.' . $image->getClientOriginalExtension();
+                // Upload image
+                $this->uploadOne($image, $folder, 'public', $name);
+                // Set user profile image path in database to filePath
+                $empleado->foto = $filePath;
+            }
+            $empleado->save();
+            $usuario->id_empleado = $empleado->id;
+            $usuario->save();
+            $mailController = new MailController();
+            $mailController->sendConfirmEmail($empleado->nombre . " " . $empleado->apellido, $empleado->correo, $normalPassword);
+            DB::commit();;
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollback();;
+            $errorCode = $e->errorInfo[1];
+            switch ($errorCode) {
+                case 1062:
+                    return response([
+                        'errors' => 'Ya existe el recurso empleado', 'details' => $e->errorInfo
+                    ], 409);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    private function createUserTables($request, $normalPassword, $user, $usuario)
+    {
+
+        DB::beginTransaction();
+        try {
+            $user = new User([
+                'name'     => $request->nombres,
+                'email'    => $request->email,
+                'password' => bcrypt($normalPassword),
+            ]);
+            $user->save();
+            // Save to Usuario table
+            $usuario = new Usuario([
+                'nombre' => $request['name'],
+                'correo' => $request['email'],
+                'contraseña' => bcrypt($normalPassword),
+                'auth_user_id' => $user->id,
+            ]);
+            $usuario->save();
+            DB::commit();
+        } catch (\Illuminate\Database\QueryException $e) {
+            DB::rollBack();
+            $errorCode = $e->errorInfo[1];
+            switch ($errorCode) {
+                case 1062:
+                    return response([
+                        'errors' => 'Ya existe el recurso Usuario', 'details' => $e->errorInfo
+                    ], 409);
+                    break;
+
+                default:
+                    break;
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
     /**
      * Display the specified resource.
      *
@@ -181,5 +236,19 @@ class EmpleadoController extends Controller
         }
         $empleado->delete();
         return response()->json(["msg" => $id . " Deleted"], 200);
+    }
+
+
+    public function modules(Request $request)
+    {
+
+        // $authUser = Auth::user();
+        $authUser = $request->user();
+
+        $usuario = Usuario::where('correo', $authUser->email)->first();
+        $empleado = Empleado::where('id', $usuario->id_empleado)->first();
+        $modules = $empleado->modules()->get();
+
+        return response()->json(['modulos' => $modules], 200);
     }
 }

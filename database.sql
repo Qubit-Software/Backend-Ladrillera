@@ -112,10 +112,10 @@ DELETE FROM
     `empleados`;
 
 DELETE FROM
-    `users`;
+    `usuarios`;
 
 DELETE FROM
-    `usuarios`;
+    `users`;
 
 DELETE FROM
     `modulos`;

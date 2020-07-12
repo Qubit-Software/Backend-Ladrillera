@@ -43,20 +43,26 @@ class EmployeesTableSeeder extends Seeder
         $usuario->save();
         $gender = $faker->randomElement(['Masculino', 'Femenino', 'Otro']);
         $empleado = Empleado::create([
-            'nombre' => $faker->name,
-            'apellido' => $faker->lastName,
+            'nombre' => $usuario->nombre,
+            'apellido' => 'Munoz',
             'cedula_ciudadania' => $faker->numberBetween(10, 1000),
             'genero' =>  $gender,
             'fecha_nacimiento' => $faker->date($format = 'Y-m-d', $max = 'now'),
-            'rol' => $faker->jobTitle,
-            'correo' => $usuario->email,
+            'rol' => "Administrador",
+            'correo' => $usuario->correo,
             'foto' => $faker->image(),
         ]);
         $empleado->save();
         $usuario->id_empleado = $empleado->id;
         $usuario->save();
+
+        // fakeData($faker, $password);
+    }
+
+    private function fakeData($faker, $password)
+    {
         // And now let's generate a few dozen users for our app:
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $user = User::create([
                 'name' => $faker->name,
                 'email' => $faker->email,
@@ -76,7 +82,7 @@ class EmployeesTableSeeder extends Seeder
             $empleado = Empleado::create([
                 'nombre' => $usuario->nombre,
                 'apellido' => $faker->lastName,
-                'cedula_ciudadania' => $faker->numberBetween(10, 1000),
+                'cedula_ciudadania' => $faker->numberBetween(10, 10000),
                 'genero' =>  $gender,
                 'fecha_nacimiento' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'rol' => $faker->jobTitle,
