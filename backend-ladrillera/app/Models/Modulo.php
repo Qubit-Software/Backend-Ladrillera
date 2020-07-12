@@ -18,6 +18,7 @@ class Modulo extends Model
     protected $guarded = [
         'id'
     ];
+    public $timestamps = false;
 
     //
     public function usuarios()

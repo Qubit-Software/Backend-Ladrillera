@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Empleado_Modulo extends Model
 {
-    //
+    public $timestamps = false;
 }

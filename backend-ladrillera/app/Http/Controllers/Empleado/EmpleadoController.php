@@ -104,6 +104,8 @@ class EmpleadoController extends Controller
             $empleado->foto = $filePath;
         }
         $empleado->save();
+        $usuario->id_empleado = $empleado->id;
+        $usuario->save();
         return response()->json($empleado, 201);
     }
 
