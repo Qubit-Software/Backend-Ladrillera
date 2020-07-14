@@ -31,6 +31,8 @@ Backend Ladillera
    2. Generar nuevas keys para passport con este flag si da error "--force" 
        > php artisan passport:install   
        > php artisan key:generate
+   3. Llenar base de datos con datos de admin y estaticos
+       > php artisan db:seed (Antes correr ultimos comandos del sql para eliminar users,usuarios,employees etc)
 8.  Iniciar proyecto
     >  php artisan serve  
 
