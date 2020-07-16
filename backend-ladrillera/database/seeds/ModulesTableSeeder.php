@@ -18,7 +18,7 @@ class ModulesTableSeeder extends Seeder
         ];
         foreach ($modules as $module) {
             // Do a mass assignment
-            Modulo::Create(['nombre' => $module]);
+            $module  = Modulo::Create(['nombre' => $module]);
         }
     }
 }

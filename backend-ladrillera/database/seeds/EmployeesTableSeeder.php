@@ -25,36 +25,40 @@ class EmployeesTableSeeder extends Seeder
         // Let's make sure everyone has the same password and 
         // let's hash it before the loop, or else our seeder 
         // will be too slow.
+        $email = "robinsonmu@unisabana.edu.co";
         $password = bcrypt("robin69");
 
-        $user = User::create([
-            'name' => 'Administrator',
-            'email' => 'robinsonmu@unisabana.edu.co',
-            'password' => $password,
-        ]);
-        $usuario = Usuario::create([
-            'nombre' => "Robinson",
-            'correo' => $user->email,
-            'contraseña' => $password,
-            'id_empleado' => null,
-            'activo' => $faker->boolean,
-            'auth_user_id' => $user->id
-        ]);
-        $usuario->save();
-        $gender = $faker->randomElement(['Masculino', 'Femenino', 'Otro']);
-        $empleado = Empleado::create([
-            'nombre' => $usuario->nombre,
-            'apellido' => 'Munoz',
-            'cedula_ciudadania' => $faker->numberBetween(10, 1000),
-            'genero' =>  $gender,
-            'fecha_nacimiento' => $faker->date($format = 'Y-m-d', $max = 'now'),
-            'rol' => "Administrador",
-            'correo' => $usuario->correo,
-            'foto' => $faker->image(),
-        ]);
-        $empleado->save();
-        $usuario->id_empleado = $empleado->id;
-        $usuario->save();
+        $user = User::where('email', '=', $email)->first();
+        if (is_null($user)) {
+            $user = User::create([
+                'name' => 'Administrator',
+                'email' => $email,
+                'password' => $password,
+            ]);
+            $usuario = Usuario::create([
+                'nombre' => "Robinson",
+                'correo' => $user->email,
+                'contraseña' => $password,
+                'id_empleado' => null,
+                'activo' => $faker->boolean,
+                'auth_user_id' => $user->id
+            ]);
+            $usuario->save();
+            $gender = $faker->randomElement(['Masculino', 'Femenino', 'Otro']);
+            $empleado = Empleado::create([
+                'nombre' => $usuario->nombre,
+                'apellido' => 'Munoz',
+                'cedula_ciudadania' => $faker->numberBetween(10, 1000),
+                'genero' =>  $gender,
+                'fecha_nacimiento' => $faker->date($format = 'Y-m-d', $max = 'now'),
+                'rol' => "Administrador",
+                'correo' => $usuario->correo,
+                'foto' => $faker->image(),
+            ]);
+            $empleado->save();
+            $usuario->id_empleado = $empleado->id;
+            $usuario->save();
+        }
 
         // fakeData($faker, $password);
     }
