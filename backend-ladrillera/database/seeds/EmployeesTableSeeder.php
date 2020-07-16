@@ -36,19 +36,17 @@ class EmployeesTableSeeder extends Seeder
                 'password' => $password,
             ]);
             $usuario = Usuario::create([
-                'nombre' => "Robinson",
                 'correo' => $user->email,
                 'contraseña' => $password,
                 'id_empleado' => null,
-                'activo' => $faker->boolean,
+                'activo' => 1,
                 'auth_user_id' => $user->id
             ]);
-            $usuario->save();
             $gender = $faker->randomElement(['Masculino', 'Femenino', 'Otro']);
             $empleado = Empleado::create([
-                'nombre' => $usuario->nombre,
+                'nombre' => "Robinson",
                 'apellido' => 'Munoz',
-                'cedula_ciudadania' => $faker->numberBetween(10, 1000),
+                'cedula_ciudadania' => $faker->numberBetween(10, 10000),
                 'genero' =>  $gender,
                 'fecha_nacimiento' => $faker->date($format = 'Y-m-d', $max = 'now'),
                 'rol' => "Administrador",

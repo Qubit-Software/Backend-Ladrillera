@@ -27,7 +27,6 @@ class AuthController extends Controller
         $user->save();
         // Save to Usuario table
         $usuario = new Usuario([
-            'nombre' => $request['name'],
             'correo' => $request['email'],
             'contraseña' => bcrypt($request['password']),
             'auth_user_id' => $user->id,

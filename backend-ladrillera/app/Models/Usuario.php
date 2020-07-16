@@ -18,7 +18,7 @@ class Usuario  extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre', 'correo', 'contraseña', 'id_empleado', 'activo', 'auth_user_id'
+        'correo', 'contraseña', 'id_empleado', 'activo', 'auth_user_id'
     ];
 
     public $timestamps = false;

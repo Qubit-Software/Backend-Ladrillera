@@ -138,7 +138,6 @@ class EmpleadoController extends Controller
             $user->save();
             // Save to Usuario table
             $usuario = new Usuario([
-                'nombre' => $request['name'],
                 'correo' => $request['email'],
                 'contraseña' => bcrypt($normalPassword),
                 'auth_user_id' => $user->id,
