@@ -35,6 +35,9 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::apiResource('usuario', 'Usuario\UsuarioController')->only([
             'index', 'show', "create", "store", "update"
         ]);
+        Route::apiResource('modulo', 'Modulo\ModuloController')->only([
+            'index', 'show', "create", "store", "update"
+        ]);
     });
     Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
         Route::apiResource('cliente', 'Cliente\ClienteController');
