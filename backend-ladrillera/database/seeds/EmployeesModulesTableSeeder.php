@@ -5,6 +5,7 @@ use App\Models\Empleado;
 use App\Models\Modulo;
 use App\Models\EmpleadoModulo as Empleado_Modulo;
 
+
 class EmployeesModulesTableSeeder extends Seeder
 {
     /**
