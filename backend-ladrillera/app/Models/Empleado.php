@@ -59,4 +59,15 @@ class Empleado extends Model
     {
         return $this->foto;
     }
+
+    public function notificaciones()
+    {
+        return $this
+            ->belongsToMany(
+                'App\Models\Notificacion',
+                'notificaciones_empleados',
+                'id_empleado',
+                'id_notificacion'
+            );
+    }
 }

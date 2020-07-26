@@ -21,7 +21,7 @@ class Modulo extends Model
     public $timestamps = false;
 
     //
-    public function usuarios()
+    public function empleados()
     {
         return $this
             ->belongsToMany('App\Models\Empleado', 'empleados_modulos', 'id_modulo', 'id_empleado');

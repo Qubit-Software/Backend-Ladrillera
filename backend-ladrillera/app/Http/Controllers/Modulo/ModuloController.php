@@ -15,7 +15,6 @@ class ModuloController extends Controller
      */
     public function index()
     {
-
         $empleados = Modulo::all();
         return response()->json($empleados, 200);
     }
