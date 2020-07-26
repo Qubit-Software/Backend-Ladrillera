@@ -18,7 +18,7 @@ CREATE TABLE EMPLEADOS (
 );
 
 CREATE TABLE USUARIOS (
-    id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    id INT(11) NOT NULL AUTO_INCREMENT,
     id_empleado INT(11) NULL,
     correo VARCHAR(250),
     contraseña VARCHAR(250),
@@ -114,7 +114,7 @@ CREATE TABLE NOTIFICACIONES(
     body VARCHAR(500),
     router VARCHAR(500),
     alcance VARCHAR(500),
-    priodirdad INT(2),
+    prioridad INT(2),
     PRIMARY key (id)
 );
 
