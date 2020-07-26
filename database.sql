@@ -115,15 +115,15 @@ CREATE TABLE NOTIFICACIONES(
     router VARCHAR(500),
     alcance VARCHAR(500),
     priodirdad INT(2),
-    PRIMARY key (id),
+    PRIMARY key (id)
 );
-CREATE TABLE NOTIFICACIONES_USUARIOS(
+
+CREATE TABLE NOTIFICACIONES_EMPLEADOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
-    id_usuario INT(11) NOT NULL,
+    id_empleado INT(11) NOT NULL,
     id_notificacion INT(11) NOT NULL,
-    
     PRIMARY key (id),
-    FOREIGN KEY (id_usuario) REFERENCES USUARIOS(id),
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id),
     FOREIGN KEY (id_notificacion) REFERENCES NOTIFICACIONES(id)
 );
 
