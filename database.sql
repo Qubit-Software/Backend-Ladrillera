@@ -38,9 +38,7 @@ CREATE TABLE CLIENTES (
     correo VARCHAR(150),
     telefono VARCHAR(100),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE
-    SET
-        NULL
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
 );
 
 CREATE TABLE PEDIDOS (
@@ -126,15 +124,3 @@ CREATE TABLE NOTIFICACIONES_EMPLEADOS(
     FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id),
     FOREIGN KEY (id_notificacion) REFERENCES NOTIFICACIONES(id)
 );
-
-DELETE FROM
-    `empleados`;
-
-DELETE FROM
-    `usuarios`;
-
-DELETE FROM
-    `users`;
-
-DELETE FROM
-    `modulos`;
