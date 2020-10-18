@@ -1,0 +1,43 @@
+version: "3"
+services:
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: postgres
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    volumes:
+      # - ./mysql:/etc/mysql/conf.d
+      - ./mysql/L21_database.sql:/docker-entrypoint-initdb.d/L21_database.sql
+      - ./mysql/L21_users.sql:/docker-entrypoint-initdb.d/L21_users.sql
+    networks:
+      - backend-compose-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "robinsonmu@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020"
+    ports:
+      - 9090:80
+    networks:
+      - backend-compose-network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - backend-compose-network
+networks:
+    backend-compose-network:
+      driver: bridge
+# https://blog.mailtrap.io/mailhog-explained/
