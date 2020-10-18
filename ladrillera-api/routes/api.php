@@ -19,6 +19,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', 'AuthController@login');
     Route::post('signup', 'AuthController@signup');
 
+    // Log out and own information
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
@@ -26,7 +27,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-// Api Routes with implicit route binding, using the api guard
+// Api Routes with implicit route binding, using the passport api guard
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user_modules', 'Empleado\EmpleadoController@modules');
     Route::get('notificacion_usuario', 'Notificacion\NotificacionController@notificacion_usuario');
@@ -35,7 +36,6 @@ Route::group(['middleware' => 'auth:api'], function () {
 
 
     Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
-        // echo "Administracion perros";
         Route::apiResource('empleado', 'Empleado\EmpleadoController');
         Route::apiResource('usuario', 'Usuario\UsuarioController')->only([
             'index', 'show', "create", "store", "update"

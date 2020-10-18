@@ -36,4 +36,9 @@ class Notificacion extends Model
                 'id_empleado'
             );
     }
+
+    public function __construct(array $attributes = array())
+    {
+        parent::__construct($attributes);
+    }
 }

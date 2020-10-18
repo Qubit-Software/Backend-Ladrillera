@@ -52,14 +52,16 @@ class AuthController extends Controller
                 'message' => 'Sin autorización'
             ], 401);
         }
+
+        // Gets a authenticable user from the request
         $user = $request->user();
-        $isActive = Usuario::where('auth_user_id', '=', $user->id)->first();
-        if (!$isActive) {
+        $activeUser = Usuario::where('auth_user_id', '=', $user->id)->first();
+        if (!$activeUser->activo) {
             return response()->json([
                 'message' => 'No tienes una cuenta activa'
             ], 401);
         }
-        // Create new token for the authenticated user 
+        // Create new passport token for the authenticated user
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
         if ($request->remember_me) {
@@ -80,8 +82,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->token()->revoke();
-        return response()->json(['message' =>
-        'Successfully logged out']);
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
     public function user(Request $request)

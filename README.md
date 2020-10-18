@@ -34,9 +34,10 @@ Backend Ladillera
         > php artisan key:generate
     3.  Llenar base de datos con datos de admin y estaticos
         > php artisan db:seed
-7.  Iniciar proyecto
+7.  Iniciar proyecto Laravel
     > php artisan serve
-
+8.  Iniciar servidor de websockets
+    > php artisan websockets:serve
 Para documentacion referirse a espacio de trabajo en POSTMAN.
 
 &nbsp;  
