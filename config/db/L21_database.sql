@@ -120,7 +120,26 @@ CREATE TABLE NOTIFICACIONES_EMPLEADOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_empleado INT(11) NOT NULL,
     id_notificacion INT(11) NOT NULL,
+    lectura boolean NOT null,
     PRIMARY key (id),
     FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id),
     FOREIGN KEY (id_notificacion) REFERENCES NOTIFICACIONES(id)
+);
+CREATE TABLE ACTUALIZACIONES(
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    titulo VARCHAR(250) NOT NULL,
+    descripcion text,
+    fecha date,
+
+    PRIMARY key (id)
+);
+CREATE TABLE ACTUALIZACIONES_EMPLEADO(
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    id_actualizacion INT(11) NOT NULL,
+    id_empleado INT(11) NOT NULL,
+    lectura boolean NOT null,
+
+    PRIMARY key (id),
+    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id),
+    FOREIGN KEY (id_actualizacion) REFERENCES ACTUALIZACIONES(id)
 );
