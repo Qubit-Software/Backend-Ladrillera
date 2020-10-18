@@ -40,6 +40,12 @@ window.Echo = new Echo({
     forceTLS: false,
     encrypted: false,
     wsHost: window.location.hostname,
+    authEndpoint: `${window.location.hostname}/api/broadcasting/auth`,
     wsPort: 6001,
     disableStats: true,
+    auth: {
+        headers: {
+            Authorization: "Bearer " + ""
+        }
+    }
 });
