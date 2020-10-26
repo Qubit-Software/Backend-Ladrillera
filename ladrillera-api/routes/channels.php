@@ -21,3 +21,8 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 //     echo "Current user " . $user;
 //     return $user;
 // });
+
+Broadcast::channel('notificaciones', function ($user) {
+    echo "Current user " . $user;
+    return $user;
+});

@@ -41,11 +41,11 @@ window.Echo = new Echo({
     forceTLS: false,
     encrypted: false,
     disableStats: true,
-    wsPort: 6001,
-    authEndpoint: `${window.location.hostname}/api/broadcasting/auth`,
-    auth: {
-        headers: {
-            Authorization: "Bearer " + ""
-        }
-    }
+    wsPort: 6001
+    // authEndpoint: `${window.location.hostname}/api/broadcasting/auth`,
+    // auth: {
+    //     headers: {
+    //         Authorization: "Bearer " + ""
+    //     }
+    // }
 });

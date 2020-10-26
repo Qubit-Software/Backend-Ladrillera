@@ -32,8 +32,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('user_modules', 'Empleado\EmpleadoController@modules');
     Route::get('notificacion_usuario', 'Notificacion\NotificacionController@notificacion_usuario');
     Route::post('send_notifications', 'Notificacion\NotificacionController@send_notifications');
-    Route::apiResource('notificacion', 'Notificacion\NotificacionController');
 
+    Route::apiResource('notificacion', 'Notificacion\NotificacionController');
 
     Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
         Route::apiResource('empleado', 'Empleado\EmpleadoController');
