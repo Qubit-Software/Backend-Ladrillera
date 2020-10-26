@@ -37,12 +37,12 @@ window.Echo = new Echo({
     broadcaster: "pusher",
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+    wsHost: window.location.hostname,
     forceTLS: false,
     encrypted: false,
-    wsHost: window.location.hostname,
-    authEndpoint: `${window.location.hostname}/api/broadcasting/auth`,
-    wsPort: 6001,
     disableStats: true,
+    wsPort: 6001,
+    authEndpoint: `${window.location.hostname}/api/broadcasting/auth`,
     auth: {
         headers: {
             Authorization: "Bearer " + ""

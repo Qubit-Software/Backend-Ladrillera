@@ -33,6 +33,6 @@ class EventoNotificacionGeneral implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('notificaciones');
+        return new Channel('notificaciones');
     }
 }

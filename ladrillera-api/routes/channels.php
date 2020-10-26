@@ -17,7 +17,7 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('notificaciones', function ($user) {
-    echo "Current user " . $user;
-    return $user;
-});
+// Broadcast::channel('notificaciones', function ($user) {
+//     echo "Current user " . $user;
+//     return $user;
+// });
