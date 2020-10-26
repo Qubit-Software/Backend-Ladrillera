@@ -33,6 +33,8 @@ import Echo from "laravel-echo";
 
 window.Pusher = require("pusher-js");
 
+console.log("APP KEY ", process.env.MIX_PUSHER_APP_KEY);
+console.log("Cluster ", process.env.MIX_PUSHER_APP_CLUSTER);
 window.Echo = new Echo({
     broadcaster: "pusher",
     key: process.env.MIX_PUSHER_APP_KEY,

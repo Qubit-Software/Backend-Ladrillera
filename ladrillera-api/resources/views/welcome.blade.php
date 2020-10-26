@@ -104,6 +104,9 @@
             console.log("Dataaaaaaaaaa "+data);
             console.log(data);
         })
+
+        console.log("APP KEY ", process.env.MIX_PUSHER_APP_KEY);
+        console.log("Cluster ", process.env.MIX_PUSHER_APP_CLUSTER);
     </script>
     </body>
 </html>
