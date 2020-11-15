@@ -101,10 +101,10 @@ class EmpleadoController extends Controller
             $this->registerEmployeeModules($empleado, $modulos);
             $this->setEmployeeImage($request, $empleado);
             $this->sendEmail($request, $normalPassword, $empleado);
-            DB::commit();;
+            DB::commit();
             return response()->json($empleado, 201);
         } catch (\Illuminate\Database\QueryException $e) {
-            DB::rollback();;
+            DB::rollback();
             $errorCode = $e->errorInfo[1];
             switch ($errorCode) {
                 case 1062:

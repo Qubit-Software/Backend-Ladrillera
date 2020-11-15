@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:api'], function () {
             'index', 'show', "create", "store", "update"
         ]);
     });
+    
     Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
         Route::apiResource('cliente', 'Cliente\ClienteController');
         Route::apiResource('pedido', 'Pedido\PedidoController');
