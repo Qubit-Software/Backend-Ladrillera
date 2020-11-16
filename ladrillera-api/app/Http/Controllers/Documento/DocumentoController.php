@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Documento;
 
 use App\Http\Controllers\Controller;
+use App\Models\Documento;
 use Illuminate\Http\Request;
 
 class DocumentoController extends Controller
@@ -41,10 +42,10 @@ class DocumentoController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Documento $documento)
     {
         //
     }
@@ -52,10 +53,10 @@ class DocumentoController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Documento $documento)
     {
         //
     }
@@ -64,10 +65,10 @@ class DocumentoController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Documento $documento)
     {
         //
     }
@@ -75,10 +76,10 @@ class DocumentoController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Documento $documento)
     {
         //
     }

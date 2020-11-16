@@ -101,7 +101,7 @@ CREATE TABLE DOCUMENTOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
     nombre VARCHAR(250),
-    tipoArchivo VARCHAR(250),
+    tipo_archivo VARCHAR(250),
     PRIMARY key (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE
 );
