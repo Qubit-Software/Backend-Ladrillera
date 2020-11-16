@@ -100,6 +100,7 @@ CREATE TABLE VALIDACIONES (
 CREATE TABLE DOCUMENTOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
+    file_path VARCHAR(1000),
     nombre VARCHAR(250),
     tipo_archivo VARCHAR(250),
     PRIMARY key (id),

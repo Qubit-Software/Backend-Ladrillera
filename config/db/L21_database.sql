@@ -4,6 +4,14 @@ CREATE DATABASE IF NOT EXISTS ladrillera;
 
 USE ladrillera;
 
+CREATE TABLE USUARIOS (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    correo VARCHAR(250),
+    contraseña VARCHAR(250),
+    activo boolean DEFAULT 1,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE EMPLEADOS (
     id INT(11) NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(250),
@@ -14,17 +22,10 @@ CREATE TABLE EMPLEADOS (
     fecha_nacimiento DATE,
     rol VARCHAR(250),
     foto VARCHAR(200),
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE USUARIOS (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    id_empleado INT(11) NULL,
-    correo VARCHAR(250),
-    contraseña VARCHAR(250),
-    activo boolean DEFAULT 1,
+    id_usuario INT(11) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE CASCADE
+    FOREIGN KEY (id_usuario) REFERENCES USUARIOS(id) ON DELETE CASCADE
+
 );
 
 CREATE TABLE CLIENTES (
