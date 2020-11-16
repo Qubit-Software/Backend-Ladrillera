@@ -38,7 +38,7 @@ trait UploadTrait
 
         $file = $uploadedFile->storeAs($folder, $name . '.' . $uploadedFile->getClientOriginalExtension(), $disk);
 
-        Log::info('File '.$name. " to ".$folder. "=>".$file);
+        \Log::info('File '.$name. " to ".$folder. "=>".$file);
         return $file;
     }
 }

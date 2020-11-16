@@ -30,7 +30,7 @@ CREATE TABLE EMPLEADOS (
 
 CREATE TABLE CLIENTES (
     id INT(11) NOT NULL AUTO_INCREMENT,
-    id_empleado INT(11) NULL,
+    id_empleado_recomendo INT(11) NULL,
     nombre VARCHAR(250),
     apellido VARCHAR(250),
     cc_nit INT(15),
@@ -39,7 +39,7 @@ CREATE TABLE CLIENTES (
     correo VARCHAR(150),
     telefono VARCHAR(100),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
+    FOREIGN KEY (id_empleado_recomendo) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
 );
 
 CREATE TABLE PEDIDOS (
@@ -102,7 +102,7 @@ CREATE TABLE DOCUMENTOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
     nombre VARCHAR(250),
-    tipoArchivo VARCHAR(250),
+    tipo_documento VARCHAR(250),
     PRIMARY key (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE
 );
