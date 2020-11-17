@@ -19,10 +19,9 @@ class FilesService{
     }
 
     public function saveClientFile($file, $name, $folder){
-        // Upload image
-        $this->uploadOne($file, $folder, $name, "clients");
-        // Set user profile image path in database to filePath
-        return true;
+        $newFilePath = $this->uploadOne($file, $folder, $name, "clients");
+        \Log::info('File '.$name. " to ".$folder. "=> The file ".$file);
+        return $newFilePath;
     }
 
     public function saveEmployeeFile($file, $name, $folder){
@@ -34,8 +33,8 @@ class FilesService{
 
     public function saveFile($file, $folder, $name,  $disk){
         // Upload image
-        $this->uploadOne($file, $folder, $name, $disk);
+        $newFilePath = $this->uploadOne($file, $folder, $name, $disk);
         // Set user profile image path in database to filePath
-        return true;
+        return $newFilePath;
     }
 }

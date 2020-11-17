@@ -64,3 +64,7 @@ Create controllers
 Crear enlaces simbolicos para el almacenamiento  
 
 >  php artisan storage:link
+
+Crear exceptions
+
+> php artisan make:exception ValidationException

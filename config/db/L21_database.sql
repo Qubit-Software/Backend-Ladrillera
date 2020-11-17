@@ -101,9 +101,10 @@ CREATE TABLE VALIDACIONES (
 CREATE TABLE DOCUMENTOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
+    file_path VARCHAR(500),
     nombre VARCHAR(250),
     tipo_documento VARCHAR(250),
-    PRIMARY key (id),
+    PRIMARY KEY (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE
 );
 

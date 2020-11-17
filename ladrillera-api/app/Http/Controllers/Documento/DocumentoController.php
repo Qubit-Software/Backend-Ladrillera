@@ -6,22 +6,24 @@ use App\Http\Controllers\Controller;
 use App\Models\Documento;
 use Illuminate\Http\Request;
 use App\Models\ClienteModel;
-use App\Services\FilesService;
 use App\Models\DocumentoModel;
-use Illuminate\Support\Facades\Validator;
+use App\Services\DocumentoService;
 
-use Illiminate\Support\Str ;
+use Illiminate\Support\Str;
+
+use App\Http\Schemas\Requests\DocumentoRequest;
+use App\Http\Schemas\Responses\ResponseBody;
 
 class DocumentoController extends Controller
 {
     protected $filesService;
-
+    protected $documentoService;
     /**
      * Instantiate a new DocumentoController instance.
      */
-    public function __construct(FilesService $filesService)
+    public function __construct(DocumentoService $documentoService)
     {
-        $this->filesService = $filesService;
+        $this->documentoService = $documentoService;
     }
 
     /**
@@ -53,28 +55,20 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
-            "id_cliente"=> "required|numeric|min:0",
-            // 'file' => 'required|max:10000|mimes:doc,docx' //a required, max 10000kb, doc or docx file
-            'archivo' => 'required|max:10000|mimes:doc,docx,pdf,png', //a required, max 10000kb, doc or docx file
-            'tipo_documento' => 'required'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+        $documentoRequest = new DocumentoRequest();
+        $documentoRequest->validateRequest($request);
+
+        $documentoRequest = DocumentoRequest::withData($request->id_cliente, $request->documento, $request->tipo_documento);
+        $client  = ClienteModel::findOrFail($documentoRequest->get_id_cliente());
+        
+        $document = $this->documentoService->createDocument($client, $documentoRequest);
+        if(is_null($document)){
+            $responseBody = new ResponseBody(null, "Ocurrio un error en el servidor", 500);
+            return response()->json($responseBody->getJsonArray(), $responseBody->get_status_code());
         }
 
-        $client  = ClienteModel::find($request->id_cliente);
-        if(! is_null($client)){
-            $client_name =  \Str::of(\Str::title($client->apellido))->replace(' ', '') . \Str::of(\Str::title($client->nombre))->replace(' ', '');
-            $fileName = $client_name . \Str::title($request->tipo_documento) ;
-            $folder = $client_name;
-    
-            $this->filesService->saveClientFile($request->archivo, $fileName, $folder);
-    
-        }else{
-            // Return a bad request not found
-        }
+        $responseBody = new ResponseBody($document, "Documento creado correctamente", 200);
+        return response()->json($responseBody->getJsonArray(), $responseBody->get_status_code());
     }
 
     /**

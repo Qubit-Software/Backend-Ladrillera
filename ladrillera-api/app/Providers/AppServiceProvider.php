@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Services\FilesService;
+use App\Service\DocumentoService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    public $singletons = [];
+    public $singletons = [
+        // DocumentoValidator::class => DocumentoValidator::class
+    ];
 
     /**
      * Register any application services.
@@ -24,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(FilesService::class, function ($app) {
             return new FilesService();
         });
+
+        $this->app->singleton(DocumentoService::class, function ($app) {
+            return new DocumentoService();
+        });
+
+
     }
 
     /**

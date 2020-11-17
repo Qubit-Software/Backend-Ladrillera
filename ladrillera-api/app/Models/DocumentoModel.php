@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class DocumentoModel extends Model
 {
  
-    protected $table = 'documentos';
     protected $primaryKey = 'id';
+    protected $table = 'documentos';
 
     /**
      * The attributes that are mass assignable.
@@ -16,7 +16,7 @@ class DocumentoModel extends Model
      * @var array
      */
     protected $fillable = [
-        'file_path', 'nombre', 'tipo_archivo', 'telefono'
+        'file_path', 'nombre', 'tipo_documento', 'id_cliente'
     ];
 
     public $timestamps = false;
@@ -32,6 +32,6 @@ class DocumentoModel extends Model
      */
     public function cliente()
     {
-        return $this->belongsTo('App\Models\ClienteModel');
+        return $this->belongsTo('App\Models\ClienteModel', 'id_cliente');
     }
 }
