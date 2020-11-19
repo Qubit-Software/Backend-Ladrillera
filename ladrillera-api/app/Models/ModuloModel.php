@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Modulo extends Model
+class ModuloModel extends Model
 {
+    protected $primaryKey = 'id';
+    protected $table = 'modulos';
     /**
      * The attributes that are mass assignable.
      *
@@ -24,6 +26,7 @@ class Modulo extends Model
     public function empleados()
     {
         return $this
-            ->belongsToMany('App\Models\Empleado', 'empleados_modulos', 'id_modulo', 'id_empleado');
+            ->belongsToMany('App\Models\EmpleadoModel', 'empleados_modulos', 'id_modulo', 'id_empleado'
+        );
     }
 }

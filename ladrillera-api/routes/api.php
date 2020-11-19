@@ -22,39 +22,58 @@ Route::group(['prefix' => 'auth'], function () {
     // Log out and own information
     Route::group(['middleware' => 'auth:api'], function () {
         Route::get('logout', 'AuthController@logout');
-        Route::get('user', 'AuthController@user');
+        Route::get('users/me', 'AuthController@user');
     });
 });
 
 
 // Api Routes with implicit route binding, using the passport api guard
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::get('user_modules', 'Empleado\EmpleadoController@modules');
-    Route::get('notificacion_usuario', 'Notificacion\NotificacionController@notificacion_usuario');
-    Route::post('send_notifications', 'Notificacion\NotificacionController@send_notifications');
+    Route::get('modulos', 'Empleado\EmpleadoController@modules');
+    Route::get('notificaciones', 'Notificacion\NotificacionController@notificacion_usuario');
+    Route::post('notificaciones', 'Notificacion\NotificacionController@send_notifications');
 
-    Route::apiResource('notificacion', 'Notificacion\NotificacionController');
+    // Notificaciones
+    Route::apiResource('notificaciones', 'Notificacion\NotificacionController');
 
+    // Administracion
     Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
-        Route::apiResource('empleado', 'Empleado\EmpleadoController');
-        Route::apiResource('usuario', 'Usuario\UsuarioController')->only([
+        Route::apiResource('empleados', 'Empleado\EmpleadoController');
+        Route::apiResource('usuarios', 'Usuario\UsuarioController')->only([
             'index', 'show', "create", "store", "update"
         ]);
-        Route::apiResource('modulo', 'Modulo\ModuloController')->only([
+        Route::apiResource('modulos', 'Modulo\ModuloController')->only([
             'index', 'show', "create", "store", "update"
         ]);
     });
     
+
+    //  Ventas
     Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
-        Route::apiResource('cliente', 'Cliente\ClienteController');
-        Route::apiResource('pedido', 'Pedido\PedidoController');
+        Route::apiResource('clientes', 'Cliente\ClienteController');
+        Route::apiResource('pedidos', 'Pedido\PedidoController');
     });
+
+    //  Contabilidad
     Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:contabilidad']], function () {
-        Route::apiResource('cliente', 'Cliente\ClienteController');
-        Route::apiResource('pedido', 'Pedido\PedidoController');
+        Route::apiResource('clientes', 'Cliente\ClienteController');
+        Route::apiResource('pedidos', 'Pedido\PedidoController');
     });
-    Route::group(['prefix' => 'despacho', 'middleware' => ['module:despacho']], function () {
-        Route::apiResource('cliente', 'Cliente\ClienteController');
-        Route::apiResource('pedido', 'Pedido\PedidoController');
+
+    //  Despacho
+    Route::group(['prefix' => 'despachos', 'middleware' => ['module:despacho']], function () {
+        Route::apiResource('clientes', 'Cliente\ClienteController');
+        Route::apiResource('pedidos', 'Pedido\PedidoController');
     });
+
+    // Documentos
+    Route::group(['prefix' => 'documentos'], function () {
+        Route::apiResource('/', 'Documento\DocumentoController');
+    });
+});
+
+
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
 });

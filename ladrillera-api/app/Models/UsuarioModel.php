@@ -9,9 +9,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 
 
-class Usuario  extends Model
+class UsuarioModel  extends Model
 {
-
+    protected $primaryKey = 'id';
+    protected $table = 'usuarios';
     /**
      * The attributes that are mass assignable.
      *

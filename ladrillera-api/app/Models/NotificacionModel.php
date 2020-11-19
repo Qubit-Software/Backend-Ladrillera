@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Notificacion extends Model
+class NotificacionModel extends Model
 {
+    protected $primaryKey = 'id';
     protected $table = "notificaciones";
     /**
      * The attributes that are mass assignable.
@@ -30,7 +31,7 @@ class Notificacion extends Model
     {
         return $this
             ->belongsToMany(
-                'App\Models\Empleado',
+                'App\Models\EmpleadoModel',
                 'notificaciones_empleados',
                 'id_notificacion',
                 'id_empleado'

@@ -38,6 +38,8 @@ Backend Ladillera
     > php artisan serve
 8.  Iniciar servidor de websockets
     > php artisan websockets:serve
+
+
 Para documentacion referirse a espacio de trabajo en POSTMAN.
 
 &nbsp;  
@@ -48,3 +50,21 @@ Para documentacion referirse a espacio de trabajo en POSTMAN.
 
 Setup Docker Containers
 [Laravel in Docker docs](https://buddy.works/guides/laravel-in-docker?utm_source=medium&utm_medium=post&utm_campaign=laravel-in-docker&utm_content=link)
+
+
+Create models
+
+> php artisan make:model Models/Documento
+
+
+Create controllers
+
+> php artisan make:controller PhotoController --resource --model=Photo
+
+Crear enlaces simbolicos para el almacenamiento  
+
+>  php artisan storage:link
+
+Crear exceptions
+
+> php artisan make:exception ValidationException

@@ -4,6 +4,14 @@ CREATE DATABASE IF NOT EXISTS ladrillera;
 
 USE ladrillera;
 
+CREATE TABLE USUARIOS (
+    id INT(11) NOT NULL AUTO_INCREMENT,
+    correo VARCHAR(250),
+    contraseña VARCHAR(250),
+    activo boolean DEFAULT 1,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE EMPLEADOS (
     id INT(11) NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(250),
@@ -14,22 +22,15 @@ CREATE TABLE EMPLEADOS (
     fecha_nacimiento DATE,
     rol VARCHAR(250),
     foto VARCHAR(200),
-    PRIMARY KEY (id)
-);
-
-CREATE TABLE USUARIOS (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    id_empleado INT(11) NULL,
-    correo VARCHAR(250),
-    contraseña VARCHAR(250),
-    activo boolean DEFAULT 1,
+    id_usuario INT(11) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE CASCADE
+    FOREIGN KEY (id_usuario) REFERENCES USUARIOS(id) ON DELETE CASCADE
+
 );
 
 CREATE TABLE CLIENTES (
     id INT(11) NOT NULL AUTO_INCREMENT,
-    id_empleado INT(11) NULL,
+    id_empleado_recomendo INT(11) NULL,
     nombre VARCHAR(250),
     apellido VARCHAR(250),
     cc_nit INT(15),
@@ -38,7 +39,7 @@ CREATE TABLE CLIENTES (
     correo VARCHAR(150),
     telefono VARCHAR(100),
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
+    FOREIGN KEY (id_empleado_recomendo) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
 );
 
 CREATE TABLE PEDIDOS (
@@ -100,9 +101,10 @@ CREATE TABLE VALIDACIONES (
 CREATE TABLE DOCUMENTOS(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
+    file_path VARCHAR(500),
     nombre VARCHAR(250),
-    tipoArchivo VARCHAR(250),
-    PRIMARY key (id),
+    tipo_documento VARCHAR(250),
+    PRIMARY KEY (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE
 );
 

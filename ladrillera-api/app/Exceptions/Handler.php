@@ -5,8 +5,10 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\QueryException;
 use Exception;
 use Throwable;
+
 
 class Handler extends ExceptionHandler
 {
@@ -55,14 +57,16 @@ class Handler extends ExceptionHandler
     {
         // This will replace our 404 response with
         // a JSON response.
-        if (
-            $exception instanceof ModelNotFoundException &&
-            $request->wantsJson()
-        ) {
+        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
             return response()->json([
-                'data' => 'Resource not found'
-            ], 404);
+                'error' => 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found'], 404);
+        }else if($exception instanceof ValidationException){
+            return $exception->render($request);
+        }else if($exception instanceof QueryException){
+            return response()->json([
+                'error' => "Ocurrio un error con la base de datos, contacté con mantenimiento." . $exception->getMessage()], 500);
         }
+    
         return parent::render($request, $exception);
     }
 
