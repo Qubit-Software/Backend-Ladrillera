@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EmpleadoClienteModel extends Model
+class PedidoModel extends Model
 {
     protected $primaryKey = 'id';
-    protected $table = 'empleado_cliente';
-    //
+    protected $table = 'pedidos';
 }

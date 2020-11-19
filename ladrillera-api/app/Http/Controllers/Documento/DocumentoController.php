@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Documento;
 
 use App\Http\Controllers\Controller;
-use App\Models\Documento;
 use Illuminate\Http\Request;
 use App\Models\ClienteModel;
 use App\Models\DocumentoModel;
@@ -12,18 +11,16 @@ use App\Services\DocumentoService;
 use Illiminate\Support\Str;
 
 use App\Http\Schemas\Requests\DocumentoRequest;
-use App\Http\Schemas\Responses\ResponseBody;
 
 class DocumentoController extends Controller
 {
-    protected $filesService;
-    protected $documentoService;
+    protected $documento_service;
     /**
      * Instantiate a new DocumentoController instance.
      */
-    public function __construct(DocumentoService $documentoService)
+    public function __construct(DocumentoService $documento_service)
     {
-        $this->documentoService = $documentoService;
+        $this->documento_service = $documento_service;
     }
 
     /**
@@ -33,8 +30,7 @@ class DocumentoController extends Controller
      */
     public function index()
     {
-        $documents = DocumentoModel::all();
-        return response()->json($documents, 200);
+        return $this->documento_service->get_all();
     }
 
     /**
@@ -61,14 +57,16 @@ class DocumentoController extends Controller
         $documentoRequest = DocumentoRequest::withData($request->id_cliente, $request->documento, $request->tipo_documento);
         $client  = ClienteModel::findOrFail($documentoRequest->get_id_cliente());
         
-        $document = $this->documentoService->createDocument($client, $documentoRequest);
+        $document = $this->documento_service->create_document($client, $documentoRequest);
+        
+        $jsonResponse = null;
         if(is_null($document)){
-            $responseBody = new ResponseBody(null, "Ocurrio un error en el servidor", 500);
-            return response()->json($responseBody->getJsonArray(), $responseBody->get_status_code());
+            $jsonResponse = response()->json(["msg"=>"Ocurrio un error en el servidor al guardar el documento "], 500);
+        }else{
+            $jsonResponse = response()->json(["documento"=>$document,"msg"=> "Documento creado correctamente"], 500);
         }
 
-        $responseBody = new ResponseBody($document, "Documento creado correctamente", 200);
-        return response()->json($responseBody->getJsonArray(), $responseBody->get_status_code());
+        return $jsonResponse;
     }
 
     /**

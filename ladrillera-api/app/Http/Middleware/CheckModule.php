@@ -3,8 +3,8 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Support\Facades\Auth;
-use App\Models\Usuario;
-use App\Models\Empleado;
+use App\Models\UsuarioModel;
+use App\Models\EmpleadoModel;
 use Closure;
 
 class CheckModule
@@ -19,8 +19,8 @@ class CheckModule
     public function handle($request, Closure $next, $module)
     {
         $authUser = Auth::user();
-        $usuario = Usuario::where('correo', $authUser->email)->first();
-        $empleado = Empleado::where('id', $usuario->id_empleado)->first();
+        $usuario = UsuarioModel::where('correo', $authUser->email)->first();
+        $empleado = EmpleadoModel::where('id', $usuario->id_empleado)->first();
         // if (is_null($empleado) || !$empleado->authorizeModules([$module,])) {
         if (is_null($empleado) || !$empleado->hasModule($module)) {
             return response()->json(['msg' => 'No tienes autorización para ingresar al modulo ' . $module], 403);

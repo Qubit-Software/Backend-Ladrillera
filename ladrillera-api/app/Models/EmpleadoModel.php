@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Empleado extends Model
+class EmpleadoModel extends Model
 {
     protected $primaryKey = 'id';
+    protected $table = 'empleados';
     protected $fillable = [
         "nombre",
         "apellido",
@@ -23,7 +24,7 @@ class Empleado extends Model
     public function modules()
     {
         return $this
-            ->belongsToMany('App\Models\Modulo', 'empleados_modulos', 'id_empleado', 'id_modulo');
+            ->belongsToMany('App\Models\ModuloModel', 'empleados_modulos', 'id_empleado', 'id_modulo');
     }
 
     public function authorizeModules($modules)
@@ -64,7 +65,7 @@ class Empleado extends Model
     {
         return $this
             ->belongsToMany(
-                'App\Models\Notificacion',
+                'App\Models\NotificacionModel',
                 'notificaciones_empleados',
                 'id_empleado',
                 'id_notificacion'

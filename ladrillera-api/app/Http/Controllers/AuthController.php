@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Usuario;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Models\UsuarioModel;
 
 class AuthController extends Controller
 {
@@ -25,8 +25,8 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
         $user->save();
-        // Save to Usuario table
-        $usuario = new Usuario([
+        // Save to UsuarioModel table
+        $usuario = new UsuarioModel([
             'correo' => $request['email'],
             'contraseña' => bcrypt($request['password']),
             'auth_user_id' => $user->id,
@@ -55,7 +55,7 @@ class AuthController extends Controller
 
         // Gets a authenticable user from the request
         $user = $request->user();
-        $activeUser = Usuario::where('auth_user_id', '=', $user->id)->first();
+        $activeUser = UsuarioModel::where('auth_user_id', '=', $user->id)->first();
         if (!$activeUser->activo) {
             return response()->json([
                 'message' => 'No tienes una cuenta activa'

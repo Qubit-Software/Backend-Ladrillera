@@ -4,16 +4,15 @@ namespace App\Http\Controllers\Empleado;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Models\Empleado as ModelEmpleado;
-use App\User;
-use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Traits\UploadTrait;
 use App\Http\Controllers\MailController;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Empleado;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Models\UsuarioModel;
+use App\Models\EmpleadoModel;
 
 class EmpleadoController extends Controller
 {
@@ -27,7 +26,7 @@ class EmpleadoController extends Controller
     public function index()
     {
         //
-        $empleados = ModelEmpleado::all();
+        $empleados = EmpleadoModel::all();
         return response()->json($empleados, 200);
     }
 
@@ -78,8 +77,8 @@ class EmpleadoController extends Controller
                 'password' => bcrypt($normalPassword),
             ]);
             $user->save();
-            // Save to Usuario table
-            $usuario = new Usuario([
+            // Save to UsuarioModel table
+            $usuario = new UsuarioModel([
                 'correo' => $user->email,
                 'contraseña' => bcrypt($normalPassword),
                 'auth_user_id' => $user->id,
@@ -93,7 +92,7 @@ class EmpleadoController extends Controller
             unset($datosEmpleado['nombres']);
             $datosEmpleado['apellido'] = $datosEmpleado['apellidos'];
             unset($datosEmpleado['apellidos']);
-            $empleado = new ModelEmpleado($datosEmpleado);
+            $empleado = new EmpleadoModel($datosEmpleado);
             $empleado->save();
             $usuario->id_empleado = $empleado->id;
             $usuario->save();
@@ -122,7 +121,7 @@ class EmpleadoController extends Controller
         }
     }
 
-    private function setEmployeeImage($request, ModelEmpleado $empleado)
+    private function setEmployeeImage($request, EmpleadoModel $empleado)
     {
         if ($request->has('foto')) {
             $image = $request->file('foto');
@@ -139,7 +138,7 @@ class EmpleadoController extends Controller
         }
     }
 
-    private function registerEmployeeModules(ModelEmpleado $empleadoRef, $modules)
+    private function registerEmployeeModules(EmpleadoModel $empleadoRef, $modules)
     {
         if (count($modules) > 0 && !is_null($empleadoRef)) {
             $empleadoRef->modules()->attach($modules);
@@ -164,8 +163,8 @@ class EmpleadoController extends Controller
                 'password' => bcrypt($normalPassword),
             ]);
             $user->save();
-            // Save to Usuario table
-            $usuario = new Usuario([
+            // Save to UsuarioModel table
+            $usuario = new UsuarioModel([
                 'correo' => $user->email,
                 'contraseña' => bcrypt($normalPassword),
                 'auth_user_id' => $user->id,
@@ -178,7 +177,7 @@ class EmpleadoController extends Controller
             switch ($errorCode) {
                 case 1062:
                     return response([
-                        'errors' => 'Ya existe el recurso Usuario', 'details' => $e->errorInfo
+                        'errors' => 'Ya existe el recurso UsuarioModel', 'details' => $e->errorInfo
                     ], 409);
                     break;
 
@@ -202,7 +201,7 @@ class EmpleadoController extends Controller
      */
     public function show($id)
     {
-        $empleado = ModelEmpleado::find($id);
+        $empleado = EmpleadoModel::find($id);
         if (is_null($empleado)) {
             return response()->json(['message' => "No se encontro el Empleado"]);
         }
@@ -244,7 +243,7 @@ class EmpleadoController extends Controller
             return response()->json($validator->errors(), 400);
         }
 
-        $empleado = ModelEmpleado::find($id);
+        $empleado = EmpleadoModel::find($id);
         if (is_null($empleado)) {
             return response()->json(["msg" => $id . " Empleado no encontrado"], 404);
         }
@@ -260,7 +259,7 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
-        $empleado = ModelEmpleado::find($id);
+        $empleado = EmpleadoModel::find($id);
         if (is_null($empleado)) {
             return response()->json(["msg" => $id . " no encontrado"], 404);
         }
@@ -275,7 +274,7 @@ class EmpleadoController extends Controller
         // $authUser = Auth::user();
         $authUser = $request->user();
 
-        $usuario = Usuario::where('correo', $authUser->email)->first();
+        $usuario = UsuarioModel::where('correo', $authUser->email)->first();
         $empleado = Empleado::where('id', $usuario->id_empleado)->first();
         $modules = $empleado->modules()->get();
 

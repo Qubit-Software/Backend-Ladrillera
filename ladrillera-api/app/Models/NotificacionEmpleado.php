@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class NotificacionEmpleado extends Model
+class NotificacionEmpleadoModel extends Model
 {
+    protected $primaryKey = 'id';
     protected $table = 'notificaciones_empleados';
     protected $fillable = [
         'id_empleado',

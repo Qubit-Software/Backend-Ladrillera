@@ -9,29 +9,35 @@ use App\Models\DocumentoModel;
 
 class DocumentoService{
 
-    protected $filesService;
+    protected $files_service;
     /**
      * Instantiate a new DocumentoController instance.
      */
-    public function __construct(FilesService $filesService)
+    public function __construct(FilesService $files_service)
     {
-        $this->filesService = $filesService;
+        $this->files_service = $files_service;
     }
-    
-    public function createDocument($client, $documentoRequest){
+
+    public function get_all(){
+        $documents = DocumentoModel::all();
+        return response()->json($documents, 200);
+    }
+    public function create_document($client, $documentoRequest){
         DB::beginTransaction();
         try {
-            $client_name =  \Str::of(\Str::title($client->apellido))->replace(' ', '') . \Str::of(\Str::title($client->nombre))->replace(' ', '');
-            $fileName = $client_name . \Str::title($documentoRequest->get_tipo_documento()) ;
+            $client_name =  \Str::title($client->apellido) . \Str::title($client->nombre);
+            $file_name = $client_name . \Str::title($documentoRequest->get_tipo_documento());
+            $file_name = str_replace(" ", "", $file_name);
+
             $folder = $client->cc_nit;
             $documento = $documentoRequest->get_documento();
             $extension = $documento->getClientOriginalExtension();
 
-            $saved_file_path = $this->filesService->saveClientFile($documento, $fileName, $folder);
+            $saved_file_path = $this->files_service->saveClientFile($documento, $file_name, $folder);
             
             $data = [
                 'file_path'=>$saved_file_path,
-                'nombre'=>$fileName .'.'. $extension, 
+                'nombre'=>$file_name .'.'. $extension, 
                 'tipo_documento'=>$documentoRequest->get_tipo_documento(),
                 'id_cliente'=>$client->id
             ];

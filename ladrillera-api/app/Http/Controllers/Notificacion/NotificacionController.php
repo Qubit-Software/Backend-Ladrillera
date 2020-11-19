@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Notificacion;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use App\Models\Modulo;
 use Illuminate\Http\Request;
-use App\Models\Notificacion;
-use App\Models\Usuario;
-use App\Models\NotificacionUsuario;
 use Dotenv\Result\Success;
+use App\Models\ModuloModel;
+use App\Models\NotificacionModel;
+use App\Models\NotificacionUsuarioModel;
+use App\Models\UsuarioModel;
 
 class NotificacionController extends Controller
 {
@@ -21,7 +21,7 @@ class NotificacionController extends Controller
     public function index()
     {
 
-        $notificaciones = Notificacion::all();
+        $notificaciones = NotificacionModel::all();
         return response()->json($notificaciones, 200);
     }
 
@@ -56,10 +56,10 @@ class NotificacionController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
-        $notificacion = new Notificacion($request->except(['user_id']));
+        $notificacion = new NotificacionModel($request->except(['user_id']));
         $notificacion->save();
 
-        $user = Usuario::find($request->input("user_id"));
+        $user = UsuarioModel::find($request->input("user_id"));
         $user->notificaciones()->attach([$notificacion->id]);
         return response()->json(['msg' => "Se creara una notifiacion para el usuario " . $user->id], 201);
     }
@@ -112,7 +112,7 @@ class NotificacionController extends Controller
     public function notificacion_usuario(Request $request)
     {
         $user_id = $request->input('user_id');
-        $user = Usuario::find($user_id)->first();
+        $user = UsuarioModel::find($user_id)->first();
         return response()->json($user->notificaciones()->get());
     }
 
@@ -120,7 +120,7 @@ class NotificacionController extends Controller
     {
 
         $modules = $request->input('module_names');
-        $notificacion = new Notificacion($request->except(['module_names']));
+        $notificacion = new NotificacionModel($request->except(['module_names']));
         $notificacion->save();
 
         if ($this->sendNotificationToModules($modules, $notificacion)) {
@@ -129,13 +129,13 @@ class NotificacionController extends Controller
         return response()->json(['msg' => "Ocurrio un error al enviar las notifiaciones"], 500);
     }
 
-    public function sendNotificationToModules($modules, Notificacion $notificacion)
+    public function sendNotificationToModules($modules, NotificacionModel $notificacion)
     {
         $success = false;
         $modulos = [];
         // Pushed every module model into a list to latter get every user
         foreach ($modules as $key => $value) {
-            $temp_module = Modulo::where("nombre", '=', $value)->first();
+            $temp_module = ModuloModel::where("nombre", '=', $value)->first();
             if (!is_null($temp_module)) {
                 array_push($modulos, $temp_module);
             }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Modulo;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Modulo;
+use App\Models\ModuloModel;
 
 class ModuloController extends Controller
 {
@@ -15,8 +15,8 @@ class ModuloController extends Controller
      */
     public function index()
     {
-        $empleados = Modulo::all();
-        return response()->json($empleados, 200);
+        $modules = ModuloModel::all();
+        return response()->json($modules, 200);
     }
 
     /**
