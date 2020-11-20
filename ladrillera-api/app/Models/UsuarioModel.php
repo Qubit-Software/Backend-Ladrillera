@@ -11,8 +11,11 @@ use Illuminate\Support\Str;
 
 class UsuarioModel  extends Model
 {
+    public static $key = 'id';
     protected $primaryKey = 'id';
     protected $table = 'usuarios';
+
+
     /**
      * The attributes that are mass assignable.
      *

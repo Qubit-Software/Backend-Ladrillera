@@ -5,6 +5,12 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Services\FilesService;
 use App\Service\DocumentoService;
+use App\Service\EmpleadoService;
+use App\Service\UserService;
+use App\Service\UsuarioService;
+use App\Service\ModulosService;
+use App\Service\EmailService;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,7 +38,17 @@ class AppServiceProvider extends ServiceProvider
             return new DocumentoService();
         });
 
+        $this->app->singleton(UserService::class, function ($app) {
+            return new UserService();
+        });
 
+        $this->app->singleton(UsuarioService::class, function ($app) {
+            return new UsuarioService();
+        });
+
+        $this->app->singleton(EmpleadoService::class, function ($app) {
+            return new EmpleadoService();
+        });
     }
 
     /**
@@ -44,6 +60,4 @@ class AppServiceProvider extends ServiceProvider
     {
         //
     }
-
-
 }

@@ -12,6 +12,15 @@ SELECT * FROM `documentos`;
 
 SELECT * FROM `clientes`;
 
+SELECT * FROM `users`;
+
+SELECT * FROM `usuarios`;
+
+SELECT * FROM `empleados`;
+
+SELECT * FROM `modulos`;
+
+DROP DATABASE `ladrillera`;
 
 # Testing data
 

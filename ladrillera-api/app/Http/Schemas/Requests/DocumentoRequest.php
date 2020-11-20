@@ -1,11 +1,12 @@
-<?php 
+<?php
 
 namespace App\Http\Schemas\Requests;
 
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\ValidationException;
 
-class DocumentoRequest{
+class DocumentoRequest
+{
 
     private $id_cliente;
     private $documento;
@@ -16,7 +17,6 @@ class DocumentoRequest{
      */
     public function __construct()
     {
-        
     }
 
 
@@ -34,33 +34,34 @@ class DocumentoRequest{
     }
 
 
-    public function validateRequest($request){
+    public function validateRequest($request)
+    {
         $rules = [
-            "id_cliente"=> "required|numeric|exists:App\Models\ClienteModel,id",
+            "id_cliente" => "required|numeric|exists:App\Models\ClienteModel,id",
             'documento' => 'required|max:10000|mimes:doc,docx,pdf,png,jpeg',
             'tipo_documento' => 'required'
         ];
 
         $validator = Validator::make($request->all(), $rules);
-        
+
         $errors =  $validator->errors();
-        if(sizeof($errors)>0){
+        if (sizeof($errors) > 0) {
             throw new ValidationException($errors, "Error al validar la peticion de creación de documento");
         }
     }
 
-    public function get_id_cliente(){
-        return $this->id_cliente;
+    public function getIdCliente()
+    {
+        return $this->idCliente;
     }
 
-    public function get_documento(){
+    public function getDocumento()
+    {
         return $this->documento;
     }
-    
-    public function get_tipo_documento(){
-        return $this->tipo_documento;
+
+    public function getTipoDocumento()
+    {
+        return $this->tipoDocumento;
     }
-    
-
-
 }

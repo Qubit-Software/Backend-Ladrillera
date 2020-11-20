@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Modulo;
+use App\Models\ModuloModel;
 
 class ModulesTableSeeder extends Seeder
 {
@@ -18,7 +19,7 @@ class ModulesTableSeeder extends Seeder
         ];
         foreach ($modules as $module) {
             // Do a mass assignment
-            $module  = Modulo::Create(['nombre' => $module]);
+            $module  = ModuloModel::Create(['nombre' => $module]);
         }
     }
 }

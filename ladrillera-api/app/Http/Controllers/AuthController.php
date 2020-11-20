@@ -25,6 +25,7 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
         $user->save();
+
         // Save to UsuarioModel table
         $usuario = new UsuarioModel([
             'correo' => $request['email'],
@@ -49,11 +50,11 @@ class AuthController extends Controller
         $credentials = request(['email', 'password']);
         if (!Auth::attempt($credentials)) {
             return response()->json([
-                'message' => 'Sin autorización'
+                'msg' => 'Sin autorización, credenciales incorrectos'
             ], 401);
         }
 
-        // Gets a authenticable user from the request
+        // Gets a authenticable user from the request whic to this point is valid
         $user = $request->user();
         $activeUser = UsuarioModel::where('auth_user_id', '=', $user->id)->first();
         if (!$activeUser->activo) {
@@ -61,6 +62,7 @@ class AuthController extends Controller
                 'message' => 'No tienes una cuenta activa'
             ], 401);
         }
+
         // Create new passport token for the authenticated user
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;

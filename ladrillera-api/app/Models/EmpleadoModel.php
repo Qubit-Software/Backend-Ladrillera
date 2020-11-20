@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class EmpleadoModel extends Model
 {
+    public static $key = 'id';
     protected $primaryKey = 'id';
     protected $table = 'empleados';
     protected $fillable = [
@@ -17,8 +18,27 @@ class EmpleadoModel extends Model
         "rol",
         "correo",
         "foto",
-
+        "id_usuario"
     ];
+
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        "id",
+        "nombre",
+        "apellido",
+        "cedula_ciudadania",
+        "genero",
+        "fecha_nacimiento",
+        "rol",
+        "correo",
+        "foto",
+        "id_usuario"
+    ];
+
     public $timestamps = false;
 
     public function modules()

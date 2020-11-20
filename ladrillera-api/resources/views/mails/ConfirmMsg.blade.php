@@ -1,8 +1,8 @@
-Hola <i>{{ $msg->userName}}</i>,
+Hola <i>{{ $msg->user_name}}</i>,
 <p>Su cuenta de usuario fue creada exitosamente</p>
  
 <div>
-<p><b>Cuenta numero:</b>&nbsp;{{ $accountsCounter }}</p>
+<p><b>Cuenta numero:</b>&nbsp;{{ $accounts_counter }}</p>
 </div>
  
 <div>
