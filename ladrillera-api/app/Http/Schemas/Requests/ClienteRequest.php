@@ -6,16 +6,17 @@ use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\ValidationException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class ClienteRequest
 {
 
-    private $id_empleado;
+    private $id_empleado_asociado;
     private $nombre;
     private $apellido;
     private $cc_nit;
-    private $tipo_persona;
+    private $tipo_cliente;
     private $ciudad;
     private $correo;
     private $telefono;
@@ -28,16 +29,39 @@ class ClienteRequest
     }
 
 
-    public function validateRequest($request)
+    public function validateCreateRequest($request)
     {
         $rules = [
-            'id_empleado' => 'required|exists:empleados,id',
-            "nombre" => "required|min:1",
-            "apellido" => "required|min:2|max:100",
-            "cc_nit" => "required|digits:10",
-            "tipo_persona" => "required",
-            "ciudad" => "required|string",
-            "correo" => "required|string|email|unique:users",
+            'id_empleado_asociado' => 'sometimes|exists:empleados,id',
+            'nombre' => 'required|min:1',
+            'apellido' => 'required|min:2|max:100',
+            'cc_nit' => 'required|digits:10|unique:clientes',
+            'tipo_cliente' => 'required',
+            'ciudad' => 'required|string',
+            'correo' => 'required|string|email|unique:clientes',
+            'telefono' =>  'required|max:10|unique:clientes'
+        ];
+
+        $data = $request->all();
+
+        $validator = Validator::make($data, $rules);
+
+        $errors =  $validator->errors();
+        if (sizeof($errors) > 0) {
+            throw new ValidationException($errors, "Error al validar la peticion de creación de pedido");
+        }
+    }
+
+    public function validateUpdateRequest($request)
+    {
+        $rules = [
+            'id_empleado_asociado' => 'sometimes|exists:empleados,id',
+            'nombre' => 'required|min:1',
+            'apellido' => 'required|min:2|max:100',
+            'cc_nit' => 'required|digits:10',
+            'tipo_cliente' => 'required',
+            'ciudad' => 'required|string',
+            'correo' => 'required|string|email',
             'telefono' =>  'required|max:10'
         ];
 
@@ -51,17 +75,18 @@ class ClienteRequest
         }
     }
 
-    public static function from_request($request)
+
+    public static function from_request(Request $request)
     {
         $new_instance = new self();
-        $new_instance->id_empleado = $request->id_empleado;
+        $new_instance->id_empleado_asociado = ($request->has('id_empleado_asociado')) ? $request->id_empleado_asociado : NULL;
 
         $new_instance->nombre = $request->nombre;
         $new_instance->apellido = $request->apellido;
         $new_instance->cc_nit = $request->cc_nit;
-        $new_instance->tipo_persona = $request->tipo_persona;
-        $new_instance->ciudad = $request->rol;
-        $new_instance->correo = $request->email;
+        $new_instance->tipo_cliente = $request->tipo_cliente;
+        $new_instance->ciudad = $request->ciudad;
+        $new_instance->correo = $request->correo;
         $new_instance->telefono = $request->telefono;
 
         return $new_instance;
@@ -70,12 +95,12 @@ class ClienteRequest
 
     public function getIdEmpleado()
     {
-        return $this->id_empleado;
+        return $this->id_empleado_asociado;
     }
 
     public function setIdEmpleado($id_empleado)
     {
-        $this->id_empleado = $id_empleado;
+        $this->id_empleado_asociado = $id_empleado;
     }
 
     public function getNombre()
@@ -108,14 +133,14 @@ class ClienteRequest
         $this->cc_nit = $cc_nit;
     }
 
-    public function getTipoPersona()
+    public function getTipoCliente()
     {
-        return $this->tipo_persona;
+        return $this->tipo_cliente;
     }
 
-    public function setTipoPersona($tipo_persona)
+    public function setTipoCliente($tipo_cliente)
     {
-        $this->tipo_persona = $tipo_persona;
+        $this->tipo_cliente = $tipo_cliente;
     }
 
     public function getCiudad()
