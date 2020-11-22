@@ -1,18 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Http\Controllers\Controller;
-use App\Mail\AccountEmail;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Schemas\Mail\AccountEmail;
 
-
-class MailController extends Controller
+class EmailService
 {
-    public function sendConfirmEmail($userName, $email, $password)
+    public function sendConfirmationEmail($user_name, $email, $password)
     {
         $msg = new \stdClass();
-        $msg->userName = $userName;
+        $msg->user_name = $user_name;
         $msg->email = $email;
         $msg->sender = 'Ladrillera 21';
         $msg->receiver = $email;

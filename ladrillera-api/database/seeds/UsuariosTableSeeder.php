@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Usuario;
+use App\Models\UsuarioModel;
 
 class UsuariosTableSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class UsuariosTableSeeder extends Seeder
     public function run()
     {
         // Let's clear the users table first
-        Usuario::truncate();
+        UsuarioModel::truncate();
 
         $faker = \Faker\Factory::create();
 
@@ -22,7 +22,7 @@ class UsuariosTableSeeder extends Seeder
         // will be too slow.
         $password = bcrypt("robin69");
 
-        Usuario::create([
+        UsuarioModel::create([
             'name' => 'Administrator',
             'email' => 'robinsonmu@unisabana.edu.co',
             'password' => $password,
@@ -30,7 +30,7 @@ class UsuariosTableSeeder extends Seeder
 
         // And now let's generate a few dozen users for our app:
         for ($i = 0; $i < 10; $i++) {
-            Usuario::create([
+            UsuarioModel::create([
                 'name' => $faker->name,
                 'email' => $faker->email,
                 'password' => $password,

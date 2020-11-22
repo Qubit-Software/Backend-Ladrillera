@@ -2,9 +2,11 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Empleado;
+use App\Models\EmpleadoModel;
 use App\Models\Modulo;
 use App\Models\EmpleadoModulo as Empleado_Modulo;
-
+use App\Models\EmpleadoModuloModel;
+use App\Models\ModuloModel;
 
 class EmployeesModulesTableSeeder extends Seeder
 {
@@ -18,9 +20,9 @@ class EmployeesModulesTableSeeder extends Seeder
         // Find admin
         $adminEmail = 'robinsonmu@unisabana.edu.co';
         $adminModuleName = 'Administracion';
-        $employee = Empleado::where('correo', '=', $adminEmail)->first();
-        $adminModule = Modulo::where('nombre', 'like', '%' . $adminModuleName . '%')->first();
-        $employeeModule = Empleado_Modulo::create([
+        $employee = EmpleadoModel::where('correo', '=', $adminEmail)->first();
+        $adminModule = ModuloModel::where('nombre', 'like', '%' . $adminModuleName . '%')->first();
+        $employeeModule = EmpleadoModuloModel::create([
             'id_empleado' => $employee->id,
             'id_modulo' => $adminModule->id
         ]);
@@ -30,7 +32,7 @@ class EmployeesModulesTableSeeder extends Seeder
     private function fakeData()
     {
         // Set other db stuff
-        $employees = Empleado::all();
-        $modules = Modulo::all();
+        $employees = EmpleadoModel::all();
+        $modules = ModuloModel::all();
     }
 }

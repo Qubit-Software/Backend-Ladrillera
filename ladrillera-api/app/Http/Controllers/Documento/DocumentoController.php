@@ -30,7 +30,7 @@ class DocumentoController extends Controller
      */
     public function index()
     {
-        return $this->documento_service->get_all();
+        return $this->documento_service->getAll();
     }
 
     /**
@@ -56,14 +56,14 @@ class DocumentoController extends Controller
 
         $documentoRequest = DocumentoRequest::withData($request->id_cliente, $request->documento, $request->tipo_documento);
         $client  = ClienteModel::findOrFail($documentoRequest->get_id_cliente());
-        
-        $document = $this->documento_service->create_document($client, $documentoRequest);
-        
+
+        $document = $this->documento_service->createDocument($client, $documentoRequest);
+
         $jsonResponse = null;
-        if(is_null($document)){
-            $jsonResponse = response()->json(["msg"=>"Ocurrio un error en el servidor al guardar el documento "], 500);
-        }else{
-            $jsonResponse = response()->json(["documento"=>$document,"msg"=> "Documento creado correctamente"], 500);
+        if (is_null($document)) {
+            $jsonResponse = response()->json(["msg" => "Ocurrio un error en el servidor al guardar el documento "], 500);
+        } else {
+            $jsonResponse = response()->json(["documento" => $document, "msg" => "Documento creado correctamente"], 500);
         }
 
         return $jsonResponse;

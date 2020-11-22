@@ -9,6 +9,7 @@ namespace App\Traits;
 
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 trait UploadTrait
@@ -29,16 +30,15 @@ trait UploadTrait
         }
 
         return false;
-
     }
 
-    public function uploadOne(UploadedFile $uploadedFile, $folder = null, $filename = null, $disk = 'public')
+    public function uploadOne(UploadedFile $uploaded_file, $folder = null, $filename = null, $disk = 'public')
     {
-        $name = ! is_null($filename) ? $filename : Str::random(25);
+        $name = !is_null($filename) ? $filename : Str::random(25);
 
-        $filePath = $uploadedFile->storeAs($folder, $name . '.' . $uploadedFile->getClientOriginalExtension(), $disk);
+        $filePath = $uploaded_file->storeAs($folder, $name . '.' . $uploaded_file->getClientOriginalExtension(), $disk);
 
-        \Log::info('File '.$name. " to ".$folder. "=>".$filePath);
+        Log::info('File ' . $name . " to " . $folder . "=>" . $filePath);
         return $filePath;
     }
 }

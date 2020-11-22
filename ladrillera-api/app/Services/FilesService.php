@@ -4,9 +4,10 @@ namespace App\Services;
 
 
 use App\Traits\UploadTrait;
+use Illuminate\Support\Facades\Log;
 
-
-class FilesService{
+class FilesService
+{
 
     use UploadTrait;
 
@@ -15,26 +16,25 @@ class FilesService{
      */
     public function __construct()
     {
-
     }
 
-    public function saveClientFile($file, $name, $folder){
-        $newFilePath = $this->uploadOne($file, $folder, $name, "clients");
-        \Log::info('File '.$name. " to ".$folder. "=> The file ".$file);
-        return $newFilePath;
+    public function saveClientFile($file, $name, $folder)
+    {
+        return $this->saveFile($file, $folder, $name, "clients");
     }
 
-    public function saveEmployeeFile($file, $name, $folder){
+    public function saveEmployeeFile($file, $name, $folder)
+    {
         // Upload image
-        $this->uploadOne($file, $folder, $name, "employees");
-        // Set user profile image path in database to filePath
-        return true;
+        return $this->saveFile($file, $folder, $name, "employees");
     }
 
-    public function saveFile($file, $folder, $name,  $disk){
+    public function saveFile($file, $folder, $name,  $disk)
+    {
         // Upload image
-        $newFilePath = $this->uploadOne($file, $folder, $name, $disk);
+        $new_filePath = $this->uploadOne($file, $folder, $name, $disk);
         // Set user profile image path in database to filePath
-        return $newFilePath;
+        Log::info('File ' . $name . " to " . $folder . "=> The file " . $file);
+        return $new_filePath;
     }
 }

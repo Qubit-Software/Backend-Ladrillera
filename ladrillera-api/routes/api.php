@@ -45,6 +45,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::apiResource('modulos', 'Modulo\ModuloController')->only([
             'index', 'show', "create", "store", "update"
         ]);
+        
     });
     
 
