@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "status": "No existe"
+    },
+    {
+        "id": 1,
+        "status": "Despacho finalizado"
+    },
+    {
+        "id": 2,
+        "status": "Despacho sin iniciar"
+    },
+    {
+        "id": 3,
+        "status": "Despacho en proceso"
+    },
+    {
+        "id": 4,
+        "status": "Pendiente Pago"
+    }
+]

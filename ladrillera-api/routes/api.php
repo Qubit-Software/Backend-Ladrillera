@@ -45,13 +45,12 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::apiResource('modulos', 'Modulo\ModuloController')->only([
             'index', 'show', "create", "store", "update"
         ]);
-        
     });
-    
+
+    Route::apiResource('clientes', 'Cliente\ClienteController');
 
     //  Ventas
     Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
-        Route::apiResource('clientes', 'Cliente\ClienteController');
         Route::apiResource('pedidos', 'Pedido\PedidoController');
     });
 
@@ -74,7 +73,8 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 
 
-Route::fallback(function(){
+Route::fallback(function () {
     return response()->json([
-        'message' => 'Page Not Found. If error persists, contact info@website.com'], 404);
+        'message' => 'Page Not Found. If error persists, contact info@website.com'
+    ], 404);
 });

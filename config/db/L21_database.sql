@@ -48,7 +48,7 @@ CREATE TABLE PEDIDOS (
     id_empleado INT(11) NOT NULL,
     fecha_cargue date,
     total BIGINT NOT null,
-    status INT NOT NULL,
+    status VARCHAR(250) NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE,
