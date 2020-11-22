@@ -47,28 +47,31 @@ CREATE TABLE PEDIDOS (
     id_cliente INT(11) NOT NULL,
     id_empleado INT(11) NOT NULL,
     fecha_cargue date,
-    comentario TEXT,
+    total BIGINT NOT null,
+    status INT NOT NULL,
+
     PRIMARY KEY (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE,
     FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id)
 );
-
-CREATE TABLE PRODUCTOS (
-    id INT(11) NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(200),
-    descripcion TEXT,
-    PRIMARY KEY (id)
-);
-
 CREATE TABLE PRODUCTOS_PEDIDOS (
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     id_pedido INT(11) NOT NULL,
-    id_producto INT(11) NOT NULL,
     cantidad INT(15),
-    unid_medicion INT(15),
+    valor_total BIGINT NOT NULL
+    unid_medicion TEXT NOT NULL,
+
     PRIMARY KEY (id),
     FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_producto) REFERENCES PRODUCTOS(id) ON DELETE CASCADE
+);
+
+CREATE TABLE DESPACHOS_FOTOGRAFIA(
+    id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    id_pedido INT(11) NOT NULL,
+    foto VARCHAR(350),
+
+     PRIMARY KEY (id),
+    FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id) ON DELETE CASCADE,
 );
 
 CREATE TABLE MODULOS (
