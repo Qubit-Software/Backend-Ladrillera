@@ -8,9 +8,9 @@ use App\Service\DocumentoService;
 use App\Service\EmpleadoService;
 use App\Service\UserService;
 use App\Service\UsuarioService;
-use App\Service\ModulosService;
+use App\Service\ModuloService;
 use App\Service\EmailService;
-
+use App\Services\ClienteService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,6 +48,19 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(EmpleadoService::class, function ($app) {
             return new EmpleadoService();
+        });
+
+        $this->app->singleton(ClienteService::class, function ($app) {
+            return new ClienteService();
+        });
+
+
+        $this->app->singleton(EmailService::class, function ($app) {
+            return new EmailService();
+        });
+
+        $this->app->singleton(ModuloService::class, function ($app) {
+            return new ModuloService();
         });
     }
 

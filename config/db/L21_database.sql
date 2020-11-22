@@ -30,16 +30,16 @@ CREATE TABLE EMPLEADOS (
 
 CREATE TABLE CLIENTES (
     id INT(11) NOT NULL AUTO_INCREMENT,
-    id_empleado_recomendo INT(11) NULL,
+    id_empleado_asociado INT(11) NULL,
     nombre VARCHAR(250),
     apellido VARCHAR(250),
-    cc_nit INT(15),
+    cc_nit INT(15) UNIQUE,
     tipo_cliente VARCHAR(100),
     ciudad VARCHAR(150),
     correo VARCHAR(150),
-    telefono VARCHAR(100),
+    telefono VARCHAR(100) UNIQUE,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado_recomendo) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
+    FOREIGN KEY (id_empleado_asociado) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
 );
 
 CREATE TABLE PEDIDOS (

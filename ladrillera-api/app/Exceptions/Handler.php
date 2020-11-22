@@ -57,16 +57,18 @@ class Handler extends ExceptionHandler
     {
         // This will replace our 404 response with
         // a JSON response.
-        if ($exception instanceof ModelNotFoundException && $request->wantsJson()) {
+        if ($exception instanceof ModelNotFoundException) {
             return response()->json([
-                'error' => 'Entry for '.str_replace('App\\', '', $exception->getModel()).' not found'], 404);
-        }else if($exception instanceof ValidationException){
+                'error' => 'Entry for ' . str_replace('App\\', '', $exception->getModel()) . ' not found'
+            ], 404);
+        } else if ($exception instanceof ValidationException) {
             return $exception->render($request);
-        }else if($exception instanceof QueryException){
+        } else if ($exception instanceof QueryException) {
             return response()->json([
-                'error' => "Ocurrio un error con la base de datos, contacté con mantenimiento." . $exception->getMessage()], 500);
+                'error' => "Ocurrio un error con la base de datos, contacté con mantenimiento." . $exception->getMessage()
+            ], 500);
         }
-    
+
         return parent::render($request, $exception);
     }
 

@@ -32,21 +32,6 @@ class EmpleadoRequest
     {
     }
 
-
-    /**
-     * Instantiate a new DocumentoValidator instance.
-     */
-    public static function withData($id_cliente, $documento, $tipo_documento)
-    {
-        $new_instance = new self();
-        $new_instance->id_cliente = $id_cliente;
-        $new_instance->documento = $documento;
-        $new_instance->tipo_documento = $tipo_documento;
-
-        return $new_instance;
-    }
-
-
     public function validateRequest($request)
     {
         $rules = [

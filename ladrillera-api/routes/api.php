@@ -47,6 +47,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         ]);
     });
 
+    Route::get('clientes/{cc_nit}', 'Cliente\ClienteController@showByCCNit');
     Route::apiResource('clientes', 'Cliente\ClienteController');
 
     //  Ventas

@@ -15,6 +15,7 @@ use App\Http\Schemas\Requests\DocumentoRequest;
 class DocumentoController extends Controller
 {
     protected $documento_service;
+
     /**
      * Instantiate a new DocumentoController instance.
      */
@@ -55,7 +56,7 @@ class DocumentoController extends Controller
         $documentoRequest->validateRequest($request);
 
         $documentoRequest = DocumentoRequest::withData($request->id_cliente, $request->documento, $request->tipo_documento);
-        $client  = ClienteModel::findOrFail($documentoRequest->get_id_cliente());
+        $client  = ClienteModel::findOrFail($documentoRequest->getIdCliente());
 
         $document = $this->documento_service->createDocument($client, $documentoRequest);
 
