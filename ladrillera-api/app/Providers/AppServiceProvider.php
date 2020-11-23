@@ -11,6 +11,7 @@ use App\Service\UsuarioService;
 use App\Service\ModuloService;
 use App\Service\EmailService;
 use App\Services\ClienteService;
+use App\Services\ProductoPedidoService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -61,6 +62,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(ModuloService::class, function ($app) {
             return new ModuloService();
+        });
+
+        $this->app->singleton(ProductoPedidoService::class, function ($app) {
+            return new ProductoPedidoService();
         });
     }
 

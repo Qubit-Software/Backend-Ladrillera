@@ -45,26 +45,27 @@ CREATE TABLE CLIENTES (
 CREATE TABLE PEDIDOS (
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
-    id_empleado INT(11) NOT NULL,
     fecha_cargue date,
     total BIGINT NOT null,
-    status VARCHAR(250) NOT NULL,
+    estatus INT NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_cliente) REFERENCES CLIENTES(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id)
 );
+
 
 CREATE TABLE PRODUCTOS_PEDIDOS (
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     id_pedido INT(11) NOT NULL,
     cantidad INT(15),
+    codigo_producto TEXT NOT NULL,
     valor_total BIGINT NOT NULL
-    unid_medicion TEXT NOT NULL,
+    unidad_medicion TEXT NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id) ON DELETE CASCADE,
 );
+
 
 CREATE TABLE DESPACHOS_FOTOGRAFIA(
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,

@@ -9,6 +9,7 @@ class EmpleadoModel extends Model
     public static $key = 'id';
     protected $primaryKey = 'id';
     protected $table = 'empleados';
+
     protected $fillable = [
         "nombre",
         "apellido",
@@ -41,34 +42,33 @@ class EmpleadoModel extends Model
 
     public $timestamps = false;
 
-    public function modules()
-    {
-        return $this
-            ->belongsToMany('App\Models\ModuloModel', 'empleados_modulos', 'id_empleado', 'id_modulo');
-    }
 
-    public function authorizeModules($modules)
+    public function authorizeModules(array $modules)
     {
-        if ($this->hasAnyRole($modules)) {
+        if ($this->hasAnyModule($modules)) {
             return true;
         }
-        abort(401, 'Esta acción no está autorizada.');
+
+        return false;
     }
-    public function hasAnyModule($modules)
+
+    public function hasAnyModule(array $modules)
     {
         if (is_array($modules)) {
             foreach ($modules as $role) {
-                if ($this->hasRole($role)) {
+                if ($this->hasModule($role)) {
                     return true;
                 }
             }
         } else {
-            if ($this->hasRole($modules)) {
+            if ($this->hasModule($modules)) {
                 return true;
             }
         }
+
         return false;
     }
+
     public function hasModule($module)
     {
         if ($this->modules()->where('nombre', $module)->first()) {
@@ -76,6 +76,13 @@ class EmpleadoModel extends Model
         }
         return false;
     }
+
+    public function modules()
+    {
+        return $this
+            ->belongsToMany('App\Models\ModuloModel', 'empleados_modulos', 'id_empleado', 'id_modulo');
+    }
+
     public function getImageAttribute()
     {
         return $this->foto;

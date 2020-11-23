@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('notificaciones', 'Notificacion\NotificacionController');
 
     // Administracion
-    Route::group(['prefix' => 'administracion', 'middleware' => ['module:administracion']], function () {
+    Route::group(['prefix' => 'administracion', 'middleware' => ['module:Administracion']], function () {
         Route::apiResource('empleados', 'Empleado\EmpleadoController');
         Route::apiResource('usuarios', 'Usuario\UsuarioController')->only([
             'index', 'show', "create", "store", "update"
@@ -51,18 +51,21 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('clientes', 'Cliente\ClienteController');
 
     //  Ventas
-    Route::group(['prefix' => 'ventas', 'middleware' => ['module:ventas']], function () {
-        Route::apiResource('pedidos', 'Pedido\PedidoController');
-    });
+    Route::group(
+        ['prefix' => 'ventas', 'middleware' => ['module:Ventas,Administracion']],
+        function () {
+            Route::apiResource('pedidos', 'Pedido\PedidoController');
+        }
+    );
 
     //  Contabilidad
-    Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:contabilidad']], function () {
+    Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:Contabilidad']], function () {
         Route::apiResource('clientes', 'Cliente\ClienteController');
         Route::apiResource('pedidos', 'Pedido\PedidoController');
     });
 
     //  Despacho
-    Route::group(['prefix' => 'despachos', 'middleware' => ['module:despacho']], function () {
+    Route::group(['prefix' => 'despachos', 'middleware' => ['module:Despacho']], function () {
         Route::apiResource('clientes', 'Cliente\ClienteController');
         Route::apiResource('pedidos', 'Pedido\PedidoController');
     });

@@ -16,14 +16,16 @@ class CheckModule
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $module)
+    public function handle($request, Closure $next, ...$modules)
     {
         $authUser = Auth::user();
         $usuario = UsuarioModel::where('correo', $authUser->email)->first();
         $empleado = EmpleadoModel::where('id_usuario', $usuario->id)->first();
-        // if (is_null($empleado) || !$empleado->authorizeModules([$module,])) {
-        if (is_null($empleado) || !$empleado->hasModule($module)) {
-            return response()->json(['msg' => 'No tienes autorización para ingresar al modulo ' . $module], 403);
+        if (is_null($empleado) || !$empleado->authorizeModules($modules)) {
+            return response()->json([
+                'msg' => 'No tienes autorización para ingresar al modulo ' . implode(',', $modules),
+                'tus_modulos' => $empleado->modules()->get()
+            ], 403);
         }
         return $next($request);
     }

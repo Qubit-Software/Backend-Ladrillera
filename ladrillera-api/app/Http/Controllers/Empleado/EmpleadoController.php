@@ -201,7 +201,7 @@ class EmpleadoController extends Controller
         $authUser = $request->user();
 
         $usuario = UsuarioModel::where('correo', $authUser->email)->first();
-        $empleado = EmpleadoModel::where('id', $usuario->id_empleado)->first();
+        $empleado = EmpleadoModel::where('id_usuario', $usuario->id)->first();
         $modules = $empleado->modules()->get();
 
         return response()->json(['modulos' => $modules], 200);

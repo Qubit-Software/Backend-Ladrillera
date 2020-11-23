@@ -3,18 +3,23 @@
 namespace App\Http\Controllers\Pedido;
 
 use App\Http\Controllers\Controller;
+use App\Http\Schemas\Requests\PedidoRequest;
+use App\Http\Schemas\Requests\ProductoPedidoRequest;
+use App\Services\ProductoPedidoService;
 use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
+    private $productos_pedido_service;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ProductoPedidoService $productos_pedido_service)
     {
-        //
+        $this->productos_pedido_service = $productos_pedido_service;
     }
 
     /**
@@ -35,7 +40,13 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pedido_request = new PedidoRequest();
+        $pedido_request->validateCreateRequest($request->all());
+        $pedido_request = PedidoRequest::fromRequest($request);
+        $productos = $pedido_request->getProductos();
+
+        $productos_pedido_request = new ProductoPedidoRequest();
+        $productos_pedido_request->validateCreate($productos);
     }
 
     /**

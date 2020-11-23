@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DocumentoModel extends Model
+class ProductoPedidoModel extends Model
 {
-
     protected $primaryKey = 'id';
-    protected $table = 'documentos';
+    protected $table = 'productos_pedidos';
 
     /**
      * The attributes that are mass assignable.
@@ -16,10 +15,12 @@ class DocumentoModel extends Model
      * @var array
      */
     protected $fillable = [
-        'file_path', 'nombre', 'tipo_documento', 'id_cliente'
+        'id_pedido',
+        'cantidad',
+        'codigo_producto',
+        'valor_total',
+        'unidad_medicion'
     ];
-
-    public $timestamps = false;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -28,11 +29,5 @@ class DocumentoModel extends Model
      */
     protected $hidden = [];
 
-    /**
-     * Get the client that owns the document.
-     */
-    public function cliente()
-    {
-        return $this->belongsTo('App\Models\ClienteModel', 'id_cliente');
-    }
+    public $timestamps = false;
 }
