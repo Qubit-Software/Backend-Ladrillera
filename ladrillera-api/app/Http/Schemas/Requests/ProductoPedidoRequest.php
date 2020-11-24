@@ -7,7 +7,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class ProductoPedidoRequest
 {
@@ -29,11 +31,14 @@ class ProductoPedidoRequest
     public function validateCreate(array $data)
     {
         $rules = [
-            'id_pedido' => 'sometimes|exists:App\Models\PedidoModel,id',
-            'cantidad' => 'sometimes|numeric',
-            'codigo_producto' => 'required|string',
-            'valor_total' => 'nullable|numeric',
-            'unidad_medicion' => 'required|string'
+            '*.id_pedido' => 'sometimes|exists:App\Models\PedidoModel,id',
+            '*.cantidad' => 'required|numeric|min:1',
+            '*.codigo_producto' => [
+                'required',
+                Rule::in(array_keys(Config::get('constants.productos')))
+            ],
+            '*.valor_total' => 'nullable|numeric',
+            '*.unidad_medicion' => 'required|string'
         ];
 
         $validator = Validator::make($data, $rules);
