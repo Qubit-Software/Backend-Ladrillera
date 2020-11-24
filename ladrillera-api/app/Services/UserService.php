@@ -21,8 +21,7 @@ class UserService
 
     public function getAll()
     {
-        $users = User::all();
-        return response()->json($users, 200);
+        return User::all();
     }
 
     public function createUser($name, $email, $normal_password)

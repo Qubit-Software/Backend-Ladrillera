@@ -43,7 +43,7 @@ class EmpleadoRequest
             "rol" => "required|string",
             'foto' =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             "email" => "required|string|email|unique:users",
-            "modulo_ids" => "required"
+            "modulo_ids" => "required|json"
         ];
 
         $data = $request->all();

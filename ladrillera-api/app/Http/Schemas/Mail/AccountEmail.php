@@ -28,7 +28,7 @@ class AccountEmail extends Mailable
     public function __construct($msg)
     {
         $this->msg = $msg;
-        $this->from_email = env('MAIL_FROM_ADDRESS', Config::get('constants.from_email'));
+        $this->from_email = env('MAIL_FROM_ADDRESS', Config::get('constants.default.from_email'));
     }
 
     /**

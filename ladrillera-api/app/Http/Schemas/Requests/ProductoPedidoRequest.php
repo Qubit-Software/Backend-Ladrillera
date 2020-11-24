@@ -29,16 +29,17 @@ class ProductoPedidoRequest
     public function validateCreate(array $data)
     {
         $rules = [
-            'id_pedido' => 'required',
-            'cantidad' => 'required|numeric',
-            'codigo_producto' => 'required',
+            'id_pedido' => 'sometimes|exists:App\Models\PedidoModel,id',
+            'cantidad' => 'sometimes|numeric',
+            'codigo_producto' => 'required|string',
             'valor_total' => 'nullable|numeric',
-            'unidad_medicion' => 'required'
+            'unidad_medicion' => 'required|string'
         ];
 
         $validator = Validator::make($data, $rules);
 
         $errors =  $validator->errors();
+
         if (sizeof($errors) > 0) {
             throw new ValidationException($errors, "Error al validar la peticion de creación de pedido");
         }
