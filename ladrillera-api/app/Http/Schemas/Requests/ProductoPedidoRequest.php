@@ -38,7 +38,7 @@ class ProductoPedidoRequest
                 'distinct',
                 Rule::in(array_keys(Config::get('constants.productos')))
             ],
-            '*.valor_total' => 'nullable|numeric',
+            '*.valor_total' => 'required|numeric',
             '*.unidad_medicion' => 'required|string'
         ];
 
@@ -58,17 +58,19 @@ class ProductoPedidoRequest
         $new_instance->cantidad = $request->cantidad;
         $new_instance->codigo_producto = $request->codigo_producto;
         $new_instance->unidad_medicion = $request->unidad_medicion;
+        $new_instance->valor_total = $request->valor_total;
 
         return $new_instance;
     }
 
-    public static function from_producto_request($codigo_producto, $unidad_medicion, $cantidad)
+    public static function from_producto_request($codigo_producto, $unidad_medicion, $cantidad, $valor_total)
     {
         $new_instance = new self();
 
         $new_instance->cantidad = $cantidad;
         $new_instance->codigo_producto = $codigo_producto;
         $new_instance->unidad_medicion = $unidad_medicion;
+        $new_instance->valor_total = $valor_total;
 
         return $new_instance;
     }

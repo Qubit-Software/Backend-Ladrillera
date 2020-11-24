@@ -70,6 +70,7 @@ class PedidoController extends Controller
                     $producto["codigo_producto"],
                     $producto["unidad_medicion"],
                     $producto["cantidad"],
+                    $producto["valor_total"],
                 );
                 array_push($producto_pedido_requests, $producto_pedido_request);
             }
@@ -81,8 +82,7 @@ class PedidoController extends Controller
                 array_push($new_producto_pedidos, $new_producto_pedido);
             }
 
-            $this->DB::commit();
-
+            DB::commit();
             return response()->json([
                 "pedido" => $new_pedido,
                 "productos_pedido" => $new_producto_pedidos
