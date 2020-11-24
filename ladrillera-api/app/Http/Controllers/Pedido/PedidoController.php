@@ -7,6 +7,7 @@ use App\Http\Schemas\Requests\PedidoRequest;
 use App\Http\Schemas\Requests\ProductoPedidoRequest;
 use App\Services\ProductoPedidoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -40,13 +41,22 @@ class PedidoController extends Controller
      */
     public function store(Request $request)
     {
-        $pedido_request = new PedidoRequest();
-        $pedido_request->validateCreateRequest($request->all());
-        $pedido_request = PedidoRequest::fromRequest($request);
-        $productos = $pedido_request->getProductos();
+        DB::beginTransaction();
+        try {
+            $pedido_request = new PedidoRequest();
+            $pedido_request->validateCreateRequest($request->all());
+            $pedido_request = PedidoRequest::fromRequest($request);
+            $productos = $pedido_request->getProductos();
 
-        $productos_pedido_request = new ProductoPedidoRequest();
-        $productos_pedido_request->validateCreate($productos);
+            $productos_pedido_request = new ProductoPedidoRequest();
+            $productos_pedido_request->validateCreate($productos);
+            $productos_pedido_request = ProductoPedidoRequest::from_request($request);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 
     /**

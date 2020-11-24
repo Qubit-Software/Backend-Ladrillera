@@ -14,11 +14,11 @@ use Illuminate\Validation\Rule;
 class ProductoPedidoRequest
 {
 
-    private $id_empleado;
-    private $id_cliente;
-    private $fecha_cargue;
-    private $total;
-    private $estatus;
+    private $id_pedido;
+    private $cantidad;
+    private $codigo_producto;
+    private $valor_total;
+    private $unidad_medicion;
 
     /**
      * Instantiate a new DocumentoValidator instance.
@@ -35,6 +35,7 @@ class ProductoPedidoRequest
             '*.cantidad' => 'required|numeric|min:1',
             '*.codigo_producto' => [
                 'required',
+                'distinct',
                 Rule::in(array_keys(Config::get('constants.productos')))
             ],
             '*.valor_total' => 'nullable|numeric',
@@ -53,97 +54,62 @@ class ProductoPedidoRequest
     public static function from_request(Request $request)
     {
         $new_instance = new self();
-        $new_instance->id_empleado_asociado = ($request->has('id_empleado_asociado')) ? $request->id_empleado_asociado : NULL;
 
-        $new_instance->nombre = $request->nombre;
-        $new_instance->apellido = $request->apellido;
-        $new_instance->cc_nit = $request->cc_nit;
-        $new_instance->tipo_cliente = $request->tipo_cliente;
-        $new_instance->ciudad = $request->ciudad;
-        $new_instance->correo = $request->correo;
-        $new_instance->telefono = $request->telefono;
+        $new_instance->cantidad = $request->cantidad;
+        $new_instance->codigo_producto = $request->codigo_producto;
+        $new_instance->unidad_medicion = $request->unidad_medicion;
 
         return $new_instance;
     }
 
 
-    public function getIdEmpleado()
+    public function getIdPedido()
     {
-        return $this->id_empleado_asociado;
+        return $this->id_pedido;
     }
 
-    public function setIdEmpleado($id_empleado)
+    public function setIdPedido($id_pedido)
     {
-        $this->id_empleado_asociado = $id_empleado;
+        $this->id_pedido = $id_pedido;
     }
 
-    public function getNombre()
+    public function getCantidad()
     {
-        return $this->nombre;
+        return $this->cantidad;
     }
 
-    public function setNombre($nombre)
+    public function setCantidad($cantidad)
     {
-        $this->nombre = $nombre;
+        $this->cantidad = $cantidad;
     }
 
-    public function getApellido()
+    public function getCodigoProducto()
     {
-        return $this->apellido;
+        return $this->codigo_producto;
     }
 
-    public function setApellido($apellido)
+    public function setCodigoProducto($codigo_producto)
     {
-        $this->apellido = $apellido;
+        $this->codigo_producto = $codigo_producto;
     }
 
-    public function getCCNit()
+    public function getValorTotal()
     {
-        return $this->cc_nit;
+        return $this->valor_total;
     }
 
-    public function setCCNit($cc_nit)
+    public function setValorTotal($valor_total)
     {
-        $this->cc_nit = $cc_nit;
+        $this->valor_total = $valor_total;
     }
 
-    public function getTipoCliente()
+    public function getUnidadMedicion()
     {
-        return $this->tipo_cliente;
+        return $this->unidad_medicion;
     }
 
-    public function setTipoCliente($tipo_cliente)
+    public function setUnidadMedicion($unidad_medicion)
     {
-        $this->tipo_cliente = $tipo_cliente;
-    }
-
-    public function getCiudad()
-    {
-        return $this->ciudad;
-    }
-
-    public function setCiudad($ciudad)
-    {
-        $this->ciudad = $ciudad;
-    }
-
-    public function getCorreo()
-    {
-        return $this->correo;
-    }
-
-    public function setCorreo($correo)
-    {
-        $this->correo = $correo;
-    }
-
-    public function getTelefono()
-    {
-        return $this->telefono;
-    }
-
-    public function setTelefono($telefono)
-    {
-        $this->telefono = $telefono;
+        $this->unidad_medicion = $unidad_medicion;
     }
 }
