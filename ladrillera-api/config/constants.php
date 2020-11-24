@@ -4,7 +4,7 @@ return [
         'from_email' => 'ladrillera21@gmail.com',
         'estatus' => 'Pendiente Pago',
     ],
-    'status' => [
+    'estatus' => [
         0 => "No existe",
         1 => "Despacho finalizado",
         2 => "Despacho sin iniciar",

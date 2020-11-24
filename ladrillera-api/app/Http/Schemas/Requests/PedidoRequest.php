@@ -7,7 +7,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\ValidationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class PedidoRequest
 {
@@ -20,6 +22,8 @@ class PedidoRequest
     // Associated products
     private $productos;
 
+    // Support for updating pedido
+    private $id_pedido;
     /**
      * Instantiate a new DocumentoValidator instance.
      */
@@ -46,6 +50,24 @@ class PedidoRequest
         }
     }
 
+    public function validateUpdateRequest(array $data)
+    {
+        $rules = [
+            'id_pedido' => 'required|exists:pedidos,id',
+            'estatus' => [
+                'required',
+                'numeric',
+                Rule::in(array_keys(Config::get('constants.estatus')))
+            ],
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        $errors =  $validator->errors();
+        if (sizeof($errors) > 0) {
+            throw new ValidationException($errors, "Error al validar la peticion de creación de pedido");
+        }
+    }
 
     public static function fromRequest(Request $request)
     {
@@ -55,6 +77,15 @@ class PedidoRequest
         $new_instance->total = $request->total;
         $new_instance->estatus = $request->estatus;
         $new_instance->productos = $request->productos;
+
+        return $new_instance;
+    }
+
+    public static function fromUpdateRequest(Request $request)
+    {
+        $new_instance = new self();
+        $new_instance->estatus = $request->estatus;
+        $new_instance->id_pedido = $request->id_pedido;
 
         return $new_instance;
     }
@@ -108,5 +139,15 @@ class PedidoRequest
     public function setProductos($productos)
     {
         $this->productos = $productos;
+    }
+
+    public function getIdPedido()
+    {
+        return $this->id_pedido;
+    }
+
+    public function setIdPedido($id_pedido)
+    {
+        $this->id_pedido = $id_pedido;
     }
 }

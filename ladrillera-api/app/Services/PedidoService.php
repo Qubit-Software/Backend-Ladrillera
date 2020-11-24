@@ -26,6 +26,11 @@ class PedidoService
         return PedidoModel::all();
     }
 
+    public function getById($id)
+    {
+        return PedidoModel::findOrFail($id);
+    }
+
     public function createPedido(PedidoRequest $pedidoRequest)
     {
         $time = strtotime($pedidoRequest->getFechaCargue());
@@ -42,5 +47,12 @@ class PedidoService
         $new_pedido = new PedidoModel($data);
         $new_pedido->save();
         return $new_pedido;
+    }
+
+    public function updatePedidoStatus(PedidoModel $to_update, $estatus)
+    {
+        $to_update->estatus = $estatus;
+        $to_update->save();
+        return $to_update;
     }
 }

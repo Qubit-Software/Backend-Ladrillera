@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Pedido;
 use App\Http\Controllers\Controller;
 use App\Http\Schemas\Requests\PedidoRequest;
 use App\Http\Schemas\Requests\ProductoPedidoRequest;
+use App\Models\PedidoModel;
 use App\Services\PedidoService;
 use App\Services\ProductoPedidoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
@@ -101,7 +103,7 @@ class PedidoController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json($this->pedido_service->getById($id), 200);
     }
 
     /**
@@ -124,7 +126,30 @@ class PedidoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $update_pedido_request = new PedidoRequest();
+            $update_pedido_request->validateUpdateRequest($request->all());
+
+            $update_pedido_request = $update_pedido_request->fromUpdateRequest($request);
+
+            $pedido_to_update = PedidoModel::findOrFail($id);
+
+            $status_key = intval($update_pedido_request->getEstatus());
+            $status_value = Config::get('constants.estatus', 'error')[$status_key];
+
+            $updated = $this->pedido_service->updatePedidoStatus(
+                $pedido_to_update,
+                $status_value
+            );
+
+            DB::commit();
+
+            return response()->json($updated, 200);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 
     /**

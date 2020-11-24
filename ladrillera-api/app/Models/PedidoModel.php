@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PedidoModel extends Model
 {
+    public static $key = 'id';
     protected $primaryKey = 'id';
     protected $table = 'pedidos';
 
