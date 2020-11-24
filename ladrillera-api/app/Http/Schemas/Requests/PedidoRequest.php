@@ -33,7 +33,7 @@ class PedidoRequest
         $rules = [
             'id_cliente' => 'required|exists:clientes,id',
             'fecha_cargue' => 'required|date_format:d/m/Y',
-            'total' => 'nullable|min:2|max:100',
+            'total' => 'required|numeric',
             'estatus' => 'nullable',
             'productos' => 'required|array'
         ];

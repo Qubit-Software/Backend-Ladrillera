@@ -62,6 +62,16 @@ class ProductoPedidoRequest
         return $new_instance;
     }
 
+    public static function from_producto_request($codigo_producto, $unidad_medicion, $cantidad)
+    {
+        $new_instance = new self();
+
+        $new_instance->cantidad = $cantidad;
+        $new_instance->codigo_producto = $codigo_producto;
+        $new_instance->unidad_medicion = $unidad_medicion;
+
+        return $new_instance;
+    }
 
     public function getIdPedido()
     {
