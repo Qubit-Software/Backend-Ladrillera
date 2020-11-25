@@ -68,3 +68,6 @@ Crear enlaces simbolicos para el almacenamiento
 Crear exceptions
 
 > php artisan make:exception ValidationException
+
+
+./ngrok authtoken 4AZuo6YDSB7Y9DqM9gki3_7xPchVKGvueoRfyHBaPjo

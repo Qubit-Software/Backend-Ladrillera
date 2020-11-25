@@ -9,7 +9,8 @@ return [
         1 => "Despacho finalizado",
         2 => "Despacho sin iniciar",
         3 => "Despacho en proceso",
-        4 => "Pendiente Pago"
+        4 => "Pendiente Pago",
+        5 => "Pedido finalizado"
     ],
     'productos' => [
         "LAD21-MATCO" => [
