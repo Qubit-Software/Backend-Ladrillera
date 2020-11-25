@@ -33,14 +33,13 @@ class PedidoService
 
     public function createPedido(PedidoRequest $pedidoRequest)
     {
-        $time = strtotime($pedidoRequest->getFechaCargue());
-        $fecha_cargue = date('Y-m-d', $time);
+        $date = date_create_from_format('d/m/Y', $pedidoRequest->getFechaCargue());
 
         $default_status = Config::get('constants.default.estatus');
         $status = (is_null($pedidoRequest->getEstatus()) ? $default_status : $pedidoRequest->getEstatus());
         $data = [
             "id_cliente" => $pedidoRequest->getIdCliente(),
-            "fecha_cargue" => $fecha_cargue,
+            "fecha_cargue" => $date,
             "total" => $pedidoRequest->getTotal(),
             "estatus" => $status
         ];
