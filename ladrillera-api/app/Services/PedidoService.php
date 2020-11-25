@@ -23,7 +23,7 @@ class PedidoService
 
     public function getAll()
     {
-        return PedidoModel::all();
+        return PedidoModel::with('productos')->get();
     }
 
     public function getById($id)
