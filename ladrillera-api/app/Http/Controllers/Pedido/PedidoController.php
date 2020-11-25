@@ -103,7 +103,8 @@ class PedidoController extends Controller
      */
     public function show($id)
     {
-        return response()->json($this->pedido_service->getById($id), 200);
+        $pedido = $this->pedido_service->getById($id);
+        return response()->json($pedido, 200);
     }
 
     /**

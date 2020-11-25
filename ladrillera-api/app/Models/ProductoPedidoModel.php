@@ -30,4 +30,9 @@ class ProductoPedidoModel extends Model
     protected $hidden = [];
 
     public $timestamps = false;
+
+    public function pedido()
+    {
+        return $this->belongsTo('App\Models\PedidoModel', 'id_pedido');
+    }
 }
