@@ -46,7 +46,7 @@ CREATE TABLE SOLICITUD_CLIENTES (
     id INT(11) NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(250) NOT NULL,
     telefono VARCHAR(150) NOT NULL,
-    creado boolean NOT NULL,
+    creado boolean NOT NULL DEFAULT FALSE,
     
     PRIMARY KEY (id)
 );
