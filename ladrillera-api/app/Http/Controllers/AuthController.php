@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmpleadoModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -72,12 +73,17 @@ class AuthController extends Controller
             $token->expires_at = Carbon::now()->addDay();
         }
         $token->save();
+
+        $empleado = EmpleadoModel::where('id_usuario', $activeUser->id)->firstOrFail();
+        $modules = $empleado->modules()->get();
+
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type'   => 'Bearer',
             'expires_at'   => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
+            'modulos' => $modules,
         ]);
     }
 
