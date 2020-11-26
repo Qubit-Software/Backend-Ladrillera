@@ -59,7 +59,7 @@ Create models
 
 Create controllers
 
-> php artisan make:controller PhotoController --resource --model=Photo
+> php artisan make:controller PhotoController --resource --model=Models\Photo
 
 Crear enlaces simbolicos para el almacenamiento  
 

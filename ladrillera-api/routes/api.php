@@ -33,6 +33,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('notificaciones', 'Notificacion\NotificacionController@notificacion_usuario');
     Route::post('notificaciones', 'Notificacion\NotificacionController@send_notifications');
 
+    // Solicitud cliente
+    Route::apiResource('solicitud_clientes', 'SolicitudCliente\SolicitudClienteController');
+
     // Notificaciones
     Route::apiResource('notificaciones', 'Notificacion\NotificacionController');
 
