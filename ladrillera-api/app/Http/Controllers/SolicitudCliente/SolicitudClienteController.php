@@ -23,9 +23,11 @@ class SolicitudClienteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->solicitud_cliente_service->getAll();
+        $creado_flag = $request->query('creado', false);
+
+        return $this->solicitud_cliente_service->getAll($creado_flag);
     }
 
     /**

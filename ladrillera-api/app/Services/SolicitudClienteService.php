@@ -33,9 +33,9 @@ class SolicitudClienteService
     }
 
 
-    public function getAll()
+    public function getAll($creado_flag)
     {
-        return SolicitudClienteModel::all();
+        return SolicitudClienteModel::all()->where("creado", $creado_flag);
     }
 
     public function getByUniqueColumn($column_name, $column_value)
