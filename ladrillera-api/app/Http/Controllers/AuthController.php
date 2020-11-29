@@ -74,8 +74,8 @@ class AuthController extends Controller
         }
         $token->save();
 
-        $empleado = EmpleadoModel::where('id_usuario', $activeUser->id)->firstOrFail();
-        $modules = $empleado->modules()->get();
+        $empleado = EmpleadoModel::with('modules')->where('id_usuario', $activeUser->id)->firstOrFail();
+        // $modules = $empleado->modules()->get();
 
         return response()->json([
             'access_token' => $tokenResult->accessToken,
@@ -83,7 +83,7 @@ class AuthController extends Controller
             'expires_at'   => Carbon::parse(
                 $tokenResult->token->expires_at
             )->toDateTimeString(),
-            'modulos' => $modules,
+            'empleado' => $empleado,
         ]);
     }
 

@@ -22,11 +22,9 @@ class ModuloModel extends Model
     ];
     public $timestamps = false;
 
-    //
     public function empleados()
     {
         return $this
-            ->belongsToMany('App\Models\EmpleadoModel', 'empleados_modulos', 'id_modulo', 'id_empleado'
-        );
+            ->belongsToMany('App\Models\EmpleadoModel', 'empleados_modulos', 'id_modulo', 'id_empleado');
     }
 }

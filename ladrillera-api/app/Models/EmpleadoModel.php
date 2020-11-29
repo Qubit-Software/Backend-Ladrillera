@@ -37,7 +37,8 @@ class EmpleadoModel extends Model
         "rol",
         "correo",
         "foto",
-        "id_usuario"
+        "id_usuario",
+        "modules"
     ];
 
     public $timestamps = false;
