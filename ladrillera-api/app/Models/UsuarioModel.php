@@ -22,7 +22,11 @@ class UsuarioModel  extends Model
      * @var array
      */
     protected $fillable = [
-        'correo', 'contraseña', 'id_empleado', 'activo', 'auth_user_id'
+        'correo',
+        'contraseña',
+        'id_empleado',
+        'activo',
+        'auth_user_id'
     ];
 
     public $timestamps = false;
@@ -43,4 +47,9 @@ class UsuarioModel  extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function auth_user()
+    {
+        return $this->hasOne('App\User', 'id');
+    }
 }

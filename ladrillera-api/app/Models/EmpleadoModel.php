@@ -99,4 +99,9 @@ class EmpleadoModel extends Model
                 'id_notificacion'
             );
     }
+
+    public function usuario()
+    {
+        return $this->hasOne('App\Models\UsuarioModel', 'id');
+    }
 }

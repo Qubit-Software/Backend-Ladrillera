@@ -16,7 +16,7 @@ CREATE TABLE EMPLEADOS (
     id INT(11) NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(250),
     apellido VARCHAR(250),
-    cedula_ciudadania INT(11) UNIQUE,
+    cedula_ciudadania VARCHAR(11) UNIQUE,
     correo VARCHAR(200),
     genero VARCHAR(20),
     fecha_nacimiento DATE,

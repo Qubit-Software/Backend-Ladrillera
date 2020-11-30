@@ -70,10 +70,41 @@ class EmpleadoService
         return $empleado;
     }
 
-    private function registerEmployeeModules(EmpleadoModel $empleadoRef, $modules)
+
+    public function updateEmpleado(EmpleadoModel $empleado_to_update, EmpleadoRequest $request_data)
     {
-        if (count($modules) > 0 && !is_null($empleadoRef)) {
-            $empleadoRef->modules()->attach($modules);
+        $data_empleado = [
+            "nombre" => $request_data->getNombre(),
+            "apellido" => $request_data->getApellido(),
+            "cedula_ciudadania" => $request_data->getCedulaCiudadania(),
+            "genero" => $request_data->getGenero(),
+            "fecha_nacimiento" => $request_data->getFechaNacimiento(),
+            "rol" => $request_data->getRol(),
+            "correo" => $request_data->getEmail(),
+        ];
+
+        $empleado_to_update->update($data_empleado);
+
+        $modulos = json_decode($request_data->getModulos());
+
+        $empleado_to_update->save();
+        $this->registerEmployeeModules($empleado_to_update, $modulos);
+        $this->setEmployeeImage($request_data->getFoto(), $empleado_to_update);
+        $empleado_to_update->save();
+        return $empleado_to_update;
+    }
+
+    private function getId($module)
+    {
+        return $module->id;
+    }
+
+    private function registerEmployeeModules(EmpleadoModel $empleado_ref, $modules)
+    {
+        if (count($modules) > 0 && !is_null($empleado_ref)) {
+            $existing = array_map(array($this, 'getId'), iterator_to_array($empleado_ref->modules()->get()));
+            $new_ids = array_diff($modules, $existing);
+            $empleado_ref->modules()->attach($new_ids);
         }
     }
 

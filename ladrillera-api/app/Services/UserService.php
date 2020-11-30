@@ -35,4 +35,15 @@ class UserService
         Log::info('A new user is being created');
         return $user;
     }
+
+    public function updateUser($user, $name, $email, $normal_password)
+    {
+
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = bcrypt($normal_password);
+        $user->save();
+        Log::info('A user is being updated');
+        return $user;
+    }
 }

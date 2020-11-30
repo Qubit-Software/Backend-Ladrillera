@@ -3,13 +3,9 @@
 namespace App\Http\Controllers\Empleado;
 
 use App\Exceptions\ValidationException;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Traits\UploadTrait;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\User;
 use App\Models\UsuarioModel;
 use App\Models\EmpleadoModel;
 use App\Services\UserService;
@@ -18,6 +14,7 @@ use App\Services\EmpleadoService;
 
 use App\Http\Schemas\Requests\EmpleadoRequest;
 use App\Services\EmailService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class EmpleadoController extends Controller
@@ -156,27 +153,57 @@ class EmpleadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $rules = [
-            "nombres" => "required|min:1",
-            "apellidos" => "required|min:2|max:100",
-            "cedula_ciudadania" => "required|digits:10",
-            "genero" => "required|min:1",
-            "fecha_nacimiento" => "required|date",
-            "rol" => "required|string",
-            "correo" => "required|string|email|unique:empleados",
-            "contraseña" => "required|string",
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
+        DB::beginTransaction();
+        try {
+            // Validate required parameters to create all the db tables needed for an Employee--------------------------------------------
+            $empleado_request = new EmpleadoRequest();
+            $empleado_request->validateUpdateRequest($request->all(), $id);
 
-        $empleado = EmpleadoModel::find($id);
-        if (is_null($empleado)) {
-            return response()->json(["msg" => $id . " Empleado no encontrado"], 404);
+            $empleado_request = EmpleadoRequest::from_request($request);
+            $empleado = EmpleadoModel::findOrFail($id);
+
+            $usuario = $empleado->usuario;
+            $auth_user = $usuario->auth_user;
+            // Creacion de tablas de apoyo para ese nuevo empleado, la de user para auth y la usuario para 
+            // gestion de datos de los usuarios
+            $new_user = $this->user_service->updateUser(
+                $auth_user,
+                $empleado_request->getNombre(),
+                $empleado_request->getEmail(),
+                $empleado_request->getRandomPassword()
+            );
+
+            $new_usuario = $this->usuario_service->updateUsuario(
+                $usuario,
+                [
+                    "email" => $empleado_request->getEmail(),
+                    "normal_password" => $empleado_request->getRandomPassword(),
+                    "id" => $new_user->id
+                ],
+                $empleado_request->getRandomPassword()
+            );
+
+            $updated_empleado = $this->empleado_service->updateEmpleado(
+                $empleado,
+                $empleado_request
+            );
+
+            $this->email_service->sendConfirmationEmail(
+                $updated_empleado->nombre,
+                $new_usuario->correo,
+                $empleado_request->getRandomPassword()
+            );
+
+            DB::commit();
+            return response()->json($updated_empleado, 200);
+        } catch (ValidationException $ve) {
+            DB::rollback();
+            throw $ve;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Log::error('Error al actualizar empleado ' . $th);
+            throw $th;
         }
-        $empleado->update($request->all());
-        return response()->json($empleado, 201);
     }
 
     /**

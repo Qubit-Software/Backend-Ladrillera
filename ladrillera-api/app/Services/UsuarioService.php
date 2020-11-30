@@ -35,4 +35,16 @@ class UsuarioService
         $usuario->save();
         return $usuario;
     }
+
+    public function updateUsuario(UsuarioModel $usuario, $data, $normal_password)
+    {
+        // Save to UsuarioModel table
+        $usuario->correo = $data["email"];
+        $usuario->contraseña = bcrypt($normal_password);
+        $usuario->auth_user_id = $data["id"];
+
+        Log::info('An usuario is being updated');
+        $usuario->save();
+        return $usuario;
+    }
 }

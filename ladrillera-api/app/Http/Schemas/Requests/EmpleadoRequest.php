@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use App\Exceptions\ValidationException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class EmpleadoRequest
 {
@@ -24,6 +25,7 @@ class EmpleadoRequest
     // Para pasar cuando se cree el usuario
     private $random_password;
     private $id_usuario;
+    private $id_empleado;
 
     /**
      * Instantiate a new DocumentoValidator instance.
@@ -53,6 +55,51 @@ class EmpleadoRequest
         $errors =  $validator->errors();
         if (sizeof($errors) > 0) {
             throw new ValidationException($errors, "Error al validar la peticion de creación de empleado");
+        }
+
+        // Processed rules
+        $data = [
+            'modulo_ids' => json_decode($data['modulo_ids'])
+        ];
+        $rules = [
+            'modulo_ids' => 'array|min:1',
+            'modulo_ids.*' => 'exists:modulos,id|distinct'
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        $errors =  $validator->errors();
+        if (sizeof($errors) > 0) {
+            throw new ValidationException($errors, "Error al validar la peticion de creación de empleado");
+        }
+    }
+
+
+
+    public function validateUpdateRequest($data, $id)
+    {
+        $rules = [
+            "id_empleado" => "required|exists:empleados,id",
+            "nombre" => "required|min:1",
+            "apellido" => "required|min:2|max:100",
+            "cedula_ciudadania" => [
+                "required",
+                "digits:10",
+                Rule::unique("empleados")->ignore($id, "id"),
+            ],
+            "genero" => "required|min:1",
+            "fecha_nacimiento" => "required|date_format:Y-m-d",
+            "rol" => "required|string",
+            'foto' =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            "email" => "required|string|email|unique:users,email," . $id . "id",
+            "modulo_ids" => "required|json"
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        $errors =  $validator->errors();
+        if (sizeof($errors) > 0) {
+            throw new ValidationException($errors, "Error al validar la peticion de actualización de empleado");
         }
 
         // Processed rules
@@ -199,5 +246,20 @@ class EmpleadoRequest
     public function setRandomPassword()
     {
         $this->random_password = Str::random(10);
+    }
+
+    public function setPasswordVal($plain_password)
+    {
+        $this->random_password = $plain_password;
+    }
+
+    public function getIdEmpleado()
+    {
+        return $this->id_empleado;
+    }
+
+    public function setIdEmpleado($id_empleado)
+    {
+        $this->id_empleado = $id_empleado;
     }
 }
