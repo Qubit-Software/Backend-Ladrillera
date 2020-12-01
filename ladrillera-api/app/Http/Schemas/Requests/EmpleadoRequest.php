@@ -23,7 +23,7 @@ class EmpleadoRequest
     private $modulo_ids;
 
     // Para pasar cuando se cree el usuario
-    private $random_password;
+    private $plain_password;
     private $id_usuario;
     private $id_empleado;
 
@@ -238,19 +238,19 @@ class EmpleadoRequest
         $this->id_usuario = $id_usuario;
     }
 
-    public function getRandomPassword()
+    public function getPlainPassword()
     {
-        return $this->random_password;
+        return $this->plain_password;
     }
 
     public function setRandomPassword()
     {
-        $this->random_password = Str::random(10);
+        $this->plain_password = Str::random(10);
     }
 
     public function setPasswordVal($plain_password)
     {
-        $this->random_password = $plain_password;
+        $this->plain_password = $plain_password;
     }
 
     public function getIdEmpleado()

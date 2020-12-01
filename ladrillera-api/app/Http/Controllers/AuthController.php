@@ -45,13 +45,14 @@ class AuthController extends Controller
         $request->validate([
             'email'       => 'required|string|email',
             'password'    => 'required|string',
-            'remember_me' => 'boolean',
+            'remember_me' => 'required|boolean',
         ]);
         // Check for user credentials
-        $credentials = request(['email', 'password']);
-        if (!Auth::attempt($credentials)) {
+        $credentials = $request->only(['email', 'password']);
+        $remember = $request->input('remember_me');
+        if (!Auth::attempt($credentials, $remember)) {
             return response()->json([
-                'msg' => 'Sin autorización, credenciales incorrectos'
+                'msg' => 'Sin autorización, credenciales incorrectos.'
             ], 401);
         }
 
@@ -75,7 +76,6 @@ class AuthController extends Controller
         $token->save();
 
         $empleado = EmpleadoModel::with('modules')->where('id_usuario', $activeUser->id)->firstOrFail();
-        // $modules = $empleado->modules()->get();
 
         return response()->json([
             'access_token' => $tokenResult->accessToken,

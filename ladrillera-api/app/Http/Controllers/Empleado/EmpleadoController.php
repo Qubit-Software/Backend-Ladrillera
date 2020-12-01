@@ -87,12 +87,12 @@ class EmpleadoController extends Controller
             $new_user = $this->user_service->createUser(
                 $empleado_request->getNombre(),
                 $empleado_request->getEmail(),
-                $empleado_request->getRandomPassword()
+                $empleado_request->getPlainPassword()
             );
 
             $new_usuario = $this->usuario_service->createUsuario(
                 $new_user,
-                $empleado_request->getRandomPassword()
+                $empleado_request->getPlainPassword()
             );
 
             $new_empleado = $this->empleado_service->createEmpleado(
@@ -102,7 +102,7 @@ class EmpleadoController extends Controller
             $this->email_service->sendConfirmationEmail(
                 $new_empleado->nombre,
                 $new_usuario->correo,
-                $empleado_request->getRandomPassword()
+                $empleado_request->getPlainPassword()
             );
 
             DB::commit();
@@ -170,17 +170,17 @@ class EmpleadoController extends Controller
                 $auth_user,
                 $empleado_request->getNombre(),
                 $empleado_request->getEmail(),
-                $empleado_request->getRandomPassword()
+                $empleado_request->getPlainPassword()
             );
 
             $new_usuario = $this->usuario_service->updateUsuario(
                 $usuario,
                 [
                     "email" => $empleado_request->getEmail(),
-                    "normal_password" => $empleado_request->getRandomPassword(),
+                    "normal_password" => $empleado_request->getPlainPassword(),
                     "id" => $new_user->id
                 ],
-                $empleado_request->getRandomPassword()
+                $empleado_request->getPlainPassword()
             );
 
             $updated_empleado = $this->empleado_service->updateEmpleado(
@@ -191,7 +191,7 @@ class EmpleadoController extends Controller
             $this->email_service->sendConfirmationEmail(
                 $updated_empleado->nombre,
                 $new_usuario->correo,
-                $empleado_request->getRandomPassword()
+                $empleado_request->getPlainPassword()
             );
 
             DB::commit();
