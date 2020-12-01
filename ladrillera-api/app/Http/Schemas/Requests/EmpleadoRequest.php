@@ -43,7 +43,7 @@ class EmpleadoRequest
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
-            'foto' =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' =>  'required||max:10000|mimes:jpeg,png,jpg,gif',
             "email" => "required|string|email|unique:users",
             "modulo_ids" => "required|json"
         ];
