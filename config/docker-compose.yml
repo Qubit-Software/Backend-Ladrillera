@@ -21,18 +21,6 @@ services:
     networks:
       - backend-l21
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: l21-pgAdmin
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: "l21admin@gmail.com"
-      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020"
-    ports:
-      - 9090:80
-    networks:
-      - backend-l21
-
   app:
     build:
       args:
