@@ -1,0 +1,80 @@
+version: "3"
+services:
+  db:
+    image: mysql
+    container_name: l21-database
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      POSTGRES_DB: postgres
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    expose:
+      - 3306
+    ports:
+      - 3307:3306
+    volumes:
+      # - ./mysql:/etc/mysql/conf.d
+      - ./db/L21_database.sql:/docker-entrypoint-initdb.d/L21_database.sql
+      - ./db/L21_users.sql:/docker-entrypoint-initdb.d/L21_users.sql
+    networks:
+      - backend-l21
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: l21-pgAdmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "l21admin@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "PgAdmin2020"
+    ports:
+      - 9090:80
+    networks:
+      - backend-l21
+
+  app:
+    build:
+      args:
+        user: l21admin
+        uid: 1000
+      context: ../
+      dockerfile: ${PWD:-.}/ladrillera-api/app/Dockerfile
+    image: l21_backend
+    container_name: l21_backend
+    restart: unless-stopped
+    working_dir: /var/www/
+    depends_on:
+      - db
+    volumes:
+      - ./ladrillera-api/:/var/www
+    networks:
+      - backend-l21
+
+  nginx:
+    image: nginx:1.17-alpine
+    container_name: l21-backend-nginx
+    restart: unless-stopped
+    ports:
+      - 8001:80
+    volumes:
+      - ./:/var/www
+      - ./nginx:/etc/nginx/conf.d
+    networks:
+      - backend-l21
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    restart: always
+    depends_on:
+      - nginx
+    ports:
+      - 1025:1025
+      - 8025:8025
+    networks:
+      - backend-l21
+
+networks:
+    backend-l21:
+      driver: bridge
+# https://blog.mailtrap.io/mailhog-explained/
