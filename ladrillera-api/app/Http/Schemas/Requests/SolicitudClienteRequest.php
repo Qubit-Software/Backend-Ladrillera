@@ -42,6 +42,23 @@ class SolicitudClienteRequest
         }
     }
 
+    public function validateUpdate(array $data)
+    {
+        $rules = [
+            'id' => 'required|exists:App\Models\SolicitudClienteModel,id',
+            'nombre' => 'required|min:1',
+            'telefono' =>  'required|max:10',
+            'creado' =>  'required|max:1',
+        ];
+
+        $validator = Validator::make($data, $rules);
+
+        $errors =  $validator->errors();
+        if (sizeof($errors) > 0) {
+            throw new ValidationException($errors, "Error al validar la peticion de creación de pedido");
+        }
+    }
+
     public static function from_request(Request $request)
     {
         $new_instance = new self();

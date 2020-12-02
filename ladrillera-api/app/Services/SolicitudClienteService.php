@@ -56,4 +56,18 @@ class SolicitudClienteService
         $solicitud_cliente->save();
         return $solicitud_cliente;
     }
+
+    public function updateSolicitudCliente(SolicitudClienteModel $solicitud_cliente, SolicitudClienteRequest $solicitud_clienteRequest)
+    {
+        $data_cliente = [
+            "nombre" => $solicitud_clienteRequest->getNombre(),
+            "telefono" => $solicitud_clienteRequest->getTelefono(),
+            "creado" => $solicitud_clienteRequest->getCreado(),
+        ];
+
+        $solicitud_cliente->update($data_cliente);
+
+        $solicitud_cliente->save();
+        return $solicitud_cliente;
+    }
 }

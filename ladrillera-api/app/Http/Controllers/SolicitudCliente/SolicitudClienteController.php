@@ -48,7 +48,6 @@ class SolicitudClienteController extends Controller
      */
     public function store(Request $request)
     {
-        //
         DB::beginTransaction();
         try {
             $solicitud_cliente_request = new SolicitudClienteRequest();
@@ -91,12 +90,30 @@ class SolicitudClienteController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SolicitudClienteModel  $solicitudClienteModel
+     * @param  \App\Models\SolicitudClienteModel  $solicitud_cliente_model
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SolicitudClienteModel $solicitudClienteModel)
+    public function update(Request $request, $id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $solicitud_cliente_update = new SolicitudClienteRequest();
+            $solicitud_cliente_update->validateUpdate($request->all());
+
+            $solicitud_cliente_request = SolicitudClienteRequest::from_request($request);
+            $solicitud_cliente_model = SolicitudClienteModel::findOrFail($id);
+
+            $solicitud_cliente = $this->solicitud_cliente_service->updateSolicitudCliente(
+                $solicitud_cliente_model,
+                $solicitud_cliente_request
+            );
+
+            DB::commit();
+            return response()->json([$solicitud_cliente], 200);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 
     /**

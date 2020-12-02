@@ -33,7 +33,7 @@ class PedidoService
 
     public function createPedido(PedidoRequest $pedidoRequest)
     {
-        $date = date_create_from_format('d/m/Y', $pedidoRequest->getFechaCargue());
+        $date = date_create_from_format('j/n/Y', $pedidoRequest->getFechaCargue());
 
         $default_status = Config::get('constants.default.estatus');
         $status = (is_null($pedidoRequest->getEstatus()) ? $default_status : $pedidoRequest->getEstatus());
