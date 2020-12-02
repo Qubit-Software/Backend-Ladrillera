@@ -26,8 +26,8 @@ class SolicitudClienteController extends Controller
     public function index(Request $request)
     {
         $creado_flag = $request->query('creado', false);
-
-        return $this->solicitud_cliente_service->getAll($creado_flag);
+        $solicitud_clientes = $this->solicitud_cliente_service->getAll($creado_flag);
+        return response()->json($solicitud_clientes, 200);
     }
 
     /**

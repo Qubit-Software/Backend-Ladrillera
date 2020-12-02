@@ -21,21 +21,14 @@ class EmpleadoService
 {
 
     private $files_service;
-    private $user_service;
-    private $usuario_service;
 
 
     /**
      * Instantiate a new DocumentoController instance.
      */
-    public function __construct(
-        FilesService $files_service,
-        UserService $user_service,
-        UsuarioService $usuario_service
-    ) {
+    public function __construct(FilesService $files_service)
+    {
         $this->files_service = $files_service;
-        $this->usuario_service = $usuario_service;
-        $this->user_service = $user_service;
     }
 
 
