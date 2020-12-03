@@ -2,7 +2,7 @@
 return [
     'default' => [
         'from_email' => 'ladrillera21@gmail.com',
-        'estatus' => 'Pendiente Pago',
+        'estatus' => 'Factura no generada',
     ],
     'estatus' => [
         0 => "No existe",
@@ -10,7 +10,8 @@ return [
         2 => "Despacho sin iniciar",
         3 => "Despacho en proceso",
         4 => "Pendiente Pago",
-        5 => "Pedido finalizado"
+        5 => "Pedido finalizado",
+        6 => "Factura no generada"
     ],
     'productos' => [
         "LAD21-MATCO" => [

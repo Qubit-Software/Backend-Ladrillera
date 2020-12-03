@@ -161,6 +161,7 @@ class PedidoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $pedido = PedidoModel::findOrFail($id);
+        $this->pedido_service->delete($pedido);
     }
 }

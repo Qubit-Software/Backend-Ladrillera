@@ -54,4 +54,9 @@ class PedidoService
         $to_update->save();
         return $to_update;
     }
+
+    public function delete(PedidoModel $pedidoModel)
+    {
+        $pedidoModel->delete();
+    }
 }
