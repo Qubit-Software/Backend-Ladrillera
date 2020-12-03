@@ -72,8 +72,7 @@ class EmpleadoService
             "cedula_ciudadania" => $request_data->getCedulaCiudadania(),
             "genero" => $request_data->getGenero(),
             "fecha_nacimiento" => $request_data->getFechaNacimiento(),
-            "rol" => $request_data->getRol(),
-            "correo" => $request_data->getEmail(),
+            "rol" => $request_data->getRol()
         ];
 
         $empleado_to_update->update($data_empleado);

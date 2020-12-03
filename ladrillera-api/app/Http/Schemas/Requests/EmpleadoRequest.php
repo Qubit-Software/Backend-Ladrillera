@@ -91,12 +91,12 @@ class EmpleadoRequest
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
             'foto' =>  'required|mimes:jpeg,png,jpg,gif|max:2048',
-            "email" => [
-                "required",
-                "email",
-                Rule::unique("empleados", "correo")->ignore($id, "id")
-            ],
-            "modulo_ids" => "required|json"
+            "modulo_ids" => "required|json",
+            // "email" => [
+            //     "required",
+            //     "email",
+            //     Rule::unique("empleados", "correo")->ignore($id, "id")
+            // ],
         ];
 
         $validator = Validator::make($data, $rules);
@@ -124,6 +124,22 @@ class EmpleadoRequest
     }
 
     public static function from_request($request)
+    {
+        $new_instance = new self();
+        $new_instance->nombre = $request->nombre;
+        $new_instance->apellido = $request->apellido;
+        $new_instance->cedula_ciudadania = $request->cedula_ciudadania;
+        $new_instance->genero = $request->genero;
+        $new_instance->fecha_nacimiento = $request->fecha_nacimiento;
+        $new_instance->rol = $request->rol;
+        $new_instance->foto = $request->file('foto');
+        $new_instance->email = $request->email;
+        $new_instance->modulo_ids = $request->modulo_ids;
+
+        return $new_instance;
+    }
+
+    public static function from_update_request($request)
     {
         $new_instance = new self();
         $new_instance->nombre = $request->nombre;

@@ -34,6 +34,7 @@ SELECT * FROM `usuarios`;
 
 SELECT * FROM `empleados`;
 
+DELETE  FROM `users` where `id` <> 0; 
 
 SELECT * FROM `productos_pedidos`;
 # Testing data
@@ -45,3 +46,7 @@ INSERT INTO `ladrillera`.`clientes` (`nombre`, `apellido`, `cc_nit`, `tipo_clien
 
 
 SELECT * FROM `solicitud_clientes`;
+
+ALTER TABLE `users` AUTO_INCREMENT = 0;
+ALTER TABLE `usuarios` AUTO_INCREMENT = 0;
+ALTER TABLE `empleados` AUTO_INCREMENT = 0;

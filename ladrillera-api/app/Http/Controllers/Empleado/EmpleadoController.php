@@ -159,40 +159,13 @@ class EmpleadoController extends Controller
             $empleado_request = new EmpleadoRequest();
             $empleado_request->validateUpdateRequest($request->all(), $id);
 
-            $empleado_request = EmpleadoRequest::from_request($request);
+            $empleado_request = EmpleadoRequest::from_update_request($request);
             $empleado = EmpleadoModel::findOrFail($id);
-
-            $usuario = $empleado->usuario;
-            $auth_user = $usuario->auth_user;
-            // Creacion de tablas de apoyo para ese nuevo empleado, la de user para auth y la usuario para 
-            // gestion de datos de los usuarios
-            $new_user = $this->user_service->updateUser(
-                $auth_user,
-                $empleado_request->getNombre(),
-                $empleado_request->getEmail(),
-                $empleado_request->getPlainPassword()
-            );
-
-            $new_usuario = $this->usuario_service->updateUsuario(
-                $usuario,
-                [
-                    "email" => $empleado_request->getEmail(),
-                    "normal_password" => $empleado_request->getPlainPassword(),
-                    "id" => $new_user->id
-                ],
-                $empleado_request->getPlainPassword()
-            );
 
             $updated_empleado = $this->empleado_service->updateEmpleado(
                 $empleado,
                 $empleado_request
             );
-
-            // $this->email_service->sendConfirmationEmail(
-            //     $updated_empleado->nombre,
-            //     $new_usuario->correo,
-            //     $empleado_request->getPlainPassword()
-            // );
 
             DB::commit();
             return response()->json($updated_empleado, 200);
