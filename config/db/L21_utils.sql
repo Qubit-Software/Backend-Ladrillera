@@ -28,6 +28,13 @@ USE `ladrillera`;
 
 SELECT * FROM `pedidos`;
 
+SELECT * FROM `users`;
+
+SELECT * FROM `usuarios`;
+
+SELECT * FROM `empleados`;
+
+
 SELECT * FROM `productos_pedidos`;
 # Testing data
 
@@ -37,3 +44,4 @@ INSERT INTO `ladrillera`.`clientes` (`nombre`, `apellido`, `cc_nit`, `tipo_clien
 
 
 
+SELECT * FROM `solicitud_clientes`;

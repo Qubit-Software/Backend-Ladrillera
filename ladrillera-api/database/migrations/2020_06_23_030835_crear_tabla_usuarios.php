@@ -16,7 +16,11 @@ class CrearTablaUsuarios extends Migration
         Schema::table('USUARIOS', function (Blueprint $table) {
             // Referencia a tabla users id con big int
             $table->unsignedBigInteger('auth_user_id')->nullable(true);
-            $table->foreign('auth_user_id')->references('id')->on('users');
+            $table->foreign('auth_user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
         });
     }
 

@@ -90,8 +90,12 @@ class EmpleadoRequest
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
-            'foto' =>  'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            "email" => "required|string|email|unique:users,email," . $id . "id",
+            'foto' =>  'required|mimes:jpeg,png,jpg,gif|max:2048',
+            "email" => [
+                "required",
+                "email",
+                Rule::unique("empleados", "correo")->ignore($id, "id")
+            ],
             "modulo_ids" => "required|json"
         ];
 
@@ -131,6 +135,7 @@ class EmpleadoRequest
         $new_instance->foto = $request->file('foto');
         $new_instance->email = $request->email;
         $new_instance->modulo_ids = $request->modulo_ids;
+        $new_instance->plain_password = $request->password;
 
         return $new_instance;
     }

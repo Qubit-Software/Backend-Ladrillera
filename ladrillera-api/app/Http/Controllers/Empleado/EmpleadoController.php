@@ -188,11 +188,11 @@ class EmpleadoController extends Controller
                 $empleado_request
             );
 
-            $this->email_service->sendConfirmationEmail(
-                $updated_empleado->nombre,
-                $new_usuario->correo,
-                $empleado_request->getPlainPassword()
-            );
+            // $this->email_service->sendConfirmationEmail(
+            //     $updated_empleado->nombre,
+            //     $new_usuario->correo,
+            //     $empleado_request->getPlainPassword()
+            // );
 
             DB::commit();
             return response()->json($updated_empleado, 200);
