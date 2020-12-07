@@ -68,11 +68,13 @@ class PedidoController extends Controller
 
             $producto_pedido_requests = [];
             foreach ($productos as $indx => $producto) {
-                $producto_pedido_request = ProductoPedidoRequest::from_producto_request(
+                $producto_pedido_request = ProductoPedidoRequest::fromProductoRequest(
                     $producto["codigo_producto"],
                     $producto["unidad_medicion"],
                     $producto["cantidad"],
                     $producto["valor_total"],
+                    $producto["iva"],
+                    $producto["comentarios"],
                 );
                 array_push($producto_pedido_requests, $producto_pedido_request);
             }

@@ -36,7 +36,9 @@ class ProductoPedidoService
             'cantidad' => $productoPedidoRequest->getCantidad(),
             'codigo_producto' => $productoPedidoRequest->getCodigoProducto(),
             'valor_total' => $productoPedidoRequest->getValorTotal(),
-            'unidad_medicion' => $productoPedidoRequest->getUnidadMedicion()
+            'unidad_medicion' => $productoPedidoRequest->getUnidadMedicion(),
+            'iva' => $productoPedidoRequest->getIva(),
+            'comentarios' => $productoPedidoRequest->getComentarios()
         ];
         $new_producto_pedido = new ProductoPedidoModel($data);
         $new_producto_pedido->save();
