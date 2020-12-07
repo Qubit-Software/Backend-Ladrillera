@@ -26,6 +26,13 @@ class PedidoService
         return PedidoModel::with('productos')->get();
     }
 
+    public function getPedidoByStatus(array $statuses)
+    {
+        return PedidoModel::whereIn("estatus", $statuses)->get();
+    }
+
+
+
     public function getById($id)
     {
         return PedidoModel::with('productos')->findOrFail($id);

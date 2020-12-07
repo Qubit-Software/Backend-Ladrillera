@@ -39,6 +39,35 @@ class PedidoController extends Controller
     }
 
     /**
+     * Get list of pedidos for agenda.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function cronograma(Request $request)
+    {
+        $status_ids = array(2, 3);
+        $statuses_text = array();
+        $all_statuses = Config::get("constants.estatus", []);
+        foreach ($status_ids as $idx => $id) {
+            if (array_key_exists($id, $all_statuses)) {
+                array_push($statuses_text, $all_statuses[$id]);
+            }
+        }
+        $pedidos = $this->pedido_service->getPedidoByStatus($statuses_text);
+
+        return response()->json($pedidos, 200);
+    }
+
+    /**
+     * Get list of pedidos for agenda.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function fecha(Request $request, $fecha)
+    {
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
