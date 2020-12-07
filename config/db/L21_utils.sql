@@ -37,6 +37,7 @@ SELECT * FROM `empleados`;
 DELETE  FROM `users` where `id` <> 0; 
 
 SELECT * FROM `productos_pedidos`;
+
 # Testing data
 
 INSERT INTO `ladrillera`.`clientes` (`nombre`, `apellido`, `cc_nit`, `tipo_cliente`, `ciudad`, `correo`, `telefono`) VALUES ('Ana', 'Hernandez', '101', 'Normal', 'Isnos-Huila', 'ana@gmail.com', '3115370810');

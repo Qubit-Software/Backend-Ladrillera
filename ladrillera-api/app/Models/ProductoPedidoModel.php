@@ -19,7 +19,9 @@ class ProductoPedidoModel extends Model
         'cantidad',
         'codigo_producto',
         'valor_total',
-        'unidad_medicion'
+        'unidad_medicion',
+        "comentarios",
+        "iva",
     ];
 
     /**

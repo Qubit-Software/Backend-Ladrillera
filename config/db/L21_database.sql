@@ -69,6 +69,8 @@ CREATE TABLE productos_pedidos (
     codigo_producto TEXT NOT NULL,
     valor_total BIGINT NOT NULL,
     unidad_medicion TEXT NOT NULL,
+    comentarios TEXT NULL,
+    iva BIGINT(10) NOT NULL DEFAULT 0,
 
     PRIMARY KEY (id),
     FOREIGN KEY (id_pedido) REFERENCES PEDIDOS(id) ON DELETE CASCADE ON UPDATE CASCADE
