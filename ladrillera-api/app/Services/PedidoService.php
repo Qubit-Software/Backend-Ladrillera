@@ -26,9 +26,31 @@ class PedidoService
         return PedidoModel::with('productos')->get();
     }
 
-    public function getPedidoByStatus(array $statuses)
+    private function getPedidoByStatus(array $statuses)
     {
-        return PedidoModel::whereIn("estatus", $statuses)->get();
+        return PedidoModel::whereIn("estatus", $statuses)
+            // ->groupBy(DB::raw("DATE_FORMAT(fecha_cargue, '%Y-%m-%d')"))  // Solo agrupa y deja una fila
+            ->orderBy('fecha_cargue', 'DESC')
+            ->get();
+    }
+
+    public function getPedidoByStatusGroupedByDate(array $statuses)
+    {
+        return $this->getPedidoByStatus($statuses)->groupBy('fecha_cargue');
+    }
+
+    public function getPedidoByStatusForDate(array $statuses, $date)
+    {
+        $all_pedidos = $this->getPedidoByStatus($statuses);
+
+        $filtered = [];
+        foreach ($all_pedidos as $indx => $pedido) {
+            if ($pedido->fecha_cargue === $date) {
+                array_push($filtered, $pedido);
+            }
+        }
+
+        return $filtered;
     }
 
 

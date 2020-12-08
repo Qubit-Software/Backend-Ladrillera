@@ -58,7 +58,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         ['prefix' => 'ventas', 'middleware' => ['module:Ventas,Administracion']],
         function () {
             Route::get('pedidos/tipo/cronograma', 'Pedido\PedidoController@cronograma');
-            Route::get('pedidos/tipo/{fecha}', 'Pedido\PedidoController@fecha');
+            Route::get('pedidos/tipo/fecha/{fecha}', 'Pedido\PedidoController@fecha');
             Route::apiResource('pedidos', 'Pedido\PedidoController');
         }
     );

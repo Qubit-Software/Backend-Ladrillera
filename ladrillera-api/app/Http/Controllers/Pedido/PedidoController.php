@@ -8,6 +8,7 @@ use App\Http\Schemas\Requests\ProductoPedidoRequest;
 use App\Models\PedidoModel;
 use App\Services\PedidoService;
 use App\Services\ProductoPedidoService;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
@@ -53,7 +54,7 @@ class PedidoController extends Controller
                 array_push($statuses_text, $all_statuses[$id]);
             }
         }
-        $pedidos = $this->pedido_service->getPedidoByStatus($statuses_text);
+        $pedidos = $this->pedido_service->getPedidoByStatusGroupedByDate($statuses_text);
 
         return response()->json($pedidos, 200);
     }
@@ -65,6 +66,18 @@ class PedidoController extends Controller
      */
     public function fecha(Request $request, $fecha)
     {
+        $status_ids = array(2, 3);
+        $statuses_text = array();
+        $string_date = ($fecha instanceof DateTime) ? $fecha->format('Y-m-d') :  $fecha;
+        $all_statuses = Config::get("constants.estatus", []);
+        foreach ($status_ids as $idx => $id) {
+            if (array_key_exists($id, $all_statuses)) {
+                array_push($statuses_text, $all_statuses[$id]);
+            }
+        }
+        $pedidos = $this->pedido_service->getPedidoByStatusForDate($statuses_text, $string_date);
+
+        return response()->json($pedidos, 200);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
 class PedidoModel extends Model
@@ -44,6 +45,13 @@ class PedidoModel extends Model
         "productos"
     ];
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['fecha_cargue'];
+
     public $timestamps = false;
 
     /**
@@ -52,5 +60,27 @@ class PedidoModel extends Model
     public function productos()
     {
         return $this->hasMany('App\Models\ProductoPedidoModel', 'id_pedido', 'id');
+    }
+
+    /**
+     * Get the user's first name.
+     *
+     * @param  date  $value
+     * @return date
+     */
+    public function getFechaCargueAttribute($value)
+    {
+        return date('Y-m-d', strtotime($value === NULL ? '' : $value));
+    }
+    /**
+     * Get the user's first name.
+     *
+     * @param  date  $value
+     * @return date
+     */
+    public function setFechaCargueAttribute($value)
+    {
+        $string_date = ($value instanceof DateTime) ? $value->format('Y-m-d') :  $value;
+        $this->attributes['fecha_cargue'] = date('Y-m-d', strtotime($string_date === NULL ? '' : $string_date));
     }
 }

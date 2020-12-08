@@ -53,7 +53,7 @@ CREATE TABLE solicitud_clientes (
 CREATE TABLE pedidos (
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_cliente INT(11) NOT NULL,
-    fecha_cargue date,
+    fecha_cargue DATE,
     total BIGINT NOT null,
     estatus VARCHAR(100) NOT NULL,
 
