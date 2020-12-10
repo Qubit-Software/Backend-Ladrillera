@@ -5,11 +5,11 @@ namespace App\Models;
 use DateTime;
 use Illuminate\Database\Eloquent\Model;
 
-class PedidoModel extends Model
+class ActualizacionModel extends Model
 {
     public static $key = 'id';
     protected $primaryKey = 'id';
-    protected $table = 'pedidos';
+    protected $table = 'actualizaciones';
 
 
     /**
@@ -18,10 +18,9 @@ class PedidoModel extends Model
      * @var array
      */
     protected $fillable = [
-        "id_cliente",
-        "fecha_cargue",
-        "total",
-        "estatus",
+        "titulo",
+        "descripcion",
+        "fecha",
     ];
 
     /**
@@ -37,13 +36,9 @@ class PedidoModel extends Model
      * @var array
      */
     protected $visible = [
-        "id",
-        "id_cliente",
-        "fecha_cargue",
-        "total",
-        "estatus",
-        "productos",
-        "cliente"
+        "titulo",
+        "descripcion",
+        "fecha",
     ];
 
     /**
@@ -51,26 +46,9 @@ class PedidoModel extends Model
      *
      * @var array
      */
-    protected $dates = ['fecha_cargue'];
+    protected $dates = ['fecha'];
 
     public $timestamps = false;
-
-    /**
-     * Get the pedidos for the blog post.
-     */
-    public function productos()
-    {
-        return $this->hasMany('App\Models\ProductoPedidoModel', 'id_pedido', 'id');
-    }
-
-    /**
-     * Get the client of the pedido.
-     */
-    public function cliente()
-    {
-        return $this->belongsTo('App\Models\ClienteModel', 'id_cliente');
-    }
-
 
     /**
      * Get the user's first name.
@@ -78,7 +56,7 @@ class PedidoModel extends Model
      * @param  date  $value
      * @return date
      */
-    public function getFechaCargueAttribute($value)
+    public function getFechaAttribute($value)
     {
         return date('Y-m-d', strtotime($value === NULL ? '' : $value));
     }
@@ -88,9 +66,9 @@ class PedidoModel extends Model
      * @param  date  $value
      * @return date
      */
-    public function setFechaCargueAttribute($value)
+    public function setFechaAttribute($value)
     {
         $string_date = ($value instanceof DateTime) ? $value->format('Y-m-d') :  $value;
-        $this->attributes['fecha_cargue'] = date('Y-m-d', strtotime($string_date === NULL ? '' : $string_date));
+        $this->attributes['fecha'] = date('Y-m-d', strtotime($string_date === NULL ? '' : $string_date));
     }
 }

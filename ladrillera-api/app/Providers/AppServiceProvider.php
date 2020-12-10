@@ -10,7 +10,9 @@ use App\Service\UserService;
 use App\Service\UsuarioService;
 use App\Service\ModuloService;
 use App\Service\EmailService;
+use App\Services\ActualizacionService;
 use App\Services\ClienteService;
+use App\Services\EventService;
 use App\Services\PedidoService;
 use App\Services\ProductoPedidoService;
 use App\Services\SolicitudClienteService;
@@ -76,6 +78,14 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(SolicitudClienteService::class, function ($app) {
             return new SolicitudClienteService();
+        });
+
+        $this->app->singleton(ActualizacionService::class, function ($app) {
+            return new ActualizacionService();
+        });
+
+        $this->app->singleton(EventService::class, function ($app) {
+            return new EventService();
         });
     }
 

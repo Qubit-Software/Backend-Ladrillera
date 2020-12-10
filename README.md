@@ -54,7 +54,7 @@ Setup Docker Containers
 
 Create models
 
-> php artisan make:model Models/Documento
+> php artisan make:model Models/DocumentoModel
 
 
 Create controllers
@@ -71,3 +71,10 @@ Crear exceptions
 
 
 ./ngrok authtoken 4AZuo6YDSB7Y9DqM9gki3_7xPchVKGvueoRfyHBaPjo
+
+
+Tinker para los sockets
+
+> php artisan tinker
+> event(new App\Events\EventoNotificacionGeneral('Hola'));
+> event(new App\Events\EventoNotificacionGeneral("Holssssa", "Body ....", "/notificaciones", "Bajo", "Baja"));

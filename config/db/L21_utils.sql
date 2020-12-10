@@ -16,6 +16,10 @@ SELECT * FROM `users`;
 
 SELECT * FROM `usuarios`;
 
+SELECT * FROM `notificaciones`;
+
+SELECT * FROM `notificaciones_empleados`;
+
 SELECT * FROM `empleados`;
 
 SELECT * FROM `modulos`;

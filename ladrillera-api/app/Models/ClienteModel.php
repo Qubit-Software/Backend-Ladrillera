@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ClienteModel extends Model
 {
-
+    public static $key = 'id';
     protected $table = 'clientes';
     protected $primaryKey = 'id';
 
@@ -41,5 +41,13 @@ class ClienteModel extends Model
     public function documents()
     {
         return $this->hasMany('App\Models\DocumentModel');
+    }
+
+    /**
+     * Get the documents for the client.
+     */
+    public function pedidos()
+    {
+        return $this->hasMany('App\Models\PedidoModel');
     }
 }

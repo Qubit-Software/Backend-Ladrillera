@@ -4,15 +4,31 @@ namespace App\Http\Controllers\Notificacion;
 
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Http\Schemas\Requests\NotificacionRequest;
 use Illuminate\Http\Request;
 use Dotenv\Result\Success;
 use App\Models\ModuloModel;
 use App\Models\NotificacionModel;
 use App\Models\NotificacionUsuarioModel;
 use App\Models\UsuarioModel;
+use App\Services\EventService;
+use App\Services\NotificacionService;
 
 class NotificacionController extends Controller
 {
+    private $notificacion_service;
+    private $event_service;
+    /**
+     * Instantiate a new NotificacionController instance.
+     */
+    public function __construct(
+        NotificacionService $notificacion_service,
+        EventService $event_service
+    ) {
+        $this->notificacion_service = $notificacion_service;
+        $this->event_service = $event_service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,25 +59,14 @@ class NotificacionController extends Controller
      */
     public function store(Request $request)
     {
+        $notificacion_request = new NotificacionRequest();
+        $notificacion_request->validateCreateRequest($request->all());
+        $notificacion_request = NotificacionRequest::fromRequest($request);
 
-        $rules = [
-            "user_id" => "required|min:1",
-            "titulo" => "required|string|min:10",
-            "body" => "required|string|min:10",
-            "router" => "required|string",
-            "alcance" => "required|string",
-            "priodirdad" => "required|min:1"
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-        $notificacion = new NotificacionModel($request->except(['user_id']));
-        $notificacion->save();
+        $notificacion = $this->notificacion_service->create($notificacion_request);
+        $this->event_service->createEventoFromNotificacion($notificacion);
 
-        $user = UsuarioModel::find($request->input("user_id"));
-        $user->notificaciones()->attach([$notificacion->id]);
-        return response()->json(['msg' => "Se creara una notifiacion para el usuario " . $user->id], 201);
+        return response()->json($notificacion, 201);
     }
 
     /**

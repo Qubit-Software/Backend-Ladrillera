@@ -24,7 +24,8 @@ class NotificacionModel extends Model
     protected $guarded = [
         'id'
     ];
-    public $timestamps = true;
+
+    public $timestamps = false;
 
     //
     public function empleados()

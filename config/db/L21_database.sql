@@ -137,7 +137,7 @@ CREATE TABLE notificaciones_empleados(
     id INT(11) NOT NULL AUTO_INCREMENT,
     id_empleado INT(11) NOT NULL,
     id_notificacion INT(11) NOT NULL,
-    lectura boolean NOT null,
+    lectura boolean NULL DEFAULT 0,
     PRIMARY key (id),
     FOREIGN KEY (id_empleado) REFERENCES EMPLEADOS(id),
     FOREIGN KEY (id_notificacion) REFERENCES NOTIFICACIONES(id)

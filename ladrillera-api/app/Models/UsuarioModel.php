@@ -48,6 +48,19 @@ class UsuarioModel  extends Model
         'email_verified_at' => 'datetime',
     ];
 
+
+    public function notificaciones()
+    {
+        return $this
+            ->belongsToMany(
+                'App\Models\NotificacionModel',
+                'notificaciones_empleados',
+                'id_empleado',
+                'id_notificacion'
+            );
+    }
+
+
     public function auth_user()
     {
         return $this->hasOne('App\User', 'id');

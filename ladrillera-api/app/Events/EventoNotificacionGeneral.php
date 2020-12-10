@@ -15,15 +15,23 @@ class EventoNotificacionGeneral implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $titulo;
+    public $body;
+    public $router;
+    public $alcance;
+    public $prioridad;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($message)
+    public function __construct($titulo, $body, $router, $alcance, $prioridad)
     {
-        $this->message = $message;
+        $this->titulo = $titulo;
+        $this->router = $router;
+        $this->body = $body;
+        $this->alcance = $alcance;
+        $this->prioridad = $prioridad;
     }
 
     /**

@@ -57,7 +57,7 @@ class PedidoService
 
     public function getById($id)
     {
-        return PedidoModel::with('productos')->findOrFail($id);
+        return PedidoModel::with('productos', 'cliente')->findOrFail($id);
     }
 
     public function createPedido(PedidoRequest $pedidoRequest)

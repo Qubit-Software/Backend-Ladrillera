@@ -38,6 +38,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     // Notificaciones
     Route::apiResource('notificaciones', 'Notificacion\NotificacionController');
+    Route::apiResource('actualizaciones', 'ActualizacionController');
 
     // Administracion
     Route::group(['prefix' => 'administracion', 'middleware' => ['module:Administracion']], function () {
