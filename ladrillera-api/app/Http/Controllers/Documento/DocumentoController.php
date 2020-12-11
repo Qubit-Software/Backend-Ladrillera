@@ -11,6 +11,7 @@ use App\Services\DocumentoService;
 use Illiminate\Support\Str;
 
 use App\Http\Schemas\Requests\DocumentoRequest;
+use Illuminate\Support\Facades\DB;
 
 class DocumentoController extends Controller
 {
@@ -52,22 +53,29 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
-        $documentoRequest = new DocumentoRequest();
-        $documentoRequest->validateRequest($request);
+        DB::beginTransaction();
+        try {
+            $documentoRequest = new DocumentoRequest();
+            $documentoRequest->validateRequest($request);
 
-        $documentoRequest = DocumentoRequest::withData($request->id_cliente, $request->documento, $request->tipo_documento);
-        $client  = ClienteModel::findOrFail($documentoRequest->getIdCliente());
+            $documentoRequest = DocumentoRequest::withData($request->id_cliente, $request->documento, $request->tipo_documento);
+            $client  = ClienteModel::findOrFail($documentoRequest->getIdCliente());
 
-        $document = $this->documento_service->createDocument($client, $documentoRequest);
+            $document = $this->documento_service->createDocument($client, $documentoRequest);
 
-        $jsonResponse = null;
-        if (is_null($document)) {
-            $jsonResponse = response()->json(["msg" => "Ocurrio un error en el servidor al guardar el documento "], 500);
-        } else {
-            $jsonResponse = response()->json(["documento" => $document, "msg" => "Documento creado correctamente"], 500);
+            $jsonResponse = null;
+            if (is_null($document)) {
+                $jsonResponse = response()->json(["msg" => "Ocurrio un error en el servidor al guardar el documento "], 500);
+            } else {
+                $jsonResponse = response()->json(["documento" => $document, "msg" => "Documento creado correctamente"], 200);
+            }
+
+            DB::commit();
+            return $jsonResponse;
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
         }
-
-        return $jsonResponse;
     }
 
     /**

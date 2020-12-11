@@ -52,7 +52,7 @@ class DocumentoRequest
 
     public function getIdCliente()
     {
-        return $this->idCliente;
+        return $this->id_cliente;
     }
 
     public function getDocumento()
@@ -62,6 +62,6 @@ class DocumentoRequest
 
     public function getTipoDocumento()
     {
-        return $this->tipoDocumento;
+        return $this->tipo_documento;
     }
 }

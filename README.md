@@ -25,7 +25,7 @@ Backend Ladillera
     ```
 5.  Ejecutar el siguiente comando dentro del Proyecto Laravel para instalar las dependencias.
     > $ composer install  
-    > $ compose update  
+    > $ compose update
 6.  Correr migraciones para el Proyecto Laravel junto con passport.
     1.  Migrar base de datos
         > php artisan migrate
@@ -39,7 +39,6 @@ Backend Ladillera
 8.  Iniciar servidor de websockets
     > php artisan websockets:serve
 
-
 Para documentacion referirse a espacio de trabajo en POSTMAN.
 
 &nbsp;  
@@ -51,27 +50,23 @@ Para documentacion referirse a espacio de trabajo en POSTMAN.
 Setup Docker Containers
 [Laravel in Docker docs](https://buddy.works/guides/laravel-in-docker?utm_source=medium&utm_medium=post&utm_campaign=laravel-in-docker&utm_content=link)
 
-
 Create models
 
 > php artisan make:model Models/DocumentoModel
-
 
 Create controllers
 
 > php artisan make:controller PhotoController --resource --model=Models\Photo
 
-Crear enlaces simbolicos para el almacenamiento  
+Crear enlaces simbolicos para el almacenamiento
 
->  php artisan storage:link
+> php artisan storage:link
 
 Crear exceptions
 
 > php artisan make:exception ValidationException
 
-
 ./ngrok authtoken 4AZuo6YDSB7Y9DqM9gki3_7xPchVKGvueoRfyHBaPjo
-
 
 Tinker para los sockets
 

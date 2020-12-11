@@ -49,23 +49,35 @@ return [
         ],
 
         'public' => [
-            'driver' => 'local',
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
         'clients' => [
-            'driver' => 'local',
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
             'root' => storage_path('app/clients'),
-            'url' => env('APP_URL') . '/storage/clients',
             'visibility' => 'private',
         ],
 
         'employees' => [
-            'driver' => 'local',
+            'driver' => 's3',
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => env('AWS_URL'),
             'root' => storage_path('app/employees'),
-            'url' => env('APP_URL') . '/storage/employees',
             'visibility' => 'private',
         ],
 
@@ -93,8 +105,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        storage_path('clients_storage') => storage_path('app/clients'),
-        storage_path('employees_storage') => storage_path('app/employees'),
+        public_path('clients_storage') => storage_path('app/clients'),
+        public_path('employees_storage') => storage_path('app/employees'),
     ],
 
 ];
