@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Documento;
 
 use App\Http\Controllers\Controller;
+use App\Http\Schemas\Requests\DescargaDocumentoRequest;
 use Illuminate\Http\Request;
 use App\Models\ClienteModel;
 use App\Models\DocumentoModel;
@@ -12,6 +13,11 @@ use Illiminate\Support\Str;
 
 use App\Http\Schemas\Requests\DocumentoRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
+use Spatie\MediaLibrary\Support\MediaStream;
+use ZipArchive;
 
 class DocumentoController extends Controller
 {
@@ -121,5 +127,21 @@ class DocumentoController extends Controller
     public function destroy(Documento $documento)
     {
         //
+    }
+
+    public function getDocumentsForCliente(Request $request)
+    {
+        try {
+            $descarga_documento_request = new DescargaDocumentoRequest();
+            $descarga_documento_request->validateGetDocumentosRequest($request->all());
+            $descarga_documento_request = $descarga_documento_request->fromGetDocumentosByCCNITRequest($request);
+
+            $documents = $this->documento_service->getDocumentsForDownloadByCCNIT($descarga_documento_request->getCcNitCliente());
+
+            return response()->json($documents, 200);
+        } catch (\Throwable $th) {
+            Log::error('Ocurrio error al obtener los documentos de un cliente ' . $th->getMessage());
+            throw $th;
+        }
     }
 }

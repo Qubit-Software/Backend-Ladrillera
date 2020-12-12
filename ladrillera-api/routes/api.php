@@ -79,6 +79,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Documentos
     Route::group(['prefix' => 'documentos'], function () {
         Route::apiResource('/', 'Documento\DocumentoController');
+        Route::get('/cliente',  'Documento\DocumentoController@getDocumentsForCliente');
     });
 });
 

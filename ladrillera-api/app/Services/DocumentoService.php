@@ -51,4 +51,9 @@ class DocumentoService
         $documento->save();
         return $documento;
     }
+
+    public function getDocumentsForDownloadByCCNIT($cc_nit)
+    {
+        return $this->files_service->getFilesFromClientsDirectory($cc_nit);
+    }
 }
