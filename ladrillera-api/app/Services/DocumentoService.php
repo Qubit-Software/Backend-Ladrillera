@@ -70,7 +70,8 @@ class DocumentoService
 
     public function getClientDocumentPath($filename)
     {
-        return Storage::disk("clients")->path($filename);
+        $path =  Storage::disk("clients")->path($filename);
+        return $path;
     }
 
     public function getClientDocumentTempUrl($filename)

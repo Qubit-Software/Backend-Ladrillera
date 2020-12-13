@@ -62,7 +62,7 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'root' => storage_path('app/clients'),
+            'root' => '/clients',
             'visibility' => 'private',
         ],
 
@@ -73,7 +73,7 @@ return [
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
             'url' => env('AWS_URL'),
-            'root' => storage_path('app/employees'),
+            'root' => '/employees',
             'visibility' => 'private',
         ],
 
@@ -101,8 +101,6 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        storage_path('clients_storage') => storage_path('app/clients'),
-        storage_path('employees_storage') => storage_path('app/employees'),
     ],
 
 ];

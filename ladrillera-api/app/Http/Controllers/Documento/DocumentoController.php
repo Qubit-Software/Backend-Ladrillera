@@ -15,6 +15,7 @@ use App\Models\DocumentoModel;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
 
@@ -99,16 +100,24 @@ class DocumentoController extends Controller
                 $resp_documento = $documento;
                 break;
             case DocumentoRequestType::DOWNLOAD:
-                $filepath = $this->documento_service->getClientDocumentPath($documento->file_path);
-                $resp_documento = response()->download($filepath);
+                $file_path = $this->documento_service->getClientDocumentPath($documento->file_path);
+                $resp_documento = Storage::disk('s3')->download($file_path);
                 break;
             case DocumentoRequestType::LINK:
                 $temp_url = $this->documento_service->getClientDocumentTempUrl($documento->file_path);
                 $resp_documento = response()->json(["temp_url" => $temp_url], 200);
                 break;
             case DocumentoRequestType::DISPLAY:
-                $filepath = $this->documento_service->getClientDocumentPath($documento->file_path);
-                $resp_documento = response()->file($filepath);
+                // Or redirect https://laracasts.com/discuss/channels/laravel/file-response-from-s3
+                $file_path = $this->documento_service->getClientDocumentPath($documento->file_path);
+                $file =  Storage::disk('s3')->get($file_path);
+                $headers = [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$documento->nombre}",
+                    'filename' => $documento->nombre
+                ];
+                $resp_documento = response()->make($file, 200, $headers);
                 break;
             default:
                 $resp_documento = $documento;
@@ -152,7 +161,8 @@ class DocumentoController extends Controller
         }
         $headers = array('Content-Type: application/zip', 'Content-Length: ' . filesize($fileName));
         ob_end_clean();
-        return response()->download(public_path($fileName), $fileName, $headers)->deleteFileAfterSend(true);
+        return response()->download(public_path($fileName), $fileName, $headers);
+        // return response()->download(public_path($fileName), $fileName, $headers)->deleteFileAfterSend(true);
     }
 
     /**
