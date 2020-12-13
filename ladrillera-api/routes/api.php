@@ -77,10 +77,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     // Documentos
-    Route::group(['prefix' => 'documentos'], function () {
-        Route::apiResource('/', 'Documento\DocumentoController');
-        Route::get('/cliente',  'Documento\DocumentoController@getDocumentsForCliente');
-    });
+    Route::get('documentos/clientes/{cliente}',  'Documento\DocumentoController@showForClient');
+    Route::apiResource('documentos', 'Documento\DocumentoController')->only([
+        'index', 'show', "create", "store", "update"
+    ]);
 });
 
 

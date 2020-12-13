@@ -16,7 +16,10 @@ class DocumentoModel extends Model
      * @var array
      */
     protected $fillable = [
-        'file_path', 'nombre', 'tipo_documento', 'id_cliente'
+        'file_path',
+        'nombre',
+        'tipo_documento',
+        'id_cliente'
     ];
 
     public $timestamps = false;

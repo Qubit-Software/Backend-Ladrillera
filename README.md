@@ -73,3 +73,8 @@ Tinker para los sockets
 > php artisan tinker
 > event(new App\Events\EventoNotificacionGeneral('Hola'));
 > event(new App\Events\EventoNotificacionGeneral("Holssssa", "Body ....", "/notificaciones", "Bajo", "Baja"));
+
+
+Guadar archivo con curl desde linux shell  
+
+> .... -o salida.pdf

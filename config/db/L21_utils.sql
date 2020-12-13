@@ -12,6 +12,9 @@ SELECT * FROM `documentos`;
 
 SELECT * FROM `clientes`;
 
+SELECT * FROM `clientes` WHERE `CC_NIT` = '1251235654';
+
+
 SELECT * FROM `users`;
 
 SELECT * FROM `usuarios`;
@@ -57,3 +60,7 @@ SELECT * FROM `solicitud_clientes`;
 ALTER TABLE `users` AUTO_INCREMENT = 0;
 ALTER TABLE `usuarios` AUTO_INCREMENT = 0;
 ALTER TABLE `empleados` AUTO_INCREMENT = 0;
+
+SELECT * FROM `documentos`;
+
+SELECT * FROM `pedidos`;

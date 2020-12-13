@@ -6,18 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Schemas\Requests\DescargaDocumentoRequest;
 use Illuminate\Http\Request;
 use App\Models\ClienteModel;
-use App\Models\DocumentoModel;
 use App\Services\DocumentoService;
 
-use Illiminate\Support\Str;
 
 use App\Http\Schemas\Requests\DocumentoRequest;
+use App\Http\Schemas\Requests\DocumentoRequestType;
+use App\Models\DocumentoModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use Spatie\MediaLibrary\Support\MediaStream;
-use ZipArchive;
 
 class DocumentoController extends Controller
 {
@@ -85,14 +83,50 @@ class DocumentoController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource in storage.
      *
-     * @param  \App\Models\Documento  $documento
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Documento $documento)
+    public function show(Request $request, DocumentoModel $documento)
     {
-        //
+        $type = strtoupper($request->query("type", DocumentoRequestType::INFO));
+        $resp_documento = null;
+        switch ($type) {
+            case DocumentoRequestType::INFO:
+                $resp_documento = $documento;
+                break;
+            case DocumentoRequestType::DOWNLOAD:
+                $filepath = $this->documento_service->getClientDocumentPath($documento->file_path);
+                $resp_documento = response()->download($filepath);
+                break;
+            case DocumentoRequestType::LINK:
+                $temp_url = $this->documento_service->getClientDocumentTempUrl($documento->file_path);
+                $resp_documento = response()->json(["temp_url" => $temp_url], 200);
+                break;
+            case DocumentoRequestType::DISPLAY:
+                $filepath = $this->documento_service->getClientDocumentPath($documento->file_path);
+                $resp_documento = response()->file($filepath);
+                break;
+            default:
+                $resp_documento = $documento;
+                break;
+        }
+        return $resp_documento;
+    }
+
+    /**
+     * Display the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showForClient(Request $request, ClienteModel $cliente)
+    {
+        $documentos = DocumentoModel::where('id_cliente', $cliente->id)->get();
+        return response()->json($documentos, 200);
     }
 
     /**
@@ -101,7 +135,7 @@ class DocumentoController extends Controller
      * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function edit(Documento $documento)
+    public function edit()
     {
         //
     }
@@ -113,7 +147,7 @@ class DocumentoController extends Controller
      * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Documento $documento)
+    public function update(Request $request)
     {
         //
     }
@@ -124,7 +158,7 @@ class DocumentoController extends Controller
      * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Documento $documento)
+    public function destroy()
     {
         //
     }
@@ -134,11 +168,27 @@ class DocumentoController extends Controller
         try {
             $descarga_documento_request = new DescargaDocumentoRequest();
             $descarga_documento_request->validateGetDocumentosRequest($request->all());
-            $descarga_documento_request = $descarga_documento_request->fromGetDocumentosByCCNITRequest($request);
+            $descarga_documento_request = $descarga_documento_request->fromGetFromRequest($request);
 
             $documents = $this->documento_service->getDocumentsForDownloadByCCNIT($descarga_documento_request->getCcNitCliente());
 
             return response()->json($documents, 200);
+        } catch (\Throwable $th) {
+            Log::error('Ocurrio error al obtener los documentos de un cliente ' . $th->getMessage());
+            throw $th;
+        }
+    }
+
+    public function getDocumentForCliente(Request $request)
+    {
+        try {
+            $descarga_documento_request = new DescargaDocumentoRequest();
+            $descarga_documento_request->validateGetDocumentoRequest($request->all());
+            $descarga_documento_request = $descarga_documento_request->fromGetFromRequest($request);
+
+            $document = $this->documento_service->getClientDocumentForDownload($descarga_documento_request->getCcNitCliente());
+
+            return response()->json($document, 200);
         } catch (\Throwable $th) {
             Log::error('Ocurrio error al obtener los documentos de un cliente ' . $th->getMessage());
             throw $th;

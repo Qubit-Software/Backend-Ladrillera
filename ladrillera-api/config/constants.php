@@ -4,6 +4,11 @@ return [
         'from_email' => 'ladrillera21@gmail.com',
         'estatus' => 'Factura no generada',
     ],
+    'DocumentoRequestType' => [
+        'INFO' => 0,
+        'DOWNLOAD' => 1,
+        'LINK' => 2,
+    ],
     'estatus' => [
         0 => "No existe",
         1 => "Despacho finalizado",

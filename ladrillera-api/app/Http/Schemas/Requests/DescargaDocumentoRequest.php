@@ -33,8 +33,23 @@ class DescargaDocumentoRequest
         }
     }
 
+    public function validateGetDocumentoRequest($data)
+    {
+        $rules = [
+            'cc_nit_cliente' => 'required|numeric|exists:App\Models\ClienteModel,cc_nit',
+            'nombre_documento' => 'required|exists:App\Models\DocumentoModel,nombre',
+        ];
 
-    public function fromGetDocumentosByCCNITRequest($request)
+        $validator = Validator::make($data, $rules);
+
+        $errors =  $validator->errors();
+        if (sizeof($errors) > 0) {
+            throw new ValidationException($errors, "Error al validar la peticion de creación de documento");
+        }
+    }
+
+
+    public function fromGetFromRequest($request)
     {
         $new_instance = new self();
         $new_instance->id_cliente = $request->id_cliente ?? null;

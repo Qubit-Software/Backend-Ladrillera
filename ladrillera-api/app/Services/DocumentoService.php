@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\DB;
 
 
 use App\Models\DocumentoModel;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class DocumentoService
 {
-
+    const CLIENT_FILE_TEMP_URL_DURATION = 1440;
     protected $files_service;
 
     /**
@@ -25,8 +27,12 @@ class DocumentoService
 
     public function getAll()
     {
-        $documents = DocumentoModel::all();
-        return response()->json($documents, 200);
+        return DocumentoModel::all();
+    }
+
+    public function getById($id)
+    {
+        return DocumentoModel::findOrFail($id);
     }
 
     public function createDocument($client, DocumentoRequest $documentoRequest)
@@ -55,5 +61,22 @@ class DocumentoService
     public function getDocumentsForDownloadByCCNIT($cc_nit)
     {
         return $this->files_service->getFilesFromClientsDirectory($cc_nit);
+    }
+
+    public function getClientDocumentForDownload($filename)
+    {
+        return $this->files_service->getFileFromClientsDirectory($filename);
+    }
+
+    public function getClientDocumentPath($filename)
+    {
+        return Storage::disk("clients")->path($filename);
+    }
+
+    public function getClientDocumentTempUrl($filename)
+    {
+        $disk = Storage::disk('clients');
+        $temp_url = $disk->temporaryUrl($filename,  Carbon::now()->addMinutes($this::CLIENT_FILE_TEMP_URL_DURATION));
+        return $temp_url;
     }
 }

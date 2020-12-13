@@ -49,12 +49,28 @@ class FilesService
         return $files;
     }
 
+    public function getFileFromDirectory($disk, $filename)
+    {
+        $file = Storage::disk($disk)->get($filename);
+        Log::info('Getting file from ' . $disk . " disk " . " and filename " . $filename);
+
+        return $file;
+    }
+
     public function getFilesFromClientsDirectory($directory)
     {
         $files = $this->getFilesFromDirectory($this::CLIENTS_DIR, $directory);
         Log::info('Getting files from clients' . " disk " . " and directory " . $directory);
 
         return $files;
+    }
+
+    public function getFileFromClientsDirectory($filename)
+    {
+        $file = $this->getFileFromDirectory($this::CLIENTS_DIR, $filename);
+        Log::info('Getting files from clients' . " disk " . " and path " . $filename);
+
+        return $file;
     }
 
     public function hasClientDirectory($cc_nit)

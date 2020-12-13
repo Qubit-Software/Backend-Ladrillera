@@ -26,6 +26,23 @@ class ClienteModel extends Model
         'telefono',
     ];
 
+    /**
+     * The attributes that should be visible in arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'nombre',
+        'apellido',
+        'cc_nit',
+        'tipo_cliente',
+        'ciudad',
+        'correo',
+        'telefono',
+        'productos',
+        'documentos',
+    ];
+
     public $timestamps = false;
     /**
      * The attributes that should be hidden for arrays.
@@ -38,9 +55,9 @@ class ClienteModel extends Model
     /**
      * Get the documents for the client.
      */
-    public function documents()
+    public function documentos()
     {
-        return $this->hasMany('App\Models\DocumentModel');
+        return $this->hasMany('App\Models\DocumentoModel', 'id_cliente', 'id');
     }
 
     /**
@@ -48,6 +65,6 @@ class ClienteModel extends Model
      */
     public function pedidos()
     {
-        return $this->hasMany('App\Models\PedidoModel');
+        return $this->hasMany('App\Models\PedidoModel', 'id_cliente', 'id');
     }
 }
