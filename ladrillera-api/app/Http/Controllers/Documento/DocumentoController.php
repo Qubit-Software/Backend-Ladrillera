@@ -130,6 +130,19 @@ class DocumentoController extends Controller
     }
 
     /**
+     * Downlaods a zip that contains the files for the client.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function showForClientInZip(Request $request, ClienteModel $cliente)
+    {
+        $documentos = DocumentoModel::where('id_cliente', $cliente->id)->get();
+        return response()->json($documentos, 200);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Documento  $documento
