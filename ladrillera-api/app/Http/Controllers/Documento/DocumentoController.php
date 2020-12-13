@@ -16,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use ZipArchive;
 
 class DocumentoController extends Controller
 {
@@ -139,7 +140,19 @@ class DocumentoController extends Controller
     public function showForClientInZip(Request $request, ClienteModel $cliente)
     {
         $documentos = DocumentoModel::where('id_cliente', $cliente->id)->get();
-        return response()->json($documentos, 200);
+        $zip = new ZipArchive;
+        $fileName = $cliente->cc_nit . '.zip';
+        if ($zip->open(public_path($fileName), ZipArchive::CREATE) === TRUE) {
+            foreach ($documentos as $key => $documento) {
+                $file_to_add_path = $this->documento_service->getClientDocumentPath($documento->file_path);
+                $relativeNameInZipFile = basename($documento->nombre);
+                $zip->addFile($file_to_add_path, $relativeNameInZipFile);
+            }
+            $zip->close();
+        }
+        $headers = array('Content-Type: application/zip', 'Content-Length: ' . filesize($fileName));
+        ob_end_clean();
+        return response()->download(public_path($fileName), $fileName, $headers)->deleteFileAfterSend(true);
     }
 
     /**

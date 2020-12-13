@@ -79,9 +79,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Documentos
     Route::get('documentos/clientes/{cliente}',  'Documento\DocumentoController@showForClient');
     Route::get('documentos/clientes/{cliente}/zip',  'Documento\DocumentoController@showForClientInZip');
-    Route::apiResource('documentos', 'Documento\DocumentoController')->only([
-        'index', 'show', "create", "store", "update"
-    ]);
+    Route::apiResource('documentos', 'Documento\DocumentoController');
 });
 
 
