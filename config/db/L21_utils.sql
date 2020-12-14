@@ -10,6 +10,9 @@ USE `ladrillera`;
 
 SELECT * FROM `documentos`;
 
+SELECT * FROM `documentos` where id_cliente=2;
+
+
 SELECT * FROM `clientes`;
 
 SELECT * FROM `clientes` WHERE `CC_NIT` = '1251235654';
@@ -62,5 +65,7 @@ ALTER TABLE `usuarios` AUTO_INCREMENT = 0;
 ALTER TABLE `empleados` AUTO_INCREMENT = 0;
 
 SELECT * FROM `documentos`;
+
+SELECT * FROM `actualizaciones`;
 
 SELECT * FROM `pedidos`;

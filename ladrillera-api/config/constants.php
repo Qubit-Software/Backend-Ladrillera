@@ -3,6 +3,7 @@ return [
     'default' => [
         'from_email' => 'ladrillera21@gmail.com',
         'estatus' => 'Factura no generada',
+        'id_actualizacion' => 1,
     ],
     'DocumentoRequestType' => [
         'INFO' => 0,

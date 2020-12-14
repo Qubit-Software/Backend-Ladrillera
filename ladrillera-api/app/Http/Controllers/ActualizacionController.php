@@ -32,7 +32,8 @@ class ActualizacionController extends Controller
      */
     public function index()
     {
-        //
+        $actualizaciones = $this->actualizacion_service->getAll();
+        return response()->json($actualizaciones, 200);
     }
 
     /**
@@ -62,6 +63,8 @@ class ActualizacionController extends Controller
 
             $actualizacion = $this->actualizacion_service->createActualizacion($actualizacion_request);
             $this->notificacion_service->createEventoParaActualizacion($actualizacion);
+            DB::commit();
+            return response()->json($actualizacion, 200);
         } catch (\Throwable $th) {
             DB::rollback();
             throw $th;
@@ -71,12 +74,12 @@ class ActualizacionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ActualizacionModel  $actualizacionModel
+     * @param  \App\Models\ActualizacionModel  $actualizacione
      * @return \Illuminate\Http\Response
      */
-    public function show(ActualizacionModel $actualizacionModel)
+    public function show(ActualizacionModel $actualizacione)
     {
-        //
+        return response()->json($actualizacione, 200);
     }
 
     /**
@@ -85,21 +88,35 @@ class ActualizacionController extends Controller
      * @param  \App\Models\ActualizacionModel  $actualizacionModel
      * @return \Illuminate\Http\Response
      */
-    public function edit(ActualizacionModel $actualizacionModel)
+    public function edit(ActualizacionModel $actualizacionModel, Request $request)
     {
-        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ActualizacionModel  $actualizacionModel
+     * @param  \App\Models\ActualizacionModel  $actualizacione
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ActualizacionModel $actualizacionModel)
+    public function update(Request $request, ActualizacionModel $actualizacione)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $actualizacion_request = new ActualizacionRequest();
+            $actualizacion_request->validateCreateRequest($request);
+
+            $actualizacion_request = ActualizacionRequest::fromRequest($request);
+
+            $actualizacion = $this->actualizacion_service
+                ->updateActualizacion($actualizacione, $actualizacion_request);
+            $this->notificacion_service->createEventoParaActualizacion($actualizacion);
+            DB::commit();
+            return response()->json($actualizacion, 200);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 
     /**

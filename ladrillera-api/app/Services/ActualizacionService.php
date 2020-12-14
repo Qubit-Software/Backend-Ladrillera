@@ -18,7 +18,7 @@ class ActualizacionService
 
     public function getAll()
     {
-        return ActualizacionModel::getAll();
+        return ActualizacionModel::all();
     }
 
     public function getById($id)
@@ -36,6 +36,20 @@ class ActualizacionService
             "fecha" => $date,
         ];
         $actualizacion = new ActualizacionModel($data);
+        $actualizacion->save();
+        return $actualizacion;
+    }
+
+    public function updateActualizacion(ActualizacionModel $actualizacion, ActualizacionRequest $actualizacionRequest)
+    {
+        $date = date_create_from_format('j/n/Y', $actualizacionRequest->getFecha());
+
+        $data = [
+            "titulo" => $actualizacionRequest->getTitulo(),
+            "descripcion" => $actualizacionRequest->getDescripcion(),
+            "fecha" => $date,
+        ];
+        $actualizacion->update($data);
         $actualizacion->save();
         return $actualizacion;
     }

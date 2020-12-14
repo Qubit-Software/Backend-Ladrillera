@@ -13,7 +13,7 @@ Backend Ladillera
     2.  Probar composer en la terminal
         > $ composer -V
 
-3.  Abrir el PhpMyadmin o Workbench y ejecutar el codigo sql dentro del archivo "database.sql" y "users.sql".
+3.  Abrir el PhpMyadmin o Workbench y ejecutar el codigo sql dentro del archivo "L21_database.sql", "L21_default_data" y "L21_users.sql".
 4.  Re nombrar archivo env.example a .env y en ese archivo .env del proyecto cambiar credenciales de acceso a la base de datos MYSQL por los nuevos.
     ```
     DB_CONNECTION=mysql
