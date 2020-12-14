@@ -71,9 +71,10 @@ Route::group(['middleware' => 'auth:api'], function () {
     });
 
     //  Despacho
-    Route::group(['prefix' => 'despachos', 'middleware' => ['module:Despacho']], function () {
+    Route::group(['prefix' => 'despachos', 'middleware' => ['module:Despacho,Administracion']], function () {
         Route::apiResource('clientes', 'Cliente\ClienteController');
         Route::apiResource('pedidos', 'Pedido\PedidoController');
+        Route::apiResource('fotografias', 'DespachoFotografiaController');
     });
 
     // Documentos

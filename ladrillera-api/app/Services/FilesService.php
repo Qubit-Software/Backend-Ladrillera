@@ -26,6 +26,11 @@ class FilesService
         return $this->saveFile($file, $folder, $name, "clients");
     }
 
+    public function savePedidoFotografia($file, $name, $folder)
+    {
+        return $this->saveFile($file, $folder, $name, "pedidos");
+    }
+
     public function saveEmployeeFile($file, $name, $folder)
     {
         // Upload image

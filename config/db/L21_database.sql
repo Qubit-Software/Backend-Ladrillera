@@ -77,7 +77,7 @@ CREATE TABLE productos_pedidos (
 );
 
 
-CREATE TABLE despachos_fotografia(
+CREATE TABLE despachos_fotografias(
     id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     id_pedido INT(11) NOT NULL,
     foto VARCHAR(350),

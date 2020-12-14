@@ -12,6 +12,7 @@ use App\Service\ModuloService;
 use App\Service\EmailService;
 use App\Services\ActualizacionService;
 use App\Services\ClienteService;
+use App\Services\DespachoFotografiaService;
 use App\Services\EventService;
 use App\Services\PedidoService;
 use App\Services\ProductoPedidoService;
@@ -86,6 +87,10 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(EventService::class, function ($app) {
             return new EventService();
+        });
+
+        $this->app->singleton(DespachoFotografiaService::class, function ($app) {
+            return new DespachoFotografiaService($app['App\Services\FilesService']);
         });
     }
 

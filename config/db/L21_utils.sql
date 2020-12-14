@@ -69,3 +69,6 @@ SELECT * FROM `documentos`;
 SELECT * FROM `actualizaciones`;
 
 SELECT * FROM `pedidos`;
+
+SELECT * FROM `despachos_fotografias`;
+
