@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Empleado;
 
 use App\Exceptions\ValidationException;
 use App\Http\Controllers\Controller;
+use App\Http\Schemas\Requests\DocumentoRequestType;
 use App\Traits\UploadTrait;
 use Illuminate\Support\Facades\DB;
 use App\Models\UsuarioModel;
@@ -124,13 +125,24 @@ class EmpleadoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, EmpleadoModel $empleado)
     {
-        $empleado = EmpleadoModel::find($id);
-        if (is_null($empleado)) {
-            return response()->json(['message' => "No se encontro el Empleado"]);
+        $type = strtoupper($request->query("type", DocumentoRequestType::INFO));
+        $resp_empleado = null;
+        switch ($type) {
+            case DocumentoRequestType::INFO:
+                $resp_empleado = $empleado;
+                break;
+            case DocumentoRequestType::LINK:
+                $temp_url = $this->empleado_service->getFotoTempUrl($empleado->foto);
+                $empleado->foto = $temp_url;
+                $resp_empleado = response()->json($empleado, 200);
+                break;
+            default:
+                $resp_empleado = $empleado;
+                break;
         }
-        return response()->json($empleado, 200);
+        return $resp_empleado;
     }
 
     /**

@@ -67,7 +67,7 @@ class DespachoFotografiaService
 
     public function getFotoForDownload($filename)
     {
-        return $this->files_service->getFileFromClientsDirectory($filename);
+        return $this->files_service->getFotoFromPedidosDirectory($filename);
     }
 
     public function getFotoPath($filename)

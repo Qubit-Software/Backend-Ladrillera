@@ -62,7 +62,7 @@ class ActualizacionController extends Controller
             $actualizacion_request = ActualizacionRequest::fromRequest($request);
 
             $actualizacion = $this->actualizacion_service->createActualizacion($actualizacion_request);
-            $this->notificacion_service->createEventoParaActualizacion($actualizacion);
+            // $this->notificacion_service->createEventoParaActualizacion($actualizacion);
             DB::commit();
             return response()->json($actualizacion, 200);
         } catch (\Throwable $th) {
@@ -110,7 +110,7 @@ class ActualizacionController extends Controller
 
             $actualizacion = $this->actualizacion_service
                 ->updateActualizacion($actualizacione, $actualizacion_request);
-            $this->notificacion_service->createEventoParaActualizacion($actualizacion);
+            // $this->notificacion_service->createEventoParaActualizacion($actualizacion);
             DB::commit();
             return response()->json($actualizacion, 200);
         } catch (\Throwable $th) {

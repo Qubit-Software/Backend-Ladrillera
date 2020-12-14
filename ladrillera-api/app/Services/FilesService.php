@@ -79,6 +79,14 @@ class FilesService
         return $file;
     }
 
+    public function getFileFromEmployeesDirectory($filename)
+    {
+        $file = $this->getFileFromDirectory($this::EMPLOYEES_DIR, $filename);
+        Log::info('Getting files from clients' . " disk " . " and path " . $filename);
+
+        return $file;
+    }
+
     public function getFotoFromPedidosDirectory($filename)
     {
         $file = $this->getFileFromDirectory($this::PEDIDOS_DIR, $filename);

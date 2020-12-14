@@ -14,13 +14,16 @@ use App\Services\UserService;
 
 use App\Http\Schemas\Requests\EmpleadoRequest;
 use App\Models\UsuarioModel;
+use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class EmpleadoService
 {
 
     private $files_service;
+    const EMPLOYEE_FOTO_TEMP_URL_DURATION = 1440;
 
 
     /**
@@ -110,5 +113,32 @@ class EmpleadoService
         // Make a file path where image will be stored [ folder path + file name + file extension]
         $file_name = $name;
         $empleado->foto = $this->files_service->saveEmployeeFile($foto, $file_name, $folder);
+    }
+
+    public function getFotoForDownload($filename)
+    {
+        return $this->files_service->getFileFromEmployeesDirectory($filename);
+    }
+
+    public function getFotoPath($filename)
+    {
+        $path =  Storage::disk($this->files_service::EMPLOYEES_DIR)->path($filename);
+        return $path;
+    }
+
+    public function getFotoTempUrl($filename)
+    {
+        $disk = Storage::disk($this->files_service::EMPLOYEES_DIR);
+        if ($this->hasFoto($filename)) {
+            $temp_url = $disk->temporaryUrl($filename,  Carbon::now()->addMinutes($this::EMPLOYEE_FOTO_TEMP_URL_DURATION));
+        } else {
+            $temp_url = null;
+        }
+        return $temp_url;
+    }
+
+    public function hasFoto($filename)
+    {
+        return  Storage::disk($this->files_service::EMPLOYEES_DIR)->exists($filename);
     }
 }
