@@ -19,11 +19,13 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 use ZipArchive;
 
 class DocumentoController extends Controller
 {
     protected $documento_service;
+    private $mime_type_detector;
 
     /**
      * Instantiate a new DocumentoController instance.
@@ -31,6 +33,7 @@ class DocumentoController extends Controller
     public function __construct(DocumentoService $documento_service)
     {
         $this->documento_service = $documento_service;
+        $this->mime_type_detector = new FinfoMimeTypeDetector();
     }
 
     /**
@@ -113,8 +116,9 @@ class DocumentoController extends Controller
                 // Or redirect https://laracasts.com/discuss/channels/laravel/file-response-from-s3
                 $file_path = $this->documento_service->getClientDocumentPath($documento->file_path);
                 $file =  Storage::disk('s3')->get($file_path);
+                $mime_type = $this->mime_type_detector->detectMimeTypeFromPath($file_path);
                 $headers = [
-                    'Content-Type' => 'application/pdf',
+                    'Content-Type' => $mime_type,
                     'Content-Description' => 'File Transfer',
                     'Content-Disposition' => "attachment; filename={$documento->nombre}",
                     'filename' => $documento->nombre
@@ -162,7 +166,10 @@ class DocumentoController extends Controller
         }
         $zip->getAdapter()->getArchive()->close();
 
-        $headers = array('Content-Type: application/zip', 'Content-Length: ' . filesize($fileName));
+        $headers = array(
+            'Content-Type: application/zip',
+            'Content-Length: ' . filesize($fileName)
+        );
         ob_end_clean();
         return response()->download(public_path($fileName), $fileName, $headers);
         // return response()->download(public_path($fileName), $fileName, $headers)->deleteFileAfterSend(true);
