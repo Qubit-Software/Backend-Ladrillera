@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 
 class DespachoFotografiaService
 {
+    const CLIENT_FOTO_TEMP_URL_DURATION = 1440;
     protected $files_service;
 
     /**
@@ -61,5 +62,24 @@ class DespachoFotografiaService
     public function getById($id)
     {
         return DespachoFotografiaModel::findOrFail($id);
+    }
+
+
+    public function getFotoForDownload($filename)
+    {
+        return $this->files_service->getFileFromClientsDirectory($filename);
+    }
+
+    public function getFotoPath($filename)
+    {
+        $path =  Storage::disk("pedidos")->path($filename);
+        return $path;
+    }
+
+    public function getFotoTempUrl($filename)
+    {
+        $disk = Storage::disk('pedidos');
+        $temp_url = $disk->temporaryUrl($filename,  Carbon::now()->addMinutes($this::CLIENT_FOTO_TEMP_URL_DURATION));
+        return $temp_url;
     }
 }

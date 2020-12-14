@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Schemas\Requests\DespachoFotografiaRequest;
+use App\Http\Schemas\Requests\DocumentoRequestType;
 use App\Models\DespachoFotografiaModel;
 use App\Models\PedidoModel;
 use App\Services\DespachoFotografiaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DespachoFotografiaController extends Controller
 {
@@ -68,12 +70,43 @@ class DespachoFotografiaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\DespachoFotografiaModel  $despachoFotografiaModel
+     * @param  \App\Models\DespachoFotografiaModel  $fotografia
      * @return \Illuminate\Http\Response
      */
-    public function show(DespachoFotografiaModel $despachoFotografiaModel)
+    public function show(Request $request, DespachoFotografiaModel $fotografia)
     {
-        //
+        $type = strtoupper($request->query("type", DocumentoRequestType::INFO));
+        $resp_despacho_foto = null;
+        switch ($type) {
+            case DocumentoRequestType::INFO:
+                $resp_despacho_foto = $fotografia;
+                break;
+            case DocumentoRequestType::DOWNLOAD:
+                $file_path = $this->despacho_foto_service->getFotoPath($fotografia->foto);
+                $resp_despacho_foto = Storage::disk('s3')->download($file_path);
+                break;
+            case DocumentoRequestType::LINK:
+                $temp_url = $this->despacho_foto_service->getFotoTempUrl($fotografia->foto);
+                $resp_despacho_foto = response()->json(["temp_url" => $temp_url], 200);
+                break;
+            case DocumentoRequestType::DISPLAY:
+                // Or redirect https://laracasts.com/discuss/channels/laravel/file-response-from-s3
+                $file_path = $this->despacho_foto_service->getFotoPath($fotografia->foto);
+                $file =  Storage::disk('s3')->get($file_path);
+                $fotoname = basename($fotografia->foto);
+                $headers = [
+                    'Content-Type' => 'image/jpeg',
+                    'Content-Description' => 'File Transfer',
+                    'Content-Disposition' => "attachment; filename={$fotoname}",
+                    'filename' => $fotoname
+                ];
+                $resp_despacho_foto = response()->make($file, 200, $headers);
+                break;
+            default:
+                $resp_despacho_foto = $fotografia;
+                break;
+        }
+        return $resp_despacho_foto;
     }
 
     /**

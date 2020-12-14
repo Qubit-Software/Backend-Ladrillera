@@ -11,6 +11,7 @@ class FilesService
 {
     public const CLIENTS_DIR = "clients";
     public const EMPLOYEES_DIR = "employees";
+    public const PEDIDOS_DIR = "pedidos";
 
     use UploadTrait;
 
@@ -75,6 +76,13 @@ class FilesService
         $file = $this->getFileFromDirectory($this::CLIENTS_DIR, $filename);
         Log::info('Getting files from clients' . " disk " . " and path " . $filename);
 
+        return $file;
+    }
+
+    public function getFotoFromPedidosDirectory($filename)
+    {
+        $file = $this->getFileFromDirectory($this::PEDIDOS_DIR, $filename);
+        Log::info('Getting files from pedidos ' . " disk " . " and path " . $filename);
         return $file;
     }
 
