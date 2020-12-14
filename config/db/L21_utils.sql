@@ -72,3 +72,4 @@ SELECT * FROM `pedidos`;
 
 SELECT * FROM `despachos_fotografias`;
 
+# Cuando se elimina un empleado se deben eliminar sus relaciones con las demas tablas

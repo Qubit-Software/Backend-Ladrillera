@@ -108,9 +108,7 @@ class EmpleadoService
         // Define folder path under storage/app/public/uploads/images
         $folder = $empleado->cedula_ciudadania;
         // Make a file path where image will be stored [ folder path + file name + file extension]
-        $file_name = $name . '.' . $foto->getClientOriginalExtension();
-        $empleado->foto = $file_name;
-        // Upload foto
-        return $this->files_service->saveEmployeeFile($foto, $file_name, $folder);
+        $file_name = $name;
+        $empleado->foto = $this->files_service->saveEmployeeFile($foto, $file_name, $folder);
     }
 }
