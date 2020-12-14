@@ -10,15 +10,17 @@ use App\Services\DespachoFotografiaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use League\MimeTypeDetection\FinfoMimeTypeDetector;
 
 class DespachoFotografiaController extends Controller
 {
     private $despacho_foto_service;
-
+    private $mime_type_detector;
 
     public function __construct(DespachoFotografiaService $despacho_foto_service)
     {
         $this->despacho_foto_service = $despacho_foto_service;
+        $this->mime_type_detector = new FinfoMimeTypeDetector();
     }
 
     /**
@@ -94,8 +96,9 @@ class DespachoFotografiaController extends Controller
                 $file_path = $this->despacho_foto_service->getFotoPath($fotografia->foto);
                 $file =  Storage::disk('s3')->get($file_path);
                 $fotoname = basename($fotografia->foto);
+                $mime_type = $this->mime_type_detector->detectMimeTypeFromPath($file_path);
                 $headers = [
-                    'Content-Type' => 'image/jpeg',
+                    'Content-Type' => $mime_type,
                     'Content-Description' => 'File Transfer',
                     'Content-Disposition' => "attachment; filename={$fotoname}",
                     'filename' => $fotoname
