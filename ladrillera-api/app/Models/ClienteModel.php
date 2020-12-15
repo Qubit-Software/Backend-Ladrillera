@@ -32,6 +32,7 @@ class ClienteModel extends Model
      * @var array
      */
     protected $visible = [
+        'id',
         'nombre',
         'apellido',
         'cc_nit',

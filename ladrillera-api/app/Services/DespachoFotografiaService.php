@@ -31,7 +31,7 @@ class DespachoFotografiaService
 
     public function createDespachoFotofrafia(DespachoFotografiaRequest $despachoFotografiaRequest, PedidoModel $pedido_model)
     {
-        $file_name = Str::upper(strval($despachoFotografiaRequest->getFoto()->getClientOriginalName()));
+        $file_name = Str::upper(pathinfo($despachoFotografiaRequest->getFoto()->getClientOriginalName())["filename"]);
         $file_name = str_replace(" ", "", $file_name);
 
         $folder = strval($pedido_model->id);

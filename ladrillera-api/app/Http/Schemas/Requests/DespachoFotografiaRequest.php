@@ -23,7 +23,7 @@ class DespachoFotografiaRequest
     {
         $rules = [
             'id_pedido' => 'required|exists:App\Models\PedidoModel,id',
-            'foto' => 'required|max:10000|mimes:png,jpeg,jpg',
+            'foto' =>  'required|mimes:jpeg,png,jpg,gif,tiff,psd,pdf|max:2048',
         ];
 
         $validator = Validator::make($data, $rules);

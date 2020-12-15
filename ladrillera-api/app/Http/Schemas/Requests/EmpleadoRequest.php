@@ -90,7 +90,7 @@ class EmpleadoRequest
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
-            'foto' =>  'required|mimes:jpeg,png,jpg,gif|max:2048',
+            'foto' =>  'required|mimes:jpeg,png,jpg,gif,tiff,psd,pdf|max:2048',
             "modulo_ids" => "required|json",
             // "email" => [
             //     "required",
