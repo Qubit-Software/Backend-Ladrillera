@@ -36,6 +36,34 @@ class DespachoFotografiaController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     * @param  \App\Models\PedidoModel  $pedido
+     * @return \Illuminate\Http\Response
+     */
+    public function forPedido(Request $request, PedidoModel $pedido)
+    {
+        $type = strtoupper($request->query("type", DocumentoRequestType::INFO));
+
+        $fotos_response = null;
+        $despacho_fotos = $this->despacho_foto_service->getByIdPedido($pedido->id);
+        switch ($type) {
+            case DocumentoRequestType::LINK:
+                foreach ($despacho_fotos as $indx => $despacho_foto) {
+                    // $despacho_foto
+                    $temp_url = $this->despacho_foto_service->getFotoTempUrl($despacho_foto->foto);
+                    $despacho_foto->foto = $temp_url;
+                }
+
+                $fotos_response = $despacho_fotos;
+                break;
+            default:
+                $fotos_response = $despacho_fotos;
+                break;
+        }
+        return response()->json($fotos_response, 200);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -111,6 +139,8 @@ class DespachoFotografiaController extends Controller
         }
         return $resp_despacho_foto;
     }
+
+
 
     /**
      * Show the form for editing the specified resource.

@@ -75,6 +75,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         Route::apiResource('clientes', 'Cliente\ClienteController');
         Route::apiResource('pedidos', 'Pedido\PedidoController');
         Route::apiResource('fotografias', 'DespachoFotografiaController');
+        Route::get('fotografias/pedidos/{pedido}', 'DespachoFotografiaController@forPedido');
     });
 
     // Documentos

@@ -64,6 +64,11 @@ class DespachoFotografiaService
         return DespachoFotografiaModel::findOrFail($id);
     }
 
+    public function getByIdPedido($id_pedido)
+    {
+        return DespachoFotografiaModel::where('id_pedido', $id_pedido)->get();
+    }
+
 
     public function getFotoForDownload($filename)
     {
