@@ -120,7 +120,7 @@ class ClienteController extends Controller
             $client_to_update = ClienteModel::findOrFail($id);
 
             $cliente_request = new ClienteRequest();
-            $cliente_request->validateUpdateRequest($request);
+            $cliente_request->validateUpdateRequest($request, $client_to_update->id);
             $cliente_request = ClienteRequest::from_request($request);
 
 

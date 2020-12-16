@@ -32,7 +32,7 @@ CREATE TABLE clientes (
     id_empleado_asociado INT(11) NULL,
     nombre VARCHAR(250),
     apellido VARCHAR(250),
-    cc_nit INT(15) UNIQUE,
+    cc_nit VARCHAR(15) UNIQUE,
     tipo_cliente VARCHAR(100),
     ciudad VARCHAR(150),
     correo VARCHAR(150),

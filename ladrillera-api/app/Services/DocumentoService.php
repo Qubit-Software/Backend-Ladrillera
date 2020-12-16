@@ -37,13 +37,15 @@ class DocumentoService
 
     public function createDocument($client, DocumentoRequest $documentoRequest)
     {
-        $client_name =  Str::title($client->apellido) . Str::title($client->nombre);
-        $file_name = $client_name . Str::title($documentoRequest->getTipoDocumento());
-        $file_name = str_replace(" ", "", $file_name);
+
 
         $folder = $client->cc_nit;
         $documento = $documentoRequest->getDocumento();
         $extension = $documento->getClientOriginalExtension();
+
+        $file_name = pathinfo($documento->getClientOriginalName())["filename"] . '_' . now()->timestamp;
+        $file_name = str_replace(" ", "", $file_name);
+
 
         $saved_file_path = $this->files_service->saveClientFile($documento, $file_name, $folder);
 

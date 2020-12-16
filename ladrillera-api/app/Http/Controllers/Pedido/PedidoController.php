@@ -46,7 +46,7 @@ class PedidoController extends Controller
      */
     public function cronograma(Request $request)
     {
-        $status_ids = array(2, 3);
+        $status_ids = array(0, 2, 3, 4, 6);
         $statuses_text = array();
         $all_statuses = Config::get("constants.estatus", []);
         foreach ($status_ids as $idx => $id) {
@@ -66,7 +66,8 @@ class PedidoController extends Controller
      */
     public function fecha(Request $request, $fecha)
     {
-        $status_ids = array(2, 3);
+        $status_ids = array(0, 2, 3, 4, 6);
+
         $statuses_text = array();
         $string_date = ($fecha instanceof DateTime) ? $fecha->format('Y-m-d') :  $fecha;
         $all_statuses = Config::get("constants.estatus", []);

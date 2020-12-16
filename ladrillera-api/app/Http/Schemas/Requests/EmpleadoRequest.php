@@ -84,7 +84,6 @@ class EmpleadoRequest
             "apellido" => "required|min:2|max:100",
             "cedula_ciudadania" => [
                 "required",
-                "digits:10",
                 Rule::unique("empleados")->ignore($id, "id"),
             ],
             "genero" => "required|min:1",

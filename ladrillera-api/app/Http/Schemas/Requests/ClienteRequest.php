@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Exceptions\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class ClienteRequest
 {
@@ -35,7 +36,7 @@ class ClienteRequest
             'id_empleado_asociado' => 'sometimes|exists:empleados,id',
             'nombre' => 'required|min:1',
             'apellido' => 'required|min:2|max:100',
-            'cc_nit' => 'required|digits:10|unique:clientes',
+            'cc_nit' => 'required|string|unique:clientes',
             'tipo_cliente' => 'required',
             'ciudad' => 'required|string',
             'correo' => 'required|string|email|unique:clientes',
@@ -52,17 +53,25 @@ class ClienteRequest
         }
     }
 
-    public function validateUpdateRequest($request)
+    public function validateUpdateRequest($request, $cliend_id)
     {
         $rules = [
             'id_empleado_asociado' => 'sometimes|exists:empleados,id',
             'nombre' => 'required|min:1',
             'apellido' => 'required|min:2|max:100',
-            'cc_nit' => 'required|digits:10',
+            'cc_nit' => [
+                'required',
+                'string',
+                Rule::unique("clientes")->ignore($cliend_id, "id"),
+            ],
             'tipo_cliente' => 'required',
             'ciudad' => 'required|string',
             'correo' => 'required|string|email',
-            'telefono' =>  'required|max:10'
+            'telefono' =>  [
+                'required',
+                'string',
+                Rule::unique("clientes", "telefono")->ignore($cliend_id, "id"),
+            ],
         ];
 
         $data = $request->all();
