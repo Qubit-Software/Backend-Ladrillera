@@ -39,7 +39,7 @@ class EmpleadoRequest
         $rules = [
             "nombre" => "required|min:1",
             "apellido" => "required|min:2|max:100",
-            "cedula_ciudadania" => "required|numeric|unique:empleados",
+            "cedula_ciudadania" => "required|numeric|digits_between:6,20|unique:empleados",
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
@@ -84,6 +84,7 @@ class EmpleadoRequest
             "apellido" => "required|min:2|max:100",
             "cedula_ciudadania" => [
                 "required",
+                'digits_between:6,20',
                 Rule::unique("empleados")->ignore($id, "id"),
             ],
             "genero" => "required|min:1",
