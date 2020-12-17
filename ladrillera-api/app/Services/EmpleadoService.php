@@ -84,7 +84,6 @@ class EmpleadoService
 
         $empleado_to_update->save();
         $this->registerEmployeeModules($empleado_to_update, $modulos);
-        $this->setEmployeeImage($request_data->getFoto(), $empleado_to_update);
         $empleado_to_update->save();
         return $empleado_to_update;
     }

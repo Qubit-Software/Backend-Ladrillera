@@ -65,7 +65,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     );
 
     //  Contabilidad
-    Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:Contabilidad']], function () {
+    Route::group(['prefix' => 'contabilidad', 'middleware' => ['module:Contabilidad,Administracion']], function () {
         Route::apiResource('clientes', 'Cliente\ClienteController');
         Route::apiResource('pedidos', 'Pedido\PedidoController');
     });

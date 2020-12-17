@@ -39,7 +39,7 @@ class EmpleadoRequest
         $rules = [
             "nombre" => "required|min:1",
             "apellido" => "required|min:2|max:100",
-            "cedula_ciudadania" => "required|digits:10|unique:empleados",
+            "cedula_ciudadania" => "required|numeric|unique:empleados",
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
@@ -89,7 +89,7 @@ class EmpleadoRequest
             "genero" => "required|min:1",
             "fecha_nacimiento" => "required|date_format:Y-m-d",
             "rol" => "required|string",
-            'foto' =>  'required|mimes:jpeg,png,jpg,gif,tiff,psd,pdf|max:2048',
+            'foto' =>  'sometimes|mimes:jpeg,png,jpg,gif,tiff,psd,pdf|max:2048',
             "modulo_ids" => "required|json",
             // "email" => [
             //     "required",
