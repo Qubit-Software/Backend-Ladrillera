@@ -43,7 +43,7 @@ class PedidoModel extends Model
         "total",
         "estatus",
         "productos",
-        "cliente"
+        "cliente",
     ];
 
     /**

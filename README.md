@@ -1,4 +1,4 @@
-# Backend-Ladrillera
+1# Backend-Ladrillera
 
 Backend Ladillera
 
@@ -30,7 +30,7 @@ Backend Ladillera
     1.  Migrar base de datos
         > php artisan migrate
     2.  Generar nuevas keys para passport con este flag si da error "--force"
-        > php artisan passport:install  
+        > php artisan passport:install  --force
         > php artisan key:generate
     3.  Llenar base de datos con datos de admin y estaticos
         > php artisan db:seed

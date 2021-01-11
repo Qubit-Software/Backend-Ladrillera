@@ -23,12 +23,13 @@ class PedidoService
 
     public function getAll()
     {
-        return PedidoModel::with('productos')->get();
+        return PedidoModel::with('productos', 'cliente', 'cliente.empleado_asociado')->get();
     }
 
     private function getPedidoByStatus(array $statuses)
     {
         return PedidoModel::whereIn("estatus", $statuses)
+            ->with('productos', 'cliente', 'cliente.empleado_asociado')
             // ->groupBy(DB::raw("DATE_FORMAT(fecha_cargue, '%Y-%m-%d')"))  // Solo agrupa y deja una fila
             ->orderBy('fecha_cargue', 'DESC')
             ->get();
@@ -57,7 +58,7 @@ class PedidoService
 
     public function getById($id)
     {
-        return PedidoModel::with('productos', 'cliente')->findOrFail($id);
+        return PedidoModel::with('productos', 'cliente', 'cliente.empleado_asociado')->findOrFail($id);
     }
 
     public function createPedido(PedidoRequest $pedidoRequest)

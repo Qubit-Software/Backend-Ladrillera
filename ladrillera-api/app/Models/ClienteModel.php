@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ClienteModel extends Model
 {
@@ -42,6 +43,7 @@ class ClienteModel extends Model
         'telefono',
         'productos',
         'documentos',
+        'empleado_asociado'
     ];
 
     public $timestamps = false;
@@ -67,5 +69,15 @@ class ClienteModel extends Model
     public function pedidos()
     {
         return $this->hasMany('App\Models\PedidoModel', 'id_cliente', 'id');
+    }
+
+    /**
+     * 
+     * Gets the employee who associated the client to the compañu
+     * @return HasOne 
+     */
+    public function empleado_asociado()
+    {
+        return $this->hasOne('App\Models\EmpleadoModel', 'id');
     }
 }

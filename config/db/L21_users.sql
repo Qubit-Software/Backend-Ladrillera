@@ -1,5 +1,3 @@
-
-
 -- Users for the db
 USE mysql;
 DROP PROCEDURE IF EXISTS exec_stmt;
