@@ -78,6 +78,6 @@ class ClienteModel extends Model
      */
     public function empleado_asociado()
     {
-        return $this->hasOne('App\Models\EmpleadoModel', 'id');
+        return $this->hasOne('App\Models\EmpleadoModel', 'id', 'id_empleado_asociado');
     }
 }

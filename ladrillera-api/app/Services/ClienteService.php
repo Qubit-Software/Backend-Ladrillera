@@ -34,7 +34,7 @@ class ClienteService
 
     public function getAll()
     {
-        return ClienteModel::with('empleado_asociado')->all();
+        return ClienteModel::with('empleado_asociado')->get();
     }
 
     public function getByUniqueColumn($column_name, $column_value)
