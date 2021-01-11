@@ -38,7 +38,7 @@ CREATE TABLE clientes (
     correo VARCHAR(150),
     telefono VARCHAR(100) UNIQUE,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empleado_asociado) REFERENCES EMPLEADOS(id) ON DELETE SET NULL
+    FOREIGN KEY (id_empleado_asociado) REFERENCES EMPLEADOS(id) ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 CREATE TABLE solicitud_clientes (

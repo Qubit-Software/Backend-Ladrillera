@@ -151,6 +151,15 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $cliente = ClienteModel::findOrFail($id);
+            $this->cliente_service->delete($cliente);
+            DB::commit();
+            return response()->json(null, 200);
+        } catch (\Throwable $th) {
+            DB::rollback();
+            throw $th;
+        }
     }
 }

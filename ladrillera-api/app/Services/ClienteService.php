@@ -34,7 +34,7 @@ class ClienteService
 
     public function getAll()
     {
-        return ClienteModel::all();
+        return ClienteModel::with('empleado_asociado')->all();
     }
 
     public function getByUniqueColumn($column_name, $column_value)
@@ -85,5 +85,10 @@ class ClienteService
 
         $to_update->save();
         return $to_update;
+    }
+
+    public function delete(ClienteModel $cliente)
+    {
+        $cliente->delete();
     }
 }
