@@ -27,6 +27,23 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
+//  Ventas Public
+Route::group(
+    ['prefix' => 'public',],
+    function () {
+        Route::group(
+            ['prefix' => 'ventas',],
+            function () {
+                Route::get('pedidos/tipo/cronograma', 'Pedido\PedidoController@cronograma');
+                Route::get('pedidos/tipo/fecha/{fecha}', 'Pedido\PedidoController@fecha');
+                Route::apiResource('pedidos', 'Pedido\PedidoController')->only([
+                    'index', 'show',
+                ]);
+            }
+        );
+    }
+);
+
 // Api Routes with implicit route binding, using the passport api guard
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('modulos', 'Empleado\EmpleadoController@modules');
