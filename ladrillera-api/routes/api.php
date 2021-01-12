@@ -27,7 +27,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
-//  Ventas Public
+// Public Routes
 Route::group(
     ['prefix' => 'public',],
     function () {
