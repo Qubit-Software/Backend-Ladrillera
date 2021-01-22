@@ -40,7 +40,7 @@ class ClienteRequest
             'tipo_cliente' => 'required',
             'ciudad' => 'required|string',
             'correo' => 'required|string|email|unique:clientes',
-            'telefono' =>  'required|max:10|unique:clientes'
+            'telefono' =>  'required|string|unique:clientes'
         ];
 
         $data = $request->all();
